@@ -25,18 +25,18 @@
         </javaTypeResolver>
 
         <!-- Entity Java Class -->
-        <javaModelGenerator targetPackage="com.rany.uic.infra.po" targetProject="./src/main/java">
+        <javaModelGenerator targetPackage="com.rany.acl.infra.po" targetProject="./src/main/java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!-- Mapper Java Class -->
-        <sqlMapGenerator targetPackage="com.rany.uic.infra.mapper" targetProject="./src/main/resources">
+        <sqlMapGenerator targetPackage="com.rany.acl.infra.mapper" targetProject="./src/main/resources">
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
         <!-- Mapper XML File -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.rany.uic.infra.mapper"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.rany.acl.infra.mapper"
                              targetProject="./src/main/java">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
