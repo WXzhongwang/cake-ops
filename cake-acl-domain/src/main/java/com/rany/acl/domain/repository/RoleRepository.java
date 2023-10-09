@@ -14,4 +14,13 @@ import com.rany.acl.domain.pk.RoleId;
  */
 
 public interface RoleRepository extends Repository<Role, RoleId> {
+
+    /**
+     * 角色更新
+     *
+     * @param role
+     * @return
+     */
+    int update(Role role);
+
 }

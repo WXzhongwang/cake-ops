@@ -1,4 +1,4 @@
-package com.rany.acl.api.command.menu;
+package com.rany.acl.api.command.role;
 
 import com.rany.acl.common.base.DTO;
 import lombok.Data;
@@ -12,10 +12,10 @@ import lombok.Data;
  * @email 18668485565163.com
  */
 @Data
-public class EnableMenuCommand extends DTO {
+public class DisableRoleCommand extends DTO {
 
     /**
-     * menuId
+     * roleId
      */
-    private Long menuId;
+    private Long roleId;
 }

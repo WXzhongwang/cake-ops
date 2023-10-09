@@ -1,4 +1,4 @@
-package com.rany.acl.api.query.menu;
+package com.rany.acl.api.query.role;
 
 import com.rany.acl.common.base.BaseQuery;
 import lombok.Data;
@@ -14,7 +14,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class MenuBasicQuery extends BaseQuery {
+public class RoleBasicQuery extends BaseQuery {
 
-    private Long menuId;
+    private Long roleId;
+    private String appCode;
 }

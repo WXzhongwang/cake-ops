@@ -15,7 +15,7 @@ import lombok.Data;
 public class DeleteMenuCommand extends DTO {
 
     /**
-     * 应用Code
+     * menuId
      */
     private Long menuId;
 }

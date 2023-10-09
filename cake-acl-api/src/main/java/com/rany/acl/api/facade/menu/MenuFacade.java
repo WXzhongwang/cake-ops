@@ -52,7 +52,7 @@ public interface MenuFacade {
     PojoResult<Boolean> enableMenu(EnableMenuCommand enableMenuCommand);
 
     /**
-     * 删除账户
+     * 删除菜单
      *
      * @param deleteMenuCommand
      * @return

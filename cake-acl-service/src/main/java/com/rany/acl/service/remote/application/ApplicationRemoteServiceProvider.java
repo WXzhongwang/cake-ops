@@ -12,6 +12,8 @@ import com.rany.acl.api.query.application.ApplicationPageQuery;
 import com.rany.acl.api.query.application.ApplicationQuery;
 import com.rany.acl.common.dto.application.ApplicationDTO;
 import com.rany.acl.common.enums.AuthTypeEnum;
+import com.rany.acl.common.enums.CommonStatusEnum;
+import com.rany.acl.common.enums.DeleteStatusEnum;
 import com.rany.acl.common.exception.BusinessException;
 import com.rany.acl.common.exception.enums.BusinessErrorMessage;
 import com.rany.acl.common.exception.enums.CommonReturnCode;
@@ -71,6 +73,12 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }
+        if (StringUtils.equals(application.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.APP_DISABLED);
+        }
+        if (StringUtils.equals(application.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.APP_DELETED);
+        }
         ApplicationDTO accountDTO = accountDataConvertor.sourceToDTO(application);
         return PojoResult.succeed(accountDTO);
     }
@@ -80,6 +88,12 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         Application application = applicationDomainService.findByAppCode(accountBasicQuery.getAppCode());
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
+        }
+        if (StringUtils.equals(application.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.APP_DELETED);
+        }
+        if (StringUtils.equals(application.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.APP_DISABLED);
         }
         ApplicationDTO applicationDTO = accountDataConvertor.sourceToDTO(application);
         return PojoResult.succeed(applicationDTO);
@@ -91,6 +105,9 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }
+        if (StringUtils.equals(application.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.APP_DELETED);
+        }
         application.disable();
         applicationDomainService.update(application);
         return PojoResult.succeed(Boolean.TRUE);
@@ -98,10 +115,12 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
 
     @Override
     public PojoResult<Boolean> enableApplication(EnableApplicationCommand enableApplicationCommand) {
-        Application application
-                = applicationDomainService.findById(new ApplicationId(enableApplicationCommand.getApplicationId()));
+        Application application = applicationDomainService.findById(new ApplicationId(enableApplicationCommand.getApplicationId()));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
+        }
+        if (StringUtils.equals(application.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.APP_DELETED);
         }
         application.enable();
         applicationDomainService.update(application);
@@ -125,6 +144,12 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         Application application = applicationDomainService.findById(new ApplicationId(modifyApplicationCommand.getAppId()));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
+        }
+        if (StringUtils.equals(application.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.APP_DELETED);
+        }
+        if (StringUtils.equals(application.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.APP_DISABLED);
         }
         if (StringUtils.isNotEmpty(modifyApplicationCommand.getAppName())) {
             application.setAppName(modifyApplicationCommand.getAppName());

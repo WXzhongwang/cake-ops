@@ -33,10 +33,20 @@ public enum BusinessErrorMessage {
 
     MENU_DISABLED("5501", "菜单已禁用"),
     MENU_NOT_FOUND("5502", "菜单未找到"),
+    MENU_DELETED("5502", "菜单已删除"),
     MENU_CONTAINS_CHILDREN("5503", "菜单包含子级，暂不支持删除"),
-    
     PARENT_MENU_DISABLED("5504", "父级菜单已禁用"),
     PARENT_MENU_NOT_FOUND("5505", "父级菜单未找到"),
+    PARENT_MENU_DELETED("5506", "父级菜单已删除"),
+
+
+    ROLE_DISABLED("6501", "角色已禁用"),
+    ROLE_NOT_FOUND("6502", "角色未找到"),
+    ROLE_DELETED("6502", "角色已删除"),
+    ROLE_CONTAINS_CHILDREN("5503", "角色包含子级，暂不支持删除"),
+    PARENT_ROLE_DISABLED("6504", "父级角色已禁用"),
+    PARENT_ROLE_NOT_FOUND("6505", "父级角色未找到"),
+    PARENT_ROLE_DELETED("6506", "父级角色已删除"),
     ;
 
     private final String code;

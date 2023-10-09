@@ -31,9 +31,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.rany.acl.common.exception.enums.BusinessErrorMessage.PARENT_MENU_DISABLED;
-import static com.rany.acl.common.exception.enums.BusinessErrorMessage.PARENT_MENU_NOT_FOUND;
-
 /**
  * TODO
  *
@@ -65,13 +62,13 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         if (Objects.nonNull(createMenuCommand.getParentId())) {
             Menu parentMenu = menuDomainService.findById(new MenuId(createMenuCommand.getParentId()));
             if (parentMenu == null) {
-                throw new BusinessException(PARENT_MENU_NOT_FOUND);
+                throw new BusinessException(BusinessErrorMessage.PARENT_MENU_NOT_FOUND);
             }
             if (StringUtils.equals(parentMenu.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
-                throw new BusinessException(PARENT_MENU_DISABLED);
+                throw new BusinessException(BusinessErrorMessage.PARENT_MENU_DISABLED);
             }
             if (StringUtils.equals(parentMenu.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
-                throw new BusinessException(PARENT_MENU_DISABLED);
+                throw new BusinessException(BusinessErrorMessage.PARENT_MENU_DELETED);
             }
             menu.setParentId(createMenuCommand.getParentId());
         }
@@ -91,6 +88,12 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         Menu menu = menuDomainService.findById(new MenuId(menuBasicQuery.getMenuId()));
         if (Objects.isNull(menu)) {
             throw new BusinessException(BusinessErrorMessage.MENU_NOT_FOUND);
+        }
+        if (StringUtils.equals(menu.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.MENU_DELETED);
+        }
+        if (StringUtils.equals(menu.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.MENU_DISABLED);
         }
         MenuDTO accountDTO = menuDataConvertor.sourceToDTO(menu);
         return PojoResult.succeed(accountDTO);
@@ -130,6 +133,9 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         if (Objects.isNull(menu)) {
             throw new BusinessException(BusinessErrorMessage.MENU_NOT_FOUND);
         }
+        if (StringUtils.equals(menu.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.MENU_DELETED);
+        }
         List<Menu> allSubMenuList = menuDomainService.findAllSubMenuListByMenuId(menu.getId());
         allSubMenuList.add(menu);
         for (Menu menuItem : allSubMenuList) {
@@ -147,6 +153,9 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         Menu menu = menuDomainService.findById(new MenuId(enableMenuCommand.getMenuId()));
         if (Objects.isNull(menu)) {
             throw new BusinessException(BusinessErrorMessage.MENU_NOT_FOUND);
+        }
+        if (StringUtils.equals(menu.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.MENU_DELETED);
         }
         menu.enable();
         menuDomainService.update(menu);
@@ -173,6 +182,12 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         Menu menu = menuDomainService.findById(new MenuId(modifyMenuCommand.getMenuId()));
         if (Objects.isNull(menu)) {
             throw new BusinessException(BusinessErrorMessage.MENU_NOT_FOUND);
+        }
+        if (StringUtils.equals(menu.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.MENU_DELETED);
+        }
+        if (StringUtils.equals(menu.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.MENU_DISABLED);
         }
         if (StringUtils.isNotEmpty(modifyMenuCommand.getName())) {
             menu.setName(modifyMenuCommand.getName());

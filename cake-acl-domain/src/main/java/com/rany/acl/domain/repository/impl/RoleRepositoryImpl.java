@@ -46,4 +46,9 @@ public class RoleRepositoryImpl implements RoleRepository {
     public void save(@NotNull Role role) {
         roleDao.save(role);
     }
+
+    @Override
+    public int update(Role role) {
+        return roleDao.update(role);
+    }
 }

@@ -15,7 +15,7 @@ import lombok.Data;
 public class ModifyMenuCommand extends DTO {
 
     /**
-     * 应用Code
+     * menuId
      */
     private Long menuId;
 
