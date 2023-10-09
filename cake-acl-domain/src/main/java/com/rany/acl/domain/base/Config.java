@@ -16,7 +16,7 @@ import java.util.Random;
  * @email 18668485565163.com
  */
 @Configuration
-@ComponentScan({"com.rany.uic.domain"})
+@ComponentScan({"com.rany.acl.domain"})
 public class Config {
 
     @Bean

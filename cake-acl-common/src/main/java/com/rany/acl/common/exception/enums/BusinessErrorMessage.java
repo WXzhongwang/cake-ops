@@ -26,12 +26,15 @@ public enum BusinessErrorMessage {
     TENANT_SHORT_NAME_EXISTED("3505", "租户简称已存在，换个试试"),
     TENANT_OVER_MAX_SIZE("3506", "租户个数已超过限制"),
 
-    ACCOUNT_NAME_DUPLICATED("4500", "账号名已重复"),
-    ACCOUNT_NOT_FOUND("4501", "账号未找到"),
-    ACCOUNT_DELETED("4502", "账号已删除"),
-    ACCOUNT_DISABLED("4503", "账号已禁用"),
+    APP_NAME_DUPLICATED("4500", "应用名已重复"),
+    APP_NOT_FOUND("4501", "应用未找到"),
+    APP_DELETED("4502", "应用已删除"),
+    APP_DISABLED("4503", "应用已禁用"),
 
-    ACCOUNT_STRATEGY_NOT_FOUND("5500", "账号登录方式未找到"),
+    MENU_DISABLED("5501", "菜单已禁用"),
+    MENU_NOT_FOUND("5502", "菜单未找到"),
+    PARENT_MENU_DISABLED("5503", "父级菜单已禁用"),
+    PARENT_MENU_NOT_FOUND("5504", "父级菜单未找到"),
     ;
 
     private final String code;

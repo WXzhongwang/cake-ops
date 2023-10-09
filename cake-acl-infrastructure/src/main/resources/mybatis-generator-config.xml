@@ -9,7 +9,7 @@
     <properties resource="gen.properties"/>
     <!-- 数据库驱动 -->
     <classPathEntry
-            location="/Users/tutu/.m2/repository/mysql/mysql-connector-java/8.0.19/mysql-connector-java-8.0.19.jar"/>
+            location="/Users/yuanjinxiu/.m2/repository/mysql/mysql-connector-java/8.0.19/mysql-connector-java-8.0.19.jar"/>
 
     <context id="DB2Tables" targetRuntime="MyBatis3">
         <!-- 数据库连接 -->
@@ -46,21 +46,31 @@
                enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
         </table>
-        <table schema="rany_acl" tableName="rbac_permission" domainObjectName="PermissionPO"
+        <table schema="rany_acl" tableName="permission" domainObjectName="PermissionPO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
         </table>
-        <table schema="rany_acl" tableName="rbac_role" domainObjectName="RolePO" enableCountByExample="false"
+        <table schema="rany_acl" tableName="role" domainObjectName="RolePO" enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
         </table>
-        <table schema="rany_acl" tableName="rbac_role_permission" domainObjectName="RolePermissionPO"
+        <table schema="rany_acl" tableName="role_permission" domainObjectName="RolePermissionPO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
         </table>
-        <table schema="rany_acl" tableName="rbac_user_role" domainObjectName="UserRolePO"
+        <table schema="rany_acl" tableName="user_role" domainObjectName="UserRolePO"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false">
+        </table>
+        <table schema="rany_acl" tableName="menu" domainObjectName="MenuPO"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false">
+        </table>
+        <table schema="rany_acl" tableName="role_menu" domainObjectName="RoleMenuPO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false" enableUpdateByExample="false">
