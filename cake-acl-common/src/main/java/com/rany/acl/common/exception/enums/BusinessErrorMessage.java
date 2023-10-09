@@ -33,8 +33,10 @@ public enum BusinessErrorMessage {
 
     MENU_DISABLED("5501", "菜单已禁用"),
     MENU_NOT_FOUND("5502", "菜单未找到"),
-    PARENT_MENU_DISABLED("5503", "父级菜单已禁用"),
-    PARENT_MENU_NOT_FOUND("5504", "父级菜单未找到"),
+    MENU_CONTAINS_CHILDREN("5503", "菜单包含子级，暂不支持删除"),
+    
+    PARENT_MENU_DISABLED("5504", "父级菜单已禁用"),
+    PARENT_MENU_NOT_FOUND("5505", "父级菜单未找到"),
     ;
 
     private final String code;

@@ -180,13 +180,33 @@
     </update>
 
 
-    <select id="selectList" resultType="com.rany.acl.infra.po.ApplicationPO"
-            parameterType="com.rany.acl.common.params.ApplicationSearchParam" resultMap="BaseResultMap">
+    <select id="selectList" resultType="com.rany.acl.infra.po.MenuPO"
+            parameterType="com.rany.acl.common.params.MenuSearchParam" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from menu
         <where>
             is_deleted = '0' and status = '0'
+            <if test="appCode != null and appCode != ''">
+                and app_name = #{appCode}
+            </if>
+            <if test="tenantId != null">
+                and tenant_id = #{tenantId}
+            </if>
+            <if test="tenantId == null">
+                and tenant_id is null
+            </if>
+        </where>
+        order by sort asc
+    </select>
+
+    <select id="selectSubMenuList" resultType="com.rany.acl.infra.po.ApplicationPO"
+            parameterType="com.rany.acl.common.params.SubMenuSearchParam" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from menu
+        <where>
+            is_deleted = '0'
             <if test="appCode != null and appCode != ''">
                 and app_name = #{appCode}
             </if>

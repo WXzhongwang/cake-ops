@@ -23,7 +23,9 @@ import com.rany.acl.domain.service.ApplicationDomainService;
 import com.rany.acl.domain.service.MenuDomainService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -122,13 +124,21 @@ public class MenuRemoteServiceProvider implements MenuFacade {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public PojoResult<Boolean> disableMenu(DisableMenuCommand disableMenuCommand) {
         Menu menu = menuDomainService.findById(new MenuId(disableMenuCommand.getMenuId()));
         if (Objects.isNull(menu)) {
             throw new BusinessException(BusinessErrorMessage.MENU_NOT_FOUND);
         }
-        menu.disable();
-        menuDomainService.update(menu);
+        List<Menu> allSubMenuList = menuDomainService.findAllSubMenuListByMenuId(menu.getId());
+        allSubMenuList.add(menu);
+        for (Menu menuItem : allSubMenuList) {
+            // 只有启用的菜单方需禁用
+            if (StringUtils.equals(menuItem.getStatus(), CommonStatusEnum.ENABLE.getValue())) {
+                menuItem.disable();
+                menuDomainService.update(menu);
+            }
+        }
         return PojoResult.succeed(Boolean.TRUE);
     }
 
@@ -148,6 +158,10 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         Menu menu = menuDomainService.findById(new MenuId(deleteMenuCommand.getMenuId()));
         if (Objects.isNull(menu)) {
             throw new BusinessException(BusinessErrorMessage.MENU_NOT_FOUND);
+        }
+        List<Menu> subMenuList = menuDomainService.findSubMenuListByMenuId(menu.getId());
+        if (CollectionUtils.isNotEmpty(subMenuList)) {
+            throw new BusinessException(BusinessErrorMessage.MENU_CONTAINS_CHILDREN);
         }
         menu.delete();
         menuDomainService.update(menu);

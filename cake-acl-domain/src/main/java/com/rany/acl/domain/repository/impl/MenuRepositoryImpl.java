@@ -2,6 +2,7 @@ package com.rany.acl.domain.repository.impl;
 
 import com.rany.acl.common.dto.menu.MenuDTO;
 import com.rany.acl.common.params.MenuSearchParam;
+import com.rany.acl.common.params.SubMenuSearchParam;
 import com.rany.acl.domain.aggregate.Menu;
 import com.rany.acl.domain.convertor.MenuDataConvertor;
 import com.rany.acl.domain.dao.MenuDao;
@@ -59,5 +60,11 @@ public class MenuRepositoryImpl implements MenuRepository {
     public List<MenuDTO> findMenus(MenuSearchParam menuSearchParam) {
         List<MenuPO> menuPOS = menuDao.selectList(menuSearchParam);
         return menuDataConvertor.targetToDTO(menuPOS);
+    }
+
+    @Override
+    public List<Menu> findSubMenus(SubMenuSearchParam subMenuSearchParam) {
+        List<MenuPO> menuPOS = menuDao.selectSubMenuList(subMenuSearchParam);
+        return menuDataConvertor.targetToSource(menuPOS);
     }
 }

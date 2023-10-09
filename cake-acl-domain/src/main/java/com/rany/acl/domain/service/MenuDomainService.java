@@ -2,13 +2,16 @@ package com.rany.acl.domain.service;
 
 import com.rany.acl.common.dto.menu.MenuDTO;
 import com.rany.acl.common.params.MenuSearchParam;
+import com.rany.acl.common.params.SubMenuSearchParam;
 import com.rany.acl.domain.aggregate.Menu;
 import com.rany.acl.domain.pk.MenuId;
 import com.rany.acl.domain.repository.MenuRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +32,37 @@ public class MenuDomainService {
 
     public Menu findById(MenuId menuId) {
         return menuRepository.find(menuId);
+    }
+
+    public List<Menu> findSubMenuListByMenuId(MenuId menuId) {
+        SubMenuSearchParam menuSearchParam = new SubMenuSearchParam();
+        menuSearchParam.setMenuId(menuId.getId());
+        return menuRepository.findSubMenus(menuSearchParam);
+    }
+
+    /**
+     * 获取下级全部菜单列表，全部层级，包含未启用的
+     *
+     * @param menuId
+     * @return
+     */
+    public List<Menu> findAllSubMenuListByMenuId(MenuId menuId) {
+        List<Menu> menus = new ArrayList<>();
+        recursive(menuId.getId(), menus);
+        return menus;
+    }
+
+
+    public void recursive(Long menuId, List<Menu> menus) {
+        SubMenuSearchParam menuSearchParam = new SubMenuSearchParam();
+        menuSearchParam.setMenuId(menuId);
+        List<Menu> subMenus = menuRepository.findSubMenus(menuSearchParam);
+        menus.addAll(subMenus);
+        if (CollectionUtils.isNotEmpty(subMenus)) {
+            for (Menu subMenu : subMenus) {
+                recursive(subMenu.getId().getId(), menus);
+            }
+        }
     }
 
     public List<MenuDTO> selectMenuList(MenuSearchParam searchParam) {

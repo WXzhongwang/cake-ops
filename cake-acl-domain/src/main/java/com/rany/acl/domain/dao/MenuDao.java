@@ -1,6 +1,7 @@
 package com.rany.acl.domain.dao;
 
 import com.rany.acl.common.params.MenuSearchParam;
+import com.rany.acl.common.params.SubMenuSearchParam;
 import com.rany.acl.domain.aggregate.Menu;
 import com.rany.acl.infra.po.MenuPO;
 
@@ -35,8 +36,16 @@ public interface MenuDao extends BaseMapper<MenuPO> {
     /**
      * 查询列表
      *
-     * @param tenant
+     * @param searchParam
      * @return
      */
-    List<MenuPO> selectList(MenuSearchParam tenant);
+    List<MenuPO> selectList(MenuSearchParam searchParam);
+
+    /**
+     * 查询子级菜单，包含未启用的
+     *
+     * @param subMenuSearchParam
+     * @return
+     */
+    List<MenuPO> selectSubMenuList(SubMenuSearchParam subMenuSearchParam);
 }
