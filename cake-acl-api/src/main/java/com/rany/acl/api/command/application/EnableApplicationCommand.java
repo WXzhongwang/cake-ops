@@ -16,7 +16,7 @@ public class EnableApplicationCommand extends DTO {
     /**
      * 账号Id
      */
-    private Long applicationId;
+    private Long appId;
 
     /**
      * 租户Id

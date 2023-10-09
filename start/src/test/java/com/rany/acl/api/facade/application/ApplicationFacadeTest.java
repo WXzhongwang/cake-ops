@@ -28,8 +28,7 @@ public class ApplicationFacadeTest extends BaseTests {
 
     @Resource
     private ApplicationFacade applicationFacade;
-    private static final Long TENANT_ID = 771342305205563392L;
-    private static final Long ACCOUNT_ID = 771358516215689216L;
+    private static final Long APP_ID = 771358516215689216L;
 
     @Test
     public void createAccount() {
@@ -44,7 +43,7 @@ public class ApplicationFacadeTest extends BaseTests {
     @Test
     public void getAccount() {
         ApplicationBasicQuery applicationBasicQuery = new ApplicationBasicQuery();
-        applicationBasicQuery.setAppId(ACCOUNT_ID);
+        applicationBasicQuery.setAppId(APP_ID);
         PojoResult<ApplicationDTO> account = applicationFacade.getApplication(applicationBasicQuery);
         Assert.assertTrue(account.getSuccess());
     }
@@ -52,7 +51,7 @@ public class ApplicationFacadeTest extends BaseTests {
     @Test
     public void disableAccount() {
         DisableApplicationCommand disableApplicationCommand = new DisableApplicationCommand();
-        disableApplicationCommand.setApplicationId(ACCOUNT_ID);
+        disableApplicationCommand.setAppId(APP_ID);
         PojoResult<Boolean> account = applicationFacade.disableApplication(disableApplicationCommand);
         Assert.assertTrue(account.getContent());
     }
@@ -60,7 +59,7 @@ public class ApplicationFacadeTest extends BaseTests {
     @Test
     public void enableAccount() {
         EnableApplicationCommand enableApplicationCommand = new EnableApplicationCommand();
-        enableApplicationCommand.setTenantId(TENANT_ID);
+        enableApplicationCommand.setAppId(APP_ID);
         PojoResult<Boolean> account = applicationFacade.enableApplication(enableApplicationCommand);
         Assert.assertTrue(account.getContent());
     }
@@ -68,7 +67,7 @@ public class ApplicationFacadeTest extends BaseTests {
     @Test
     public void deleteAccount() {
         DeleteApplicationCommand deleteApplicationCommand = new DeleteApplicationCommand();
-        deleteApplicationCommand.setApplicationId(ACCOUNT_ID);
+        deleteApplicationCommand.setAppId(APP_ID);
         PojoResult<Boolean> account = applicationFacade.deleteApplication(deleteApplicationCommand);
         Assert.assertTrue(account.getContent());
     }
@@ -76,7 +75,7 @@ public class ApplicationFacadeTest extends BaseTests {
     @Test
     public void modifyAccount() {
         ModifyApplicationCommand modifyApplicationCommand = new ModifyApplicationCommand();
-        modifyApplicationCommand.setAppId(ACCOUNT_ID);
+        modifyApplicationCommand.setAppId(APP_ID);
         modifyApplicationCommand.setAppName("测试ACL");
         PojoResult<Boolean> account = applicationFacade.modifyApplication(modifyApplicationCommand);
         Assert.assertTrue(account.getContent());

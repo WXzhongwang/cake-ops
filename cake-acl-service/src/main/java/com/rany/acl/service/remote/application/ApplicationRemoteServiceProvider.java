@@ -101,7 +101,7 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
 
     @Override
     public PojoResult<Boolean> disableApplication(DisableApplicationCommand disableApplicationCommand) {
-        Application application = applicationDomainService.findById(new ApplicationId(disableApplicationCommand.getApplicationId()));
+        Application application = applicationDomainService.findById(new ApplicationId(disableApplicationCommand.getAppId()));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }
@@ -115,7 +115,7 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
 
     @Override
     public PojoResult<Boolean> enableApplication(EnableApplicationCommand enableApplicationCommand) {
-        Application application = applicationDomainService.findById(new ApplicationId(enableApplicationCommand.getApplicationId()));
+        Application application = applicationDomainService.findById(new ApplicationId(enableApplicationCommand.getAppId()));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }
@@ -130,7 +130,7 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
     @Override
     public PojoResult<Boolean> deleteApplication(DeleteApplicationCommand deleteApplicationCommand) {
         Application application
-                = applicationDomainService.findById(new ApplicationId(deleteApplicationCommand.getApplicationId()));
+                = applicationDomainService.findById(new ApplicationId(deleteApplicationCommand.getAppId()));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }

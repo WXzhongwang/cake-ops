@@ -16,5 +16,5 @@ public class DisableApplicationCommand extends DTO {
     /**
      * 账号Id
      */
-    private Long applicationId;
+    private Long appId;
 }
