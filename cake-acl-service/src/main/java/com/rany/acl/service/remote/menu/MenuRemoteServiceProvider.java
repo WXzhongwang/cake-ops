@@ -98,8 +98,8 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         if (StringUtils.equals(menu.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
             throw new BusinessException(BusinessErrorMessage.MENU_DISABLED);
         }
-        MenuDTO accountDTO = menuDataConvertor.sourceToDTO(menu);
-        return PojoResult.succeed(accountDTO);
+        MenuDTO menuDTO = menuDataConvertor.sourceToDTO(menu);
+        return PojoResult.succeed(menuDTO);
     }
 
     @Override

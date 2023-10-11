@@ -1,8 +1,11 @@
 package com.rany.acl.domain.dao;
 
+import com.rany.acl.common.params.RoleSearchParam;
 import com.rany.acl.domain.aggregate.Role;
 import com.rany.acl.infra.po.RolePO;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * TODO
@@ -35,4 +38,11 @@ public interface RoleDao extends BaseMapper<RolePO> {
                            @Param("roleKey") String roleKey);
 
 
+    /**
+     * 查询列表
+     *
+     * @param searchParam
+     * @return
+     */
+    List<RolePO> selectList(RoleSearchParam searchParam);
 }

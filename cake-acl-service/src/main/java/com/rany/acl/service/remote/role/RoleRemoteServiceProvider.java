@@ -13,6 +13,7 @@ import com.rany.acl.common.enums.CommonStatusEnum;
 import com.rany.acl.common.enums.DeleteStatusEnum;
 import com.rany.acl.common.exception.BusinessException;
 import com.rany.acl.common.exception.enums.BusinessErrorMessage;
+import com.rany.acl.common.params.RoleSearchParam;
 import com.rany.acl.common.util.SnowflakeIdWorker;
 import com.rany.acl.domain.aggregate.Application;
 import com.rany.acl.domain.aggregate.Role;
@@ -24,7 +25,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -98,8 +101,37 @@ public class RoleRemoteServiceProvider implements RoleFacade {
     }
 
     @Override
-    public ListResult<RoleTreeDTO> getRoleTree(RoleTreeQuery RoleTreeQuery) {
-        return null;
+    public ListResult<RoleTreeDTO> getRoleTree(RoleTreeQuery roleTreeQuery) {
+        Application application = applicationDomainService.findByAppCode(roleTreeQuery.getAppCode());
+        if (Objects.isNull(application)) {
+            throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
+        }
+        if (StringUtils.equals(application.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.APP_DELETED);
+        }
+        if (StringUtils.equals(application.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.APP_DISABLED);
+        }
+
+        RoleSearchParam searchParam = new RoleSearchParam();
+        searchParam.setAppCode(roleTreeQuery.getAppCode());
+        searchParam.setTenantId(roleTreeQuery.getTenantId());
+        List<RoleDTO> roleDTOS = roleDomainService.selectRoleList(searchParam);
+        List<RoleDTO> top = roleDTOS.stream().filter(p -> Objects.isNull(p.getParentId())).collect(Collectors.toList());
+        List<RoleTreeDTO> treeDTO = roleDataConvertor.convertToTreeDTO(top);
+        for (RoleTreeDTO menuDTO : treeDTO) {
+            recursive(menuDTO, roleDTOS);
+        }
+        return ListResult.succeed(treeDTO);
+    }
+
+    public void recursive(RoleTreeDTO treeDTO, List<RoleDTO> menuDTOS) {
+        List<RoleDTO> children = menuDTOS.stream().filter(p -> Objects.equals(treeDTO.getRoleId(), p.getParentId())).collect(Collectors.toList());
+        List<RoleTreeDTO> childrenTreeItems = roleDataConvertor.convertToTreeDTO(children);
+        treeDTO.setChildren(childrenTreeItems);
+        for (RoleTreeDTO childrenItem : childrenTreeItems) {
+            recursive(childrenItem, menuDTOS);
+        }
     }
 
     @Override

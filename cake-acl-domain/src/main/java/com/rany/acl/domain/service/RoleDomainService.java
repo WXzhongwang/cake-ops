@@ -1,5 +1,7 @@
 package com.rany.acl.domain.service;
 
+import com.rany.acl.common.dto.role.RoleDTO;
+import com.rany.acl.common.params.RoleSearchParam;
 import com.rany.acl.domain.aggregate.Role;
 import com.rany.acl.domain.pk.RoleId;
 import com.rany.acl.domain.repository.RoleRepository;
@@ -7,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * TODO
@@ -30,6 +33,10 @@ public class RoleDomainService {
 
     public Role findByRoleKey(String appCode, Long tenantId, String roleKey) {
         return roleRepository.findByRoleKey(appCode, tenantId, roleKey);
+    }
+
+    public List<RoleDTO> selectRoleList(RoleSearchParam searchParam) {
+        return roleRepository.findRoles(searchParam);
     }
 
     public Boolean save(Role role) {

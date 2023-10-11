@@ -37,6 +37,26 @@
 
     </select>
 
+    <select id="selectList" resultType="com.rany.acl.infra.po.RolePO"
+            parameterType="com.rany.acl.common.params.RoleSearchParam" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from role
+        <where>
+            is_deleted = '0' and status = '0'
+            <if test="appCode != null and appCode != ''">
+                and app_code = #{appCode}
+            </if>
+            <if test="tenantId != null">
+                and tenant_id = #{tenantId}
+            </if>
+            <if test="tenantId == null">
+                and tenant_id is null
+            </if>
+        </where>
+        order by sort asc
+    </select>
+
     <insert id="save" parameterType="com.rany.acl.domain.aggregate.Role">
         insert into role
         <trim prefix="(" suffix=")" suffixOverrides=",">

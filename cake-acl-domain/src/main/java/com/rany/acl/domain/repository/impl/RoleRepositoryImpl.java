@@ -1,5 +1,7 @@
 package com.rany.acl.domain.repository.impl;
 
+import com.rany.acl.common.dto.role.RoleDTO;
+import com.rany.acl.common.params.RoleSearchParam;
 import com.rany.acl.domain.aggregate.Role;
 import com.rany.acl.domain.convertor.RoleDataConvertor;
 import com.rany.acl.domain.dao.RoleDao;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * TODO
@@ -56,5 +59,11 @@ public class RoleRepositoryImpl implements RoleRepository {
     public Role findByRoleKey(String appCode, Long tenantId, String roleKey) {
         RolePO rolePO = roleDao.selectByRoleKey(appCode, tenantId, roleKey);
         return roleDataConvertor.targetToSource(rolePO);
+    }
+
+    @Override
+    public List<RoleDTO> findRoles(RoleSearchParam roleSearchParam) {
+        List<RolePO> rolePOS = roleDao.selectList(roleSearchParam);
+        return roleDataConvertor.targetToDTO(rolePOS);
     }
 }
