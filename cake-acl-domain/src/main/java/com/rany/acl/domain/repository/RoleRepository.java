@@ -23,4 +23,7 @@ public interface RoleRepository extends Repository<Role, RoleId> {
      */
     int update(Role role);
 
+
+    Role findByRoleKey(String appCode, Long tenantId, String roleKey);
+
 }

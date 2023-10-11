@@ -51,4 +51,10 @@ public class RoleRepositoryImpl implements RoleRepository {
     public int update(Role role) {
         return roleDao.update(role);
     }
+
+    @Override
+    public Role findByRoleKey(String appCode, Long tenantId, String roleKey) {
+        RolePO rolePO = roleDao.selectByRoleKey(appCode, tenantId, roleKey);
+        return roleDataConvertor.targetToSource(rolePO);
+    }
 }

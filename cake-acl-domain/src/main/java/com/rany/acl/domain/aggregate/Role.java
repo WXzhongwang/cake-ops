@@ -44,6 +44,8 @@ public class Role extends BaseAggregateRoot implements IAggregate<RoleId> {
 
     private String roleDesc;
 
+    private String roleKey;
+
     private String status;
 
     /**
@@ -61,11 +63,13 @@ public class Role extends BaseAggregateRoot implements IAggregate<RoleId> {
      */
     private List<Menu> menuList;
 
-    public Role(RoleId id, String appCode, String roleName, String roleDesc) {
+    public Role(RoleId id, String appCode, String roleName, String roleDesc,
+                String roleKey) {
         this.id = id;
         this.roleName = roleName;
         this.appCode = appCode;
         this.roleDesc = roleDesc;
+        this.roleKey = roleKey;
     }
 
     /**

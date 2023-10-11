@@ -14,6 +14,7 @@ import com.rany.acl.common.enums.DeleteStatusEnum;
 import com.rany.acl.common.exception.BusinessException;
 import com.rany.acl.common.exception.enums.BusinessErrorMessage;
 import com.rany.acl.common.util.SnowflakeIdWorker;
+import com.rany.acl.domain.aggregate.Application;
 import com.rany.acl.domain.aggregate.Role;
 import com.rany.acl.domain.convertor.RoleDataConvertor;
 import com.rany.acl.domain.pk.RoleId;
@@ -37,13 +38,31 @@ public class RoleRemoteServiceProvider implements RoleFacade {
 
     @Override
     public PojoResult<Long> createRole(CreateRoleCommand createRoleCommand) {
+        Application application = applicationDomainService.findByAppCode(createRoleCommand.getAppCode());
+        if (Objects.isNull(application)) {
+            throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
+        }
+        if (StringUtils.equals(application.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.APP_DELETED);
+        }
+        if (StringUtils.equals(application.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.APP_DISABLED);
+        }
         Role role = new Role(new RoleId(snowflakeIdWorker.nextId()),
                 createRoleCommand.getAppCode(),
                 createRoleCommand.getRoleName(),
-                createRoleCommand.getRoleDesc());
+                createRoleCommand.getRoleDesc(),
+                createRoleCommand.getRoleKey());
         if (Objects.nonNull(createRoleCommand.getTenantId())) {
             role.setTenantId(createRoleCommand.getTenantId());
         }
+
+        Role current = roleDomainService.findByRoleKey(createRoleCommand.getAppCode(),
+                createRoleCommand.getTenantId(), createRoleCommand.getRoleKey());
+        if (current != null) {
+            throw new BusinessException(BusinessErrorMessage.ROLE_DUPLICATED);
+        }
+
         if (Objects.nonNull(createRoleCommand.getParentId())) {
             Role parentRole = roleDomainService.findById(new RoleId(createRoleCommand.getParentId()));
             if (parentRole == null) {

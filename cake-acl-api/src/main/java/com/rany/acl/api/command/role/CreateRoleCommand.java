@@ -35,6 +35,11 @@ public class CreateRoleCommand extends DTO {
     private String roleDesc;
 
     /**
+     * 角色唯一标识
+     */
+    private String roleKey;
+
+    /**
      * 父级角色id
      */
     private Long parentId;

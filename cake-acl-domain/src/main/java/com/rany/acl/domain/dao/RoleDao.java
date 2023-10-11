@@ -2,6 +2,7 @@ package com.rany.acl.domain.dao;
 
 import com.rany.acl.domain.aggregate.Role;
 import com.rany.acl.infra.po.RolePO;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * TODO
@@ -28,4 +29,10 @@ public interface RoleDao extends BaseMapper<RolePO> {
      * @return
      */
     int update(Role role);
+
+    RolePO selectByRoleKey(@Param("appCode") String appCode,
+                           @Param("tenantId") Long tenantId,
+                           @Param("roleKey") String roleKey);
+
+
 }

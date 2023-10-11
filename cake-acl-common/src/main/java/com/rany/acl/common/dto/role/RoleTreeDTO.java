@@ -15,6 +15,6 @@ public class RoleTreeDTO extends DTO {
     private Long parentId;
     private String isDeleted;
     private String status;
-
+    private String roleKey;
     private List<RoleTreeDTO> children;
 }

@@ -28,6 +28,10 @@ public class RoleDomainService {
         return roleRepository.find(roleId);
     }
 
+    public Role findByRoleKey(String appCode, Long tenantId, String roleKey) {
+        return roleRepository.findByRoleKey(appCode, tenantId, roleKey);
+    }
+
     public Boolean save(Role role) {
         roleRepository.save(role);
         return Boolean.TRUE;
