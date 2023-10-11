@@ -156,7 +156,7 @@
         order by gmt_modified, gmt_create desc
     </select>
 
-    <select id="selectByAppCode" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByAppCode" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from application

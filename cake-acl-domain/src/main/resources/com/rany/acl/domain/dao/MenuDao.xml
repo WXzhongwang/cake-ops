@@ -188,7 +188,7 @@
         <where>
             is_deleted = '0' and status = '0'
             <if test="appCode != null and appCode != ''">
-                and app_name = #{appCode}
+                and app_code = #{appCode}
             </if>
             <if test="tenantId != null">
                 and tenant_id = #{tenantId}
@@ -200,7 +200,7 @@
         order by sort asc
     </select>
 
-    <select id="selectSubMenuList" resultType="com.rany.acl.infra.po.ApplicationPO"
+    <select id="selectSubMenuList"
             parameterType="com.rany.acl.common.params.SubMenuSearchParam" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -208,7 +208,7 @@
         <where>
             is_deleted = '0'
             <if test="appCode != null and appCode != ''">
-                and app_name = #{appCode}
+                and app_code = #{appCode}
             </if>
             <if test="tenantId != null">
                 and tenant_id = #{tenantId}

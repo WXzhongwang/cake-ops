@@ -71,6 +71,9 @@ public class MenuRemoteServiceProvider implements MenuFacade {
                 throw new BusinessException(BusinessErrorMessage.PARENT_MENU_DELETED);
             }
             menu.setParentId(createMenuCommand.getParentId());
+            menu.setLevel(parentMenu.getLevel() + 1);
+        } else {
+            menu.setLevel(1);
         }
         menu.setIcon(createMenuCommand.getIcon());
         menu.setHidden(createMenuCommand.getHidden());
@@ -109,7 +112,7 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         searchParam.setAppCode(menuTreeQuery.getAppCode());
         searchParam.setTenantId(menuTreeQuery.getTenantId());
         List<MenuDTO> menuDTOS = menuDomainService.selectMenuList(searchParam);
-        List<MenuDTO> top = menuDTOS.stream().filter(p -> Objects.equals(p.getLevel(), 0)).collect(Collectors.toList());
+        List<MenuDTO> top = menuDTOS.stream().filter(p -> Objects.equals(p.getLevel(), 1)).collect(Collectors.toList());
         List<MenuTreeDTO> treeDTO = menuDataConvertor.convertToTreeDTO(top);
         for (MenuTreeDTO menuDTO : treeDTO) {
             recursive(menuDTO, menuDTOS);
