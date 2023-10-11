@@ -23,6 +23,7 @@ import com.rany.acl.domain.service.ApplicationDomainService;
 import com.rany.acl.domain.service.RoleDomainService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -63,7 +64,7 @@ public class RoleRemoteServiceProvider implements RoleFacade {
         Role current = roleDomainService.findByRoleKey(createRoleCommand.getAppCode(),
                 createRoleCommand.getTenantId(), createRoleCommand.getRoleKey());
         if (current != null) {
-            throw new BusinessException(BusinessErrorMessage.ROLE_DUPLICATED);
+            throw new BusinessException(BusinessErrorMessage.ROLE_KEY_DUPLICATED);
         }
 
         if (Objects.nonNull(createRoleCommand.getParentId())) {
@@ -141,16 +142,61 @@ public class RoleRemoteServiceProvider implements RoleFacade {
 
     @Override
     public PojoResult<Boolean> enableRole(EnableRoleCommand enableRoleCommand) {
-        return null;
+        Role role = roleDomainService.findById(new RoleId(enableRoleCommand.getRoleId()));
+        if (Objects.isNull(role)) {
+            throw new BusinessException(BusinessErrorMessage.ROLE_NOT_FOUND);
+        }
+        if (StringUtils.equals(role.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.ROLE_DELETED);
+        }
+        role.enable();
+        roleDomainService.update(role);
+        return PojoResult.succeed(Boolean.TRUE);
     }
 
     @Override
     public PojoResult<Boolean> deleteRole(DeleteRoleCommand deleteRoleCommand) {
-        return null;
+        Role role = roleDomainService.findById(new RoleId(deleteRoleCommand.getRoleId()));
+        if (Objects.isNull(role)) {
+            throw new BusinessException(BusinessErrorMessage.ROLE_NOT_FOUND);
+        }
+        List<Role> subRoles = roleDomainService.findSubRoleListByRoleId(role.getId());
+        if (CollectionUtils.isNotEmpty(subRoles)) {
+            throw new BusinessException(BusinessErrorMessage.ROLE_CONTAINS_CHILDREN);
+        }
+        role.delete();
+        roleDomainService.update(role);
+        return PojoResult.succeed(Boolean.TRUE);
     }
 
     @Override
     public PojoResult<Boolean> modifyRole(ModifyRoleCommand modifyRoleCommand) {
-        return null;
+        Role role = roleDomainService.findById(new RoleId(modifyRoleCommand.getRoleId()));
+        if (Objects.isNull(role)) {
+            throw new BusinessException(BusinessErrorMessage.MENU_NOT_FOUND);
+        }
+        if (StringUtils.equals(role.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.MENU_DELETED);
+        }
+        if (StringUtils.equals(role.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.MENU_DISABLED);
+        }
+        if (StringUtils.isNotEmpty(modifyRoleCommand.getRoleName())) {
+            role.setRoleName(modifyRoleCommand.getRoleName());
+        }
+        if (StringUtils.isNotEmpty(modifyRoleCommand.getRoleDesc())) {
+            role.setRoleDesc(modifyRoleCommand.getRoleDesc());
+        }
+        if (StringUtils.isNotEmpty(modifyRoleCommand.getRoleKey())) {
+            role.setRoleKey(modifyRoleCommand.getRoleKey());
+            Role current = roleDomainService.findByRoleKey(role.getAppCode(),
+                    role.getTenantId(), modifyRoleCommand.getRoleKey());
+            if (current != null) {
+                throw new BusinessException(BusinessErrorMessage.ROLE_KEY_DUPLICATED);
+            }
+        }
+        role.modify();
+        roleDomainService.update(role);
+        return PojoResult.succeed(Boolean.TRUE);
     }
 }

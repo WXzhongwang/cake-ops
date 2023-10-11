@@ -1,6 +1,7 @@
 package com.rany.acl.domain.dao;
 
 import com.rany.acl.common.params.RoleSearchParam;
+import com.rany.acl.common.params.SubRoleSearchParam;
 import com.rany.acl.domain.aggregate.Role;
 import com.rany.acl.infra.po.RolePO;
 import org.apache.ibatis.annotations.Param;
@@ -45,4 +46,13 @@ public interface RoleDao extends BaseMapper<RolePO> {
      * @return
      */
     List<RolePO> selectList(RoleSearchParam searchParam);
+
+
+    /**
+     * 查询子级菜单，包含未启用的
+     *
+     * @param subRoleSearchParam
+     * @return
+     */
+    List<RolePO> selectSubRoleList(SubRoleSearchParam subRoleSearchParam);
 }

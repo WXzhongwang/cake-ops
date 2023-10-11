@@ -28,6 +28,7 @@ public class ModifyRoleCommand extends DTO {
      * 菜单名称
      */
     private String roleDesc;
+    private String roleKey;
 
     /**
      * 父级菜单id

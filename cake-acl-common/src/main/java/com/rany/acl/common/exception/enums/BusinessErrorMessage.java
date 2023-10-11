@@ -47,7 +47,8 @@ public enum BusinessErrorMessage {
     PARENT_ROLE_DISABLED("6504", "父级角色已禁用"),
     PARENT_ROLE_NOT_FOUND("6505", "父级角色未找到"),
     PARENT_ROLE_DELETED("6506", "父级角色已删除"),
-    ROLE_DUPLICATED("6507", "角色已存在"),
+    ROLE_KEY_DUPLICATED("6507", "角色Key已存在"),
+
     ;
 
     private final String code;

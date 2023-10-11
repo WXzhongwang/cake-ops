@@ -2,6 +2,7 @@ package com.rany.acl.domain.service;
 
 import com.rany.acl.common.dto.role.RoleDTO;
 import com.rany.acl.common.params.RoleSearchParam;
+import com.rany.acl.common.params.SubRoleSearchParam;
 import com.rany.acl.domain.aggregate.Role;
 import com.rany.acl.domain.pk.RoleId;
 import com.rany.acl.domain.repository.RoleRepository;
@@ -38,6 +39,13 @@ public class RoleDomainService {
     public List<RoleDTO> selectRoleList(RoleSearchParam searchParam) {
         return roleRepository.findRoles(searchParam);
     }
+
+    public List<Role> findSubRoleListByRoleId(RoleId roleId) {
+        SubRoleSearchParam searchParam = new SubRoleSearchParam();
+        searchParam.setRoleId(roleId.getId());
+        return roleRepository.findSubRoles(searchParam);
+    }
+
 
     public Boolean save(Role role) {
         roleRepository.save(role);

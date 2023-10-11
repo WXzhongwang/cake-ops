@@ -2,6 +2,7 @@ package com.rany.acl.domain.repository.impl;
 
 import com.rany.acl.common.dto.role.RoleDTO;
 import com.rany.acl.common.params.RoleSearchParam;
+import com.rany.acl.common.params.SubRoleSearchParam;
 import com.rany.acl.domain.aggregate.Role;
 import com.rany.acl.domain.convertor.RoleDataConvertor;
 import com.rany.acl.domain.dao.RoleDao;
@@ -65,5 +66,11 @@ public class RoleRepositoryImpl implements RoleRepository {
     public List<RoleDTO> findRoles(RoleSearchParam roleSearchParam) {
         List<RolePO> rolePOS = roleDao.selectList(roleSearchParam);
         return roleDataConvertor.targetToDTO(rolePOS);
+    }
+
+    @Override
+    public List<Role> findSubRoles(SubRoleSearchParam subRoleSearchParam) {
+        List<RolePO> rolePOList = roleDao.selectSubRoleList(subRoleSearchParam);
+        return roleDataConvertor.targetToSource(rolePOList);
     }
 }

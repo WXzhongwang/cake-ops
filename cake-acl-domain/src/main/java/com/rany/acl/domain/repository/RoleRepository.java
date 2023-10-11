@@ -3,6 +3,7 @@ package com.rany.acl.domain.repository;
 import com.cake.framework.ddd.repository.Repository;
 import com.rany.acl.common.dto.role.RoleDTO;
 import com.rany.acl.common.params.RoleSearchParam;
+import com.rany.acl.common.params.SubRoleSearchParam;
 import com.rany.acl.domain.aggregate.Role;
 import com.rany.acl.domain.pk.RoleId;
 
@@ -38,4 +39,11 @@ public interface RoleRepository extends Repository<Role, RoleId> {
      */
     List<RoleDTO> findRoles(RoleSearchParam roleSearchParam);
 
+    /**
+     * 查询下级菜单列表，包含未启用的
+     *
+     * @param subRoleSearchParam
+     * @return
+     */
+    List<Role> findSubRoles(SubRoleSearchParam subRoleSearchParam);
 }
