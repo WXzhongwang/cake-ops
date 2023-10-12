@@ -1,9 +1,14 @@
 package com.rany.acl.api.facade;
 
+import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.BaseTests;
 import com.rany.acl.api.command.role.CreateRoleCommand;
 import com.rany.acl.api.facade.role.RoleFacade;
+import com.rany.acl.api.query.role.RoleBasicQuery;
+import com.rany.acl.api.query.role.RoleTreeQuery;
+import com.rany.acl.common.dto.role.RoleDTO;
+import com.rany.acl.common.dto.role.RoleTreeDTO;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -32,6 +37,23 @@ public class RoleFacadeTest extends BaseTests {
         createRoleCommand.setRoleDesc("应用超级管理员");
         createRoleCommand.setRoleKey("SUPER_ADMINISTRATOR");
         PojoResult<Long> app = roleFacade.createRole(createRoleCommand);
+        Assert.assertTrue(app.getSuccess());
+    }
+
+    @Test
+    public void getMenu() {
+        RoleBasicQuery roleBasicQuery = new RoleBasicQuery();
+        roleBasicQuery.setAppCode(APP_CODE);
+        roleBasicQuery.setRoleId(872090360875200512L);
+        PojoResult<RoleDTO> app = roleFacade.getRole(roleBasicQuery);
+        Assert.assertTrue(app.getSuccess());
+    }
+
+    @Test
+    public void getMenuTree() {
+        RoleTreeQuery roleTreeQuery = new RoleTreeQuery();
+        roleTreeQuery.setAppCode(APP_CODE);
+        ListResult<RoleTreeDTO> app = roleFacade.getRoleTree(roleTreeQuery);
         Assert.assertTrue(app.getSuccess());
     }
 }

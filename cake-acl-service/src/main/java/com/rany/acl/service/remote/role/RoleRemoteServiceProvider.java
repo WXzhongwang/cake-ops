@@ -137,7 +137,23 @@ public class RoleRemoteServiceProvider implements RoleFacade {
 
     @Override
     public PojoResult<Boolean> disableRole(DisableRoleCommand disableRoleCommand) {
-        return null;
+        Role role = roleDomainService.findById(new RoleId(disableRoleCommand.getRoleId()));
+        if (Objects.isNull(role)) {
+            throw new BusinessException(BusinessErrorMessage.ROLE_NOT_FOUND);
+        }
+        if (StringUtils.equals(role.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.ROLE_DELETED);
+        }
+        List<Role> allSubMenuList = roleDomainService.findAllSubRolesByRoleId(role.getId());
+        allSubMenuList.add(role);
+        for (Role roleItem : allSubMenuList) {
+            // 只有启用的菜单方需禁用
+            if (StringUtils.equals(roleItem.getStatus(), CommonStatusEnum.ENABLE.getValue())) {
+                roleItem.disable();
+                roleDomainService.update(role);
+            }
+        }
+        return PojoResult.succeed(Boolean.TRUE);
     }
 
     @Override
