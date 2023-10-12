@@ -3,6 +3,7 @@ package com.rany.acl.domain.aggregate;
 import cn.hutool.core.date.DateUtil;
 import com.cake.framework.common.base.BaseAggregateRoot;
 import com.cake.framework.common.base.IAggregate;
+import com.rany.acl.common.Constants;
 import com.rany.acl.common.enums.CommonStatusEnum;
 import com.rany.acl.common.enums.DeleteStatusEnum;
 import com.rany.acl.domain.event.permission.*;
@@ -67,10 +68,14 @@ public class Permission extends BaseAggregateRoot implements IAggregate<Permissi
      */
     private Application application;
 
-    public Permission(PermissionId id, String resourceName, String appCode) {
+    public Permission(PermissionId id, String appCode, String resourceName,
+                      String resourcePath,
+                      Long refMenuId) {
         this.id = id;
         this.resourceName = resourceName;
+        this.resourcePath = resourcePath;
         this.appCode = appCode;
+        this.refMenuId = refMenuId;
     }
 
     /**
@@ -79,6 +84,7 @@ public class Permission extends BaseAggregateRoot implements IAggregate<Permissi
      * @return
      */
     public Boolean save() {
+        this.setResourceType(Constants.RESOURCE_TYPE_ACTION);
         this.gmtCreate = DateUtil.date();
         this.gmtModified = DateUtil.date();
         this.isDeleted = DeleteStatusEnum.NO.getValue();

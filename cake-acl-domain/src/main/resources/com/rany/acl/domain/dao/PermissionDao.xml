@@ -17,6 +17,12 @@
         <result column="status" jdbcType="VARCHAR" property="status"/>
     </resultMap>
 
+    <sql id="Base_Column_List">
+        id
+        , app_code, tenant_id, resource_type, resource_name, resource_path, creator, modifier,
+        gmt_create, gmt_modified, is_deleted, ref_menu_id, status
+    </sql>
+
     <insert id="save" parameterType="com.rany.acl.domain.aggregate.Permission">
         insert into permission
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -56,6 +62,9 @@
             <if test="refMenuId != null">
                 ref_menu_id,
             </if>
+            <if test="status != null">
+                status,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -94,8 +103,12 @@
             <if test="refMenuId != null">
                 #{refMenuId,jdbcType=BIGINT},
             </if>
+            <if test="status != null">
+                #{status},
+            </if>
         </trim>
     </insert>
+
 
     <update id="update" parameterType="com.rany.acl.domain.aggregate.Permission">
         update permission
@@ -133,7 +146,33 @@
             <if test="refMenuId != null">
                 ref_menu_id = #{refMenuId,jdbcType=BIGINT},
             </if>
+            <if test="status != null">
+                status = #{status,jdbcType=CHAR},
+            </if>
         </set>
-        where id = #{id.id,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
     </update>
+
+    <select id="selectList" resultType="com.rany.acl.infra.po.PermissionPO"
+            parameterType="com.rany.acl.common.params.PermissionSearchParam" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from permission
+        <where>
+            is_deleted = '0'
+            <if test="appCode != null and appCode != ''">
+                and app_code = #{appCode}
+            </if>
+            <if test="tenantId != null">
+                and tenant_id = #{tenantId}
+            </if>
+            <if test="tenantId == null">
+                and tenant_id is null
+            </if>
+            <if test="refMenuId == null">
+                and ref_menu_id = #{refMenuId}
+            </if>
+        </where>
+        order by gmt_modified desc
+    </select>
 </mapper>

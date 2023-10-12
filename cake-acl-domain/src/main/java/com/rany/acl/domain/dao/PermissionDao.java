@@ -1,7 +1,10 @@
 package com.rany.acl.domain.dao;
 
+import com.rany.acl.common.params.PermissionSearchParam;
 import com.rany.acl.domain.aggregate.Permission;
 import com.rany.acl.infra.po.PermissionPO;
+
+import java.util.List;
 
 /**
  * TODO
@@ -28,4 +31,12 @@ public interface PermissionDao extends BaseMapper<PermissionPO> {
      * @return
      */
     int update(Permission permission);
+
+    /**
+     * 查询列表
+     *
+     * @param searchParam
+     * @return
+     */
+    List<PermissionPO> selectList(PermissionSearchParam searchParam);
 }

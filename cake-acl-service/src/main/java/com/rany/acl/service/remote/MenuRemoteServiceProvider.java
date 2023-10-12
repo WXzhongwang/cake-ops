@@ -1,4 +1,4 @@
-package com.rany.acl.service.remote.menu;
+package com.rany.acl.service.remote;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.cake.framework.common.response.ListResult;

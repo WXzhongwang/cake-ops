@@ -49,6 +49,15 @@ public enum BusinessErrorMessage {
     PARENT_ROLE_DELETED("6506", "父级角色已删除"),
     ROLE_KEY_DUPLICATED("6507", "角色Key已存在"),
 
+    PERMISSION_DISABLED("6501", "权限已禁用"),
+    PERMISSION_NOT_FOUND("6502", "权限未找到"),
+    PERMISSION_DELETED("6502", "权限已删除"),
+
+    PERMISSION_REF_MENU_NOT_FOUND("6505", "权限关联菜单未找到"),
+    PERMISSION_REF_MENU_NOT_MATCHED("6505", "权限关联菜单仅支持关联本应用菜单"),
+    PERMISSION_REF_MENU_REQUIRED("6505", "权限需关联菜单"),
+    PERMISSION_RESOURCE_TYPE_ILLEGAL("6505", "权限点类型仅支持行为action"),
+
     ;
 
     private final String code;
