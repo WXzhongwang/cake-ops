@@ -4,7 +4,6 @@ import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.BaseTests;
 import com.rany.acl.api.command.role.CreateRoleCommand;
-import com.rany.acl.api.facade.role.RoleFacade;
 import com.rany.acl.api.query.role.RoleBasicQuery;
 import com.rany.acl.api.query.role.RoleTreeQuery;
 import com.rany.acl.common.dto.role.RoleDTO;

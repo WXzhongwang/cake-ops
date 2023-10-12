@@ -1,10 +1,19 @@
-package com.rany.acl.api.facade.permission;
+package com.rany.acl.api.facade;
 
 import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.api.command.permission.*;
 import com.rany.acl.api.query.permission.PermissionBasicQuery;
 import com.rany.acl.common.dto.permission.PermissionDTO;
 
+
+/**
+ * 权限点管理，权限点关联页面
+ *
+ * @author zhongshengwang
+ * @description 应用管理
+ * @date 2022/12/27 20:39
+ * @email 18668485565163.com
+ */
 public interface PermissionFacade {
 
 

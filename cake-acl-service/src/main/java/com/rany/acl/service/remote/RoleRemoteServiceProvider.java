@@ -4,7 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.api.command.role.*;
-import com.rany.acl.api.facade.role.RoleFacade;
+import com.rany.acl.api.facade.RoleFacade;
 import com.rany.acl.api.query.role.RoleBasicQuery;
 import com.rany.acl.api.query.role.RoleTreeQuery;
 import com.rany.acl.common.dto.role.RoleDTO;
@@ -80,7 +80,7 @@ public class RoleRemoteServiceProvider implements RoleFacade {
             }
             role.setParentRoleId(createRoleCommand.getParentId());
         }
-        role.save();
+        role.save(createRoleCommand.getUser());
         roleDomainService.save(role);
         return PojoResult.succeed(role.getId().getId());
     }
@@ -149,7 +149,7 @@ public class RoleRemoteServiceProvider implements RoleFacade {
         for (Role roleItem : allSubMenuList) {
             // 只有启用的菜单方需禁用
             if (StringUtils.equals(roleItem.getStatus(), CommonStatusEnum.ENABLE.getValue())) {
-                roleItem.disable();
+                roleItem.disable(disableRoleCommand.getUser());
                 roleDomainService.update(role);
             }
         }
@@ -165,7 +165,7 @@ public class RoleRemoteServiceProvider implements RoleFacade {
         if (StringUtils.equals(role.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.ROLE_DELETED);
         }
-        role.enable();
+        role.enable(enableRoleCommand.getUser());
         roleDomainService.update(role);
         return PojoResult.succeed(Boolean.TRUE);
     }
@@ -180,7 +180,7 @@ public class RoleRemoteServiceProvider implements RoleFacade {
         if (CollectionUtils.isNotEmpty(subRoles)) {
             throw new BusinessException(BusinessErrorMessage.ROLE_CONTAINS_CHILDREN);
         }
-        role.delete();
+        role.delete(deleteRoleCommand.getUser());
         roleDomainService.update(role);
         return PojoResult.succeed(Boolean.TRUE);
     }
@@ -211,7 +211,7 @@ public class RoleRemoteServiceProvider implements RoleFacade {
                 throw new BusinessException(BusinessErrorMessage.ROLE_KEY_DUPLICATED);
             }
         }
-        role.modify();
+        role.modify(modifyRoleCommand.getUser());
         roleDomainService.update(role);
         return PojoResult.succeed(Boolean.TRUE);
     }

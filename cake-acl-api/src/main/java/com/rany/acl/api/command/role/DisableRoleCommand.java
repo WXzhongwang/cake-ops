@@ -1,6 +1,6 @@
 package com.rany.acl.api.command.role;
 
-import com.rany.acl.common.base.DTO;
+import com.rany.acl.common.base.BaseCommand;
 import lombok.Data;
 
 /**
@@ -12,7 +12,7 @@ import lombok.Data;
  * @email 18668485565163.com
  */
 @Data
-public class DisableRoleCommand extends DTO {
+public class DisableRoleCommand extends BaseCommand {
 
     /**
      * roleId

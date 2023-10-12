@@ -3,7 +3,6 @@ package com.rany.acl.api.facade;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.BaseTests;
 import com.rany.acl.api.command.permission.CreatePermissionCommand;
-import com.rany.acl.api.facade.permission.PermissionFacade;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.rany.acl.api.facade.menu;
+package com.rany.acl.api.facade;
 
 import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.PojoResult;
@@ -8,6 +8,14 @@ import com.rany.acl.api.query.menu.MenuTreeQuery;
 import com.rany.acl.common.dto.menu.MenuDTO;
 import com.rany.acl.common.dto.menu.MenuTreeDTO;
 
+/**
+ * 菜单管理
+ *
+ * @author zhongshengwang
+ * @description 菜单管理
+ * @date 2022/12/27 20:39
+ * @email 18668485565163.com
+ */
 public interface MenuFacade {
 
 

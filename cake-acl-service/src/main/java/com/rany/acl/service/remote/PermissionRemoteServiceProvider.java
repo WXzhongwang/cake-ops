@@ -3,7 +3,7 @@ package com.rany.acl.service.remote;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.api.command.permission.*;
-import com.rany.acl.api.facade.permission.PermissionFacade;
+import com.rany.acl.api.facade.PermissionFacade;
 import com.rany.acl.api.query.permission.PermissionBasicQuery;
 import com.rany.acl.common.Constants;
 import com.rany.acl.common.dto.permission.PermissionDTO;
@@ -72,7 +72,7 @@ public class PermissionRemoteServiceProvider implements PermissionFacade {
         if (Objects.nonNull(createPermissionCommand.getTenantId())) {
             permission.setTenantId(createPermissionCommand.getTenantId());
         }
-        permission.save();
+        permission.save(createPermissionCommand.getUser());
         permissionDomainService.save(permission);
         return PojoResult.succeed(permission.getId().getId());
     }
@@ -102,7 +102,7 @@ public class PermissionRemoteServiceProvider implements PermissionFacade {
         if (StringUtils.equals(permission.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.PERMISSION_DELETED);
         }
-        permission.disable();
+        permission.disable(disablePermissionCommand.getUser());
         permissionDomainService.update(permission);
         return PojoResult.succeed(Boolean.TRUE);
     }
@@ -116,7 +116,7 @@ public class PermissionRemoteServiceProvider implements PermissionFacade {
         if (StringUtils.equals(permission.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.PERMISSION_DELETED);
         }
-        permission.enable();
+        permission.enable(enablePermissionCommand.getUser());
         permissionDomainService.update(permission);
         return PojoResult.succeed(Boolean.TRUE);
     }
@@ -127,7 +127,7 @@ public class PermissionRemoteServiceProvider implements PermissionFacade {
         if (Objects.isNull(permission)) {
             throw new BusinessException(BusinessErrorMessage.PERMISSION_NOT_FOUND);
         }
-        permission.delete();
+        permission.delete(deletePermissionCommand.getUser());
         permissionDomainService.update(permission);
         return PojoResult.succeed(Boolean.TRUE);
     }
@@ -153,7 +153,7 @@ public class PermissionRemoteServiceProvider implements PermissionFacade {
         if (StringUtils.isNotEmpty(modifyPermissionCommand.getResourcePath())) {
             permission.setResourcePath(modifyPermissionCommand.getResourcePath());
         }
-        permission.modify();
+        permission.modify(modifyPermissionCommand.getUser());
         permissionDomainService.update(permission);
         return PojoResult.succeed(Boolean.TRUE);
     }

@@ -5,7 +5,6 @@ import com.cake.framework.common.response.PageResult;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.BaseTests;
 import com.rany.acl.api.command.application.*;
-import com.rany.acl.api.facade.application.ApplicationFacade;
 import com.rany.acl.api.query.application.ApplicationBasicQuery;
 import com.rany.acl.api.query.application.ApplicationPageQuery;
 import com.rany.acl.api.query.application.ApplicationQuery;

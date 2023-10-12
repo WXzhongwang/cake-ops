@@ -6,7 +6,7 @@ import com.cake.framework.common.response.Page;
 import com.cake.framework.common.response.PageResult;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.api.command.application.*;
-import com.rany.acl.api.facade.application.ApplicationFacade;
+import com.rany.acl.api.facade.ApplicationFacade;
 import com.rany.acl.api.query.application.ApplicationBasicQuery;
 import com.rany.acl.api.query.application.ApplicationPageQuery;
 import com.rany.acl.api.query.application.ApplicationQuery;
@@ -62,7 +62,7 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
             AuthTypeEnum authTypeEnum = EnumUtils.getEnum(AuthTypeEnum.class, createApplicationCommand.getAuthType());
             application.setAuthType(authTypeEnum.name());
         }
-        application.save();
+        application.save(createApplicationCommand.getUser());
         applicationDomainService.save(application);
         return PojoResult.succeed(application.getId().getId());
     }
@@ -108,7 +108,7 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         if (StringUtils.equals(application.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.APP_DELETED);
         }
-        application.disable();
+        application.disable(disableApplicationCommand.getUser());
         applicationDomainService.update(application);
         return PojoResult.succeed(Boolean.TRUE);
     }
@@ -122,7 +122,7 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         if (StringUtils.equals(application.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.APP_DELETED);
         }
-        application.enable();
+        application.enable(enableApplicationCommand.getUser());
         applicationDomainService.update(application);
         return PojoResult.succeed(Boolean.TRUE);
     }
@@ -134,7 +134,7 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }
-        application.delete();
+        application.delete(deleteApplicationCommand.getUser());
         applicationDomainService.update(application);
         return PojoResult.succeed(Boolean.TRUE);
     }
@@ -157,7 +157,7 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         if (StringUtils.isNotEmpty(modifyApplicationCommand.getAuthType())) {
             application.setAuthType(modifyApplicationCommand.getAuthType());
         }
-        application.modify();
+        application.modify(modifyApplicationCommand.getUser());
         applicationDomainService.update(application);
         return PojoResult.succeed(Boolean.TRUE);
     }

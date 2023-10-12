@@ -1,10 +1,10 @@
-package com.rany.acl.api.command.role;
+package com.rany.acl.api.command.grant;
 
 import com.rany.acl.common.base.BaseCommand;
 import lombok.Data;
 
 /**
- * TODO
+ * 用户角色授权
  *
  * @author zhongshengwang
  * @description TODO
@@ -12,10 +12,13 @@ import lombok.Data;
  * @email 18668485565163.com
  */
 @Data
-public class DeleteRoleCommand extends BaseCommand {
+public class GrantUserRoleCommand extends BaseCommand {
 
-    /**
-     * roleId
-     */
+    private String appCode;
+
+    private Long tenantId;
+
+    private Long accountId;
+
     private Long roleId;
 }

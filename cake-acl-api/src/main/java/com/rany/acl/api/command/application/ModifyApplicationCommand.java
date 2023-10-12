@@ -1,6 +1,6 @@
 package com.rany.acl.api.command.application;
 
-import com.rany.acl.common.base.DTO;
+import com.rany.acl.common.base.BaseCommand;
 import lombok.Data;
 
 /**
@@ -12,7 +12,7 @@ import lombok.Data;
  * @email 18668485565163.com
  */
 @Data
-public class ModifyApplicationCommand extends DTO {
+public class ModifyApplicationCommand extends BaseCommand {
 
     /**
      * accountId

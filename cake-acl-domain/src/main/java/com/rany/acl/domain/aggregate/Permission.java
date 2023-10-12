@@ -83,39 +83,44 @@ public class Permission extends BaseAggregateRoot implements IAggregate<Permissi
      *
      * @return
      */
-    public Boolean save() {
+    public Boolean save(String user) {
         this.setResourceType(Constants.RESOURCE_TYPE_ACTION);
         this.gmtCreate = DateUtil.date();
         this.gmtModified = DateUtil.date();
+        this.modifier = user;
         this.isDeleted = DeleteStatusEnum.NO.getValue();
         this.status = CommonStatusEnum.ENABLE.getValue();
         this.registerEvent(new PermissionCreatedEvent(this, this.gmtCreate));
         return Boolean.TRUE;
     }
 
-    public Boolean disable() {
+    public Boolean disable(String user) {
         this.gmtModified = DateUtil.date();
+        this.modifier = user;
         this.status = CommonStatusEnum.DISABLED.getValue();
         this.registerEvent(new PermissionDisabledEvent(this, this.gmtModified));
         return Boolean.TRUE;
     }
 
-    public Boolean enable() {
+    public Boolean enable(String user) {
         this.gmtModified = DateUtil.date();
+        this.modifier = user;
         this.status = CommonStatusEnum.ENABLE.getValue();
         this.registerEvent(new PermissionEnabledEvent(this, this.gmtModified));
         return Boolean.TRUE;
     }
 
-    public Boolean delete() {
+    public Boolean delete(String user) {
         this.gmtModified = DateUtil.date();
+        this.modifier = user;
         this.isDeleted = DeleteStatusEnum.YES.getValue();
         this.registerEvent(new PermissionDeletedEvent(this, this.gmtModified));
         return Boolean.TRUE;
     }
 
-    public Boolean modify() {
+    public Boolean modify(String user) {
         this.gmtModified = DateUtil.date();
+        this.modifier = user;
         this.registerEvent(new PermissionModifiedEvent(this, this.gmtModified));
         return Boolean.TRUE;
     }

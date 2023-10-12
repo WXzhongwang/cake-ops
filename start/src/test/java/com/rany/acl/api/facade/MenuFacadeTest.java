@@ -4,7 +4,6 @@ import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.BaseTests;
 import com.rany.acl.api.command.menu.CreateMenuCommand;
-import com.rany.acl.api.facade.menu.MenuFacade;
 import com.rany.acl.api.query.menu.MenuTreeQuery;
 import com.rany.acl.common.dto.menu.MenuTreeDTO;
 import org.junit.Assert;

@@ -1,4 +1,4 @@
-package com.rany.acl.api.facade.role;
+package com.rany.acl.api.facade;
 
 import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.PojoResult;
@@ -8,6 +8,15 @@ import com.rany.acl.api.query.role.RoleTreeQuery;
 import com.rany.acl.common.dto.role.RoleDTO;
 import com.rany.acl.common.dto.role.RoleTreeDTO;
 
+
+/**
+ * 角色管理
+ *
+ * @author zhongshengwang
+ * @description 角色管理
+ * @date 2022/12/27 20:39
+ * @email 18668485565163.com
+ */
 public interface RoleFacade {
 
     /**

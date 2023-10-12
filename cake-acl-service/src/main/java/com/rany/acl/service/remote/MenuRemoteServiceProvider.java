@@ -4,7 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.api.command.menu.*;
-import com.rany.acl.api.facade.menu.MenuFacade;
+import com.rany.acl.api.facade.MenuFacade;
 import com.rany.acl.api.query.menu.MenuBasicQuery;
 import com.rany.acl.api.query.menu.MenuTreeQuery;
 import com.rany.acl.common.dto.menu.MenuDTO;
@@ -81,7 +81,7 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         menu.setSort(createMenuCommand.getSort());
 
 
-        menu.save();
+        menu.save(createMenuCommand.getUser());
         menuDomainService.save(menu);
         return PojoResult.succeed(menu.getId().getId());
     }
@@ -144,7 +144,7 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         for (Menu menuItem : allSubMenuList) {
             // 只有启用的菜单方需禁用
             if (StringUtils.equals(menuItem.getStatus(), CommonStatusEnum.ENABLE.getValue())) {
-                menuItem.disable();
+                menuItem.disable(disableMenuCommand.getUser());
                 menuDomainService.update(menu);
             }
         }
@@ -160,7 +160,7 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         if (StringUtils.equals(menu.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.MENU_DELETED);
         }
-        menu.enable();
+        menu.enable(enableMenuCommand.getUser());
         menuDomainService.update(menu);
         return PojoResult.succeed(Boolean.TRUE);
     }
@@ -175,7 +175,7 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         if (CollectionUtils.isNotEmpty(subMenuList)) {
             throw new BusinessException(BusinessErrorMessage.MENU_CONTAINS_CHILDREN);
         }
-        menu.delete();
+        menu.delete(deleteMenuCommand.getUser());
         menuDomainService.update(menu);
         return PojoResult.succeed(Boolean.TRUE);
     }
@@ -207,7 +207,7 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         if (Objects.nonNull(modifyMenuCommand.getSort())) {
             menu.setSort(modifyMenuCommand.getSort());
         }
-        menu.modify();
+        menu.modify(modifyMenuCommand.getUser());
         menuDomainService.update(menu);
         return PojoResult.succeed(Boolean.TRUE);
     }

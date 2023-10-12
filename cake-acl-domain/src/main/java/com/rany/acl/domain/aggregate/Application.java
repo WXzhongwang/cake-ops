@@ -47,38 +47,44 @@ public class Application extends BaseAggregateRoot implements IAggregate<Applica
      *
      * @return
      */
-    public Boolean save() {
+    public Boolean save(String user) {
         this.gmtCreate = DateUtil.date();
         this.gmtModified = DateUtil.date();
         this.isDeleted = DeleteStatusEnum.NO.getValue();
         this.status = CommonStatusEnum.ENABLE.getValue();
+        this.creator = user;
+        this.modifier = user;
         this.registerEvent(new ApplicationCreatedEvent(this, this.gmtCreate));
         return Boolean.TRUE;
     }
 
-    public Boolean disable() {
+    public Boolean disable(String user) {
         this.gmtModified = DateUtil.date();
+        this.modifier = user;
         this.status = CommonStatusEnum.DISABLED.getValue();
         this.registerEvent(new ApplicationDisabledEvent(this, this.gmtModified));
         return Boolean.TRUE;
     }
 
-    public Boolean enable() {
+    public Boolean enable(String user) {
         this.gmtModified = DateUtil.date();
+        this.modifier = user;
         this.status = CommonStatusEnum.ENABLE.getValue();
         this.registerEvent(new ApplicationEnabledEvent(this, this.gmtModified));
         return Boolean.TRUE;
     }
 
-    public Boolean delete() {
+    public Boolean delete(String user) {
         this.gmtModified = DateUtil.date();
+        this.modifier = user;
         this.isDeleted = DeleteStatusEnum.YES.getValue();
         this.registerEvent(new ApplicationDeletedEvent(this, this.gmtModified));
         return Boolean.TRUE;
     }
 
-    public Boolean modify() {
+    public Boolean modify(String user) {
         this.gmtModified = DateUtil.date();
+        this.modifier = user;
         this.registerEvent(new ApplicationModifiedEvent(this, this.gmtModified));
         return Boolean.TRUE;
     }

@@ -1,4 +1,4 @@
-package com.rany.acl.api.facade.application;
+package com.rany.acl.api.facade;
 
 import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.PageResult;
@@ -10,10 +10,10 @@ import com.rany.acl.api.query.application.ApplicationQuery;
 import com.rany.acl.common.dto.application.ApplicationDTO;
 
 /**
- * TODO
+ * 应用管理
  *
  * @author zhongshengwang
- * @description TODO
+ * @description 应用管理
  * @date 2022/12/27 20:39
  * @email 18668485565163.com
  */
