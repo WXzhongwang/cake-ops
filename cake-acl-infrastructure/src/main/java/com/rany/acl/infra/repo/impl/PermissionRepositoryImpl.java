@@ -1,12 +1,12 @@
-package com.rany.acl.domain.repository.impl;
+package com.rany.acl.infra.repo.impl;
 
 import com.rany.acl.common.dto.permission.PermissionDTO;
 import com.rany.acl.common.params.PermissionSearchParam;
 import com.rany.acl.domain.aggregate.Permission;
-import com.rany.acl.domain.convertor.PermissionDataConvertor;
-import com.rany.acl.domain.dao.PermissionDao;
 import com.rany.acl.domain.pk.PermissionId;
 import com.rany.acl.domain.repository.PermissionRepository;
+import com.rany.acl.infra.convertor.PermissionDataConvertor;
+import com.rany.acl.infra.dao.PermissionDao;
 import com.rany.acl.infra.mapper.PermissionPOMapper;
 import com.rany.acl.infra.po.PermissionPO;
 import lombok.AllArgsConstructor;

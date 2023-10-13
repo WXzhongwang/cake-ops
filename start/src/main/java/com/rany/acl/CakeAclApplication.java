@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableDubbo
 @EnableTransactionManagement
 @SpringBootApplication(exclude = {ParamLimitInterceptor.class})
-@MapperScan(basePackages = {"com.rany.acl.domain.dao", "com.rany.acl.infra.mapper"})
+@MapperScan(basePackages = {"com.rany.acl.infra.dao", "com.rany.acl.infra.mapper"})
 @ComponentScan({"com.rany.acl.domain", "com.rany.acl.infra", "com.rany.acl.service", "com.rany.acl.web"})
 public class CakeAclApplication extends SpringBootServletInitializer {
 

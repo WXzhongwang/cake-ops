@@ -33,6 +33,10 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.rany.acl</groupId>
+            <artifactId>cake-acl-domain</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

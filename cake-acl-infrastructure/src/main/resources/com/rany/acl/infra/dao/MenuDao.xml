@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.rany.acl.domain.dao.PermissionDao">
-    <resultMap id="BaseResultMap" type="com.rany.acl.infra.po.PermissionPO">
+<mapper namespace="com.rany.acl.infra.dao.MenuDao">
+    <resultMap id="BaseResultMap" type="com.rany.acl.infra.po.MenuPO">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="app_code" jdbcType="VARCHAR" property="appCode"/>
         <result column="tenant_id" jdbcType="BIGINT" property="tenantId"/>
-        <result column="resource_type" jdbcType="VARCHAR" property="resourceType"/>
-        <result column="resource_name" jdbcType="VARCHAR" property="resourceName"/>
-        <result column="resource_path" jdbcType="VARCHAR" property="resourcePath"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+        <result column="icon" jdbcType="INTEGER" property="icon"/>
+        <result column="hidden" jdbcType="TINYINT" property="hidden"/>
         <result column="creator" jdbcType="VARCHAR" property="creator"/>
         <result column="modifier" jdbcType="VARCHAR" property="modifier"/>
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
-        <result column="is_deleted" jdbcType="CHAR" property="isDeleted"/>
-        <result column="ref_menu_id" jdbcType="BIGINT" property="refMenuId"/>
-        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="status" property="status"/>
     </resultMap>
-
     <sql id="Base_Column_List">
         id
-        , app_code, tenant_id, resource_type, resource_name, resource_path, creator, modifier,
-        gmt_create, gmt_modified, is_deleted, ref_menu_id, status
+        , app_code, tenant_id, name, path, parent_id, level, icon, hidden, creator, modifier,
+    gmt_create, gmt_modified, is_deleted, sort, status
     </sql>
 
-    <insert id="save" parameterType="com.rany.acl.domain.aggregate.Permission">
-        insert into permission
+    <insert id="save" parameterType="com.rany.acl.domain.aggregate.Menu">
+
+        insert into menu
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -35,14 +38,23 @@
             <if test="tenantId != null">
                 tenant_id,
             </if>
-            <if test="resourceType != null">
-                resource_type,
+            <if test="name != null">
+                name,
             </if>
-            <if test="resourceName != null">
-                resource_name,
+            <if test="path != null">
+                path,
             </if>
-            <if test="resourcePath != null">
-                resource_path,
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="icon != null">
+                icon,
+            </if>
+            <if test="hidden != null">
+                hidden,
             </if>
             <if test="creator != null">
                 creator,
@@ -59,8 +71,8 @@
             <if test="isDeleted != null">
                 is_deleted,
             </if>
-            <if test="refMenuId != null">
-                ref_menu_id,
+            <if test="sort != null">
+                sort,
             </if>
             <if test="status != null">
                 status,
@@ -76,14 +88,23 @@
             <if test="tenantId != null">
                 #{tenantId,jdbcType=BIGINT},
             </if>
-            <if test="resourceType != null">
-                #{resourceType,jdbcType=VARCHAR},
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
             </if>
-            <if test="resourceName != null">
-                #{resourceName,jdbcType=VARCHAR},
+            <if test="path != null">
+                #{path,jdbcType=VARCHAR},
             </if>
-            <if test="resourcePath != null">
-                #{resourcePath,jdbcType=VARCHAR},
+            <if test="parentId != null">
+                #{parentId,jdbcType=BIGINT},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=INTEGER},
+            </if>
+            <if test="icon != null">
+                #{icon,jdbcType=INTEGER},
+            </if>
+            <if test="hidden != null">
+                #{hidden,jdbcType=TINYINT},
             </if>
             <if test="creator != null">
                 #{creator,jdbcType=VARCHAR},
@@ -98,10 +119,10 @@
                 #{gmtModified,jdbcType=TIMESTAMP},
             </if>
             <if test="isDeleted != null">
-                #{isDeleted,jdbcType=CHAR},
+                #{isDeleted,jdbcType=TINYINT},
             </if>
-            <if test="refMenuId != null">
-                #{refMenuId,jdbcType=BIGINT},
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
             </if>
             <if test="status != null">
                 #{status},
@@ -109,9 +130,8 @@
         </trim>
     </insert>
 
-
-    <update id="update" parameterType="com.rany.acl.domain.aggregate.Permission">
-        update permission
+    <update id="update" parameterType="com.rany.acl.domain.aggregate.Menu">
+        update menu
         <set>
             <if test="appCode != null">
                 app_code = #{appCode,jdbcType=VARCHAR},
@@ -119,14 +139,23 @@
             <if test="tenantId != null">
                 tenant_id = #{tenantId,jdbcType=BIGINT},
             </if>
-            <if test="resourceType != null">
-                resource_type = #{resourceType,jdbcType=VARCHAR},
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
             </if>
-            <if test="resourceName != null">
-                resource_name = #{resourceName,jdbcType=VARCHAR},
+            <if test="path != null">
+                path = #{path,jdbcType=VARCHAR},
             </if>
-            <if test="resourcePath != null">
-                resource_path = #{resourcePath,jdbcType=VARCHAR},
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=BIGINT},
+            </if>
+            <if test="level != null">
+                level = #{level,jdbcType=INTEGER},
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=INTEGER},
+            </if>
+            <if test="hidden != null">
+                hidden = #{hidden,jdbcType=TINYINT},
             </if>
             <if test="creator != null">
                 creator = #{creator,jdbcType=VARCHAR},
@@ -141,25 +170,23 @@
                 gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
             </if>
             <if test="isDeleted != null">
-                is_deleted = #{isDeleted,jdbcType=CHAR},
+                is_deleted = #{isDeleted,jdbcType=TINYINT},
             </if>
-            <if test="refMenuId != null">
-                ref_menu_id = #{refMenuId,jdbcType=BIGINT},
-            </if>
-            <if test="status != null">
-                status = #{status,jdbcType=CHAR},
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
             </if>
         </set>
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id.id,jdbcType=BIGINT}
     </update>
 
-    <select id="selectList" resultType="com.rany.acl.infra.po.PermissionPO"
-            parameterType="com.rany.acl.common.params.PermissionSearchParam" resultMap="BaseResultMap">
+
+    <select id="selectList" resultType="com.rany.acl.infra.po.MenuPO"
+            parameterType="com.rany.acl.common.params.MenuSearchParam" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from permission
+        from menu
         <where>
-            is_deleted = '0'
+            is_deleted = '0' and status = '0'
             <if test="appCode != null and appCode != ''">
                 and app_code = #{appCode}
             </if>
@@ -169,10 +196,27 @@
             <if test="tenantId == null">
                 and tenant_id is null
             </if>
-            <if test="refMenuId == null">
-                and ref_menu_id = #{refMenuId}
+        </where>
+        order by sort asc
+    </select>
+
+    <select id="selectSubMenuList"
+            parameterType="com.rany.acl.common.params.SubMenuSearchParam" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from menu
+        <where>
+            is_deleted = '0' and parent_id = #{menuId}
+            <if test="appCode != null and appCode != ''">
+                and app_code = #{appCode}
+            </if>
+            <if test="tenantId != null">
+                and tenant_id = #{tenantId}
+            </if>
+            <if test="tenantId == null">
+                and tenant_id is null
             </if>
         </where>
-        order by gmt_modified desc
+        order by sort asc
     </select>
 </mapper>

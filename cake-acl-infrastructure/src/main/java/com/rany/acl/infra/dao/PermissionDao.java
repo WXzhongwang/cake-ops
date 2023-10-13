@@ -1,4 +1,4 @@
-package com.rany.acl.domain.dao;
+package com.rany.acl.infra.dao;
 
 import com.rany.acl.common.params.PermissionSearchParam;
 import com.rany.acl.domain.aggregate.Permission;

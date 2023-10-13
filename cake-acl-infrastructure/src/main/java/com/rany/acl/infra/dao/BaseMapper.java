@@ -1,4 +1,4 @@
-package com.rany.acl.domain.dao;
+package com.rany.acl.infra.dao;
 
 /**
  * TODO

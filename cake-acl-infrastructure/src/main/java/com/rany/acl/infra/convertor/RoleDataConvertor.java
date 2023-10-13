@@ -1,4 +1,4 @@
-package com.rany.acl.domain.convertor;
+package com.rany.acl.infra.convertor;
 
 import com.rany.acl.common.dto.role.RoleDTO;
 import com.rany.acl.common.dto.role.RoleTreeDTO;

@@ -1,4 +1,4 @@
-package com.rany.acl.domain.convertor;
+package com.rany.acl.infra.convertor;
 
 import org.mapstruct.InheritConfiguration;
 import org.mapstruct.InheritInverseConfiguration;

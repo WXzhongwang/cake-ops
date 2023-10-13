@@ -85,10 +85,10 @@
             <artifactId>aspectjweaver</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.rany.acl</groupId>
-            <artifactId>cake-acl-infrastructure</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.rany.acl</groupId>-->
+        <!--            <artifactId>cake-acl-infrastructure</artifactId>-->
+        <!--        </dependency>-->
     </dependencies>
 
     <build>
