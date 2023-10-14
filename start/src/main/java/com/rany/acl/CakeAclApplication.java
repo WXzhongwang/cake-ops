@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * UIC Application
+ * 统一角色权限管理
  *
  * @author zhongshengwang
  * @description TODO
