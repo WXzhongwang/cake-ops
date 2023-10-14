@@ -52,7 +52,7 @@ public class GrantUserRoleRemoteServiceProvider implements GrantUserRoleFacade {
             throw new BusinessException(BusinessErrorMessage.ROLE_DELETED);
         }
         UserRole userRole = new UserRole(userRoleSearchParam.getAppCode(), userRoleSearchParam.getTenantId(),
-                userRoleSearchParam.getUserId(), userRoleSearchParam.getTenantId());
+                userRoleSearchParam.getUserId(), userRoleSearchParam.getRoleId());
         userRoleDomainService.save(userRole);
         return PojoResult.succeed(Boolean.TRUE);
     }
