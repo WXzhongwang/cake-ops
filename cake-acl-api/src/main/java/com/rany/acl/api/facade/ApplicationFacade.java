@@ -61,7 +61,7 @@ public interface ApplicationFacade {
     PojoResult<Boolean> enableApplication(EnableApplicationCommand enableApplicationCommand);
 
     /**
-     * 删除账户
+     * 删除应用
      *
      * @param deleteApplicationCommand
      * @return
