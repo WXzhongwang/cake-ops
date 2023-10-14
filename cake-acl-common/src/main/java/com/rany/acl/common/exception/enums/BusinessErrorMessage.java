@@ -58,6 +58,9 @@ public enum BusinessErrorMessage {
     PERMISSION_REF_MENU_REQUIRED("6505", "权限需关联菜单"),
     PERMISSION_RESOURCE_TYPE_ILLEGAL("6505", "权限点类型仅支持行为action"),
 
+    USER_ROLE_EXIST("6505", "用户已存在该角色"),
+    USER_ROLE_NOT_EXIST("6505", "用户角色关系不存在"),
+
     ;
 
     private final String code;

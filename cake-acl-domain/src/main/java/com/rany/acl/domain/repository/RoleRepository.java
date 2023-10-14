@@ -4,7 +4,9 @@ import com.cake.framework.ddd.repository.Repository;
 import com.rany.acl.common.dto.role.RoleDTO;
 import com.rany.acl.common.params.RoleSearchParam;
 import com.rany.acl.common.params.SubRoleSearchParam;
+import com.rany.acl.common.params.UserRoleSearchParam;
 import com.rany.acl.domain.aggregate.Role;
+import com.rany.acl.domain.entity.UserRole;
 import com.rany.acl.domain.pk.RoleId;
 
 import java.util.List;
@@ -46,4 +48,28 @@ public interface RoleRepository extends Repository<Role, RoleId> {
      * @return
      */
     List<Role> findSubRoles(SubRoleSearchParam subRoleSearchParam);
+
+    /**
+     * 查询单个用户角色
+     *
+     * @param userRoleSearchParam
+     * @return
+     */
+    UserRole findUserRole(UserRoleSearchParam userRoleSearchParam);
+
+    /**
+     * 查询一组用户角色
+     *
+     * @param userRoleSearchParam
+     * @return
+     */
+    List<UserRole> findUserRoles(UserRoleSearchParam userRoleSearchParam);
+
+    /**
+     * 更新单条用户角色
+     *
+     * @param userRole
+     * @return
+     */
+    Boolean saveUserRole(UserRole userRole);
 }

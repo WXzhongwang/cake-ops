@@ -1,6 +1,7 @@
 package com.rany.acl.api.facade;
 
 import com.cake.framework.common.response.PojoResult;
+import com.rany.acl.api.command.grant.DisGrantUserRoleCommand;
 import com.rany.acl.api.command.grant.GrantUserRoleCommand;
 
 /**
@@ -14,10 +15,19 @@ import com.rany.acl.api.command.grant.GrantUserRoleCommand;
 public interface GrantUserRoleFacade {
 
     /**
-     * 用户角色授权是否成功
+     * 用户角色授权
      *
-     * @param grantUserRoleCommand
-     * @return
+     * @param grantUserRoleCommand 授权请求
+     * @return 是否成功
      */
     PojoResult<Boolean> grantUserRole(GrantUserRoleCommand grantUserRoleCommand);
+
+
+    /**
+     * 解除用户角色授权
+     *
+     * @param disGrantUserRoleCommand 解除授权请求
+     * @return 是否成功
+     */
+    PojoResult<Boolean> disGrantUserRole(DisGrantUserRoleCommand disGrantUserRoleCommand);
 }
