@@ -2,12 +2,10 @@ package com.rany.acl.domain.repository;
 
 import com.cake.framework.ddd.repository.Repository;
 import com.rany.acl.common.dto.role.RoleDTO;
-import com.rany.acl.common.params.RoleMenuSearchParam;
-import com.rany.acl.common.params.RoleSearchParam;
-import com.rany.acl.common.params.SubRoleSearchParam;
-import com.rany.acl.common.params.UserRoleSearchParam;
+import com.rany.acl.common.params.*;
 import com.rany.acl.domain.aggregate.Role;
 import com.rany.acl.domain.entity.RoleMenu;
+import com.rany.acl.domain.entity.RolePermission;
 import com.rany.acl.domain.entity.UserRole;
 import com.rany.acl.domain.pk.RoleId;
 
@@ -76,6 +74,16 @@ public interface RoleRepository extends Repository<Role, RoleId> {
      */
     List<RoleMenu> findRoleMenus(RoleMenuSearchParam roleMenuSearchParam);
 
+
+    /**
+     * 查询一组角色权限点关系
+     *
+     * @param rolePermissionSearchParam
+     * @return
+     */
+    List<RolePermission> findRolePermissions(RolePermissionSearchParam rolePermissionSearchParam);
+
+
     /**
      * 保存单条用户角色关系
      *
@@ -109,4 +117,22 @@ public interface RoleRepository extends Repository<Role, RoleId> {
      * @return
      */
     Boolean updateRoleMenu(RoleMenu roleMenu);
+
+
+    /**
+     * 保存单条角色权限点关系
+     *
+     * @param rolePermission
+     * @return
+     */
+    Boolean saveRolePermission(RolePermission rolePermission);
+
+
+    /**
+     * 更新单条角色权限点关系
+     *
+     * @param rolePermission
+     * @return
+     */
+    Boolean updateRolePermission(RolePermission rolePermission);
 }
