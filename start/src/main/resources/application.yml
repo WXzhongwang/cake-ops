@@ -1,5 +1,5 @@
 server:
-  port: 6321
+  port: 6322
 
 
 logging:
@@ -14,19 +14,18 @@ dubbo:
     id: rany-acl-service
     name: rany-acl-service
   protocol:
-    id: dubbo
     name: dubbo
-    port: 20880
+    port: -1
   registry:
-    protocol: zookeeper
-    id: my-registry
-    # address: 127.0.0.1:2181
+    address: zookeeper://127.0.0.1:2181
+  metadata-report:
+    address: zookeeper://127.0.0.1:2181
   scan:
-    basePackages: com.rany.uic
+    basePackages: com.rany.acl
 
 spring:
   application:
-    name: rany-uic-service
+    name: rany-acl-service
   profiles:
     #active: @activatedProperties@
     active: dev
@@ -70,5 +69,5 @@ warn:
     time: 300
 
 mybatis:
-  mapper-locations: classpath:com/rany/uic/domain/dao/*.xml, classpath:com/rany/uic/infra/mapper/*.xml
-  type-aliases-package: com.rany.uic.infra
+  mapper-locations: classpath:com/rany/uic/infra/dao/*.xml, classpath:com/rany/acl/infra/mapper/*.xml
+  type-aliases-package: com.rany.acl.infra
