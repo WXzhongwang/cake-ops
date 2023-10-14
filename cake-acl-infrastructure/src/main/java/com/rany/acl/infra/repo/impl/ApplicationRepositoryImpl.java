@@ -3,6 +3,8 @@ package com.rany.acl.infra.repo.impl;
 import com.cake.framework.common.response.Page;
 import com.github.pagehelper.PageInfo;
 import com.rany.acl.common.dto.application.ApplicationDTO;
+import com.rany.acl.common.exception.BusinessException;
+import com.rany.acl.common.exception.enums.BusinessErrorMessage;
 import com.rany.acl.common.params.ApplicationPageSearchParam;
 import com.rany.acl.common.params.ApplicationSearchParam;
 import com.rany.acl.domain.aggregate.Application;
@@ -40,8 +42,11 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
 
     @Override
     public Application find(@NotNull ApplicationId applicationId) {
-        ApplicationPO accountPO = applicationPOMapper.selectByPrimaryKey(applicationId.getId());
-        return applicationDataConvertor.targetToSource(accountPO);
+        ApplicationPO applicationPO = applicationPOMapper.selectByPrimaryKey(applicationId.getId());
+        if (applicationPO == null) {
+            throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
+        }
+        return applicationDataConvertor.targetToSource(applicationPO);
     }
 
     @Override
@@ -51,7 +56,6 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void save(@NotNull Application application) {
-        Long accountId = application.getId().getId();
         applicationDao.save(application);
     }
 
@@ -64,6 +68,9 @@ public class ApplicationRepositoryImpl implements ApplicationRepository {
     @Override
     public Application findByAppCode(String appCode) {
         ApplicationPO applicationPO = applicationDao.selectByAppCode(appCode);
+        if (applicationPO == null) {
+            throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
+        }
         return applicationDataConvertor.targetToSource(applicationPO);
     }
 
