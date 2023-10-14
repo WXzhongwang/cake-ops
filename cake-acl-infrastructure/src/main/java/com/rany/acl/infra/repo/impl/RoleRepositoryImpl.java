@@ -1,19 +1,25 @@
 package com.rany.acl.infra.repo.impl;
 
 import com.rany.acl.common.dto.role.RoleDTO;
+import com.rany.acl.common.params.RoleMenuSearchParam;
 import com.rany.acl.common.params.RoleSearchParam;
 import com.rany.acl.common.params.SubRoleSearchParam;
 import com.rany.acl.common.params.UserRoleSearchParam;
 import com.rany.acl.domain.aggregate.Role;
+import com.rany.acl.domain.entity.RoleMenu;
 import com.rany.acl.domain.entity.UserRole;
 import com.rany.acl.domain.pk.RoleId;
 import com.rany.acl.domain.repository.RoleRepository;
 import com.rany.acl.infra.convertor.RoleDataConvertor;
+import com.rany.acl.infra.convertor.RoleMenuDataConvertor;
 import com.rany.acl.infra.convertor.UserRoleDataConvertor;
 import com.rany.acl.infra.dao.RoleDao;
+import com.rany.acl.infra.dao.RoleMenuDao;
 import com.rany.acl.infra.dao.UserRoleDao;
+import com.rany.acl.infra.mapper.RoleMenuPOMapper;
 import com.rany.acl.infra.mapper.RolePOMapper;
 import com.rany.acl.infra.mapper.UserRolePOMapper;
+import com.rany.acl.infra.po.RoleMenuPO;
 import com.rany.acl.infra.po.RolePO;
 import com.rany.acl.infra.po.UserRolePO;
 import lombok.AllArgsConstructor;
@@ -44,6 +50,9 @@ public class RoleRepositoryImpl implements RoleRepository {
     private final UserRolePOMapper userRolePOMapper;
     private final UserRoleDao userRoleDao;
     private final UserRoleDataConvertor userRoleDataConvertor;
+    private final RoleMenuPOMapper roleMenuPOMapper;
+    private final RoleMenuDao roleMenuDao;
+    private final RoleMenuDataConvertor roleMenuDataConvertor;
 
     @Override
     public Role find(@NotNull RoleId roleId) {
@@ -103,8 +112,35 @@ public class RoleRepositoryImpl implements RoleRepository {
     }
 
     @Override
+    public List<RoleMenu> findRoleMenus(RoleMenuSearchParam roleMenuSearchParam) {
+        List<RoleMenuPO> roleMenuPOS = roleMenuDao.selectRoleMenuList(roleMenuSearchParam);
+        if (roleMenuPOS == null || roleMenuPOS.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return roleMenuDataConvertor.targetToSource(roleMenuPOS);
+    }
+
+    @Override
     public Boolean saveUserRole(UserRole userRole) {
         userRoleDao.save(userRole);
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean updateUserRole(UserRole userRole) {
+        userRoleDao.update(userRole);
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean saveRoleMenu(RoleMenu roleMenu) {
+        roleMenuDao.save(roleMenu);
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean updateRoleMenu(RoleMenu roleMenu) {
+        roleMenuDao.update(roleMenu);
         return Boolean.TRUE;
     }
 }

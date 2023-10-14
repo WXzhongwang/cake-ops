@@ -1,20 +1,20 @@
-package com.rany.acl.api.command.grant;
+package com.rany.acl.common.params;
 
-import com.rany.acl.common.base.BaseCommand;
+import com.rany.acl.common.base.BaseQuery;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 用户角色授权
+ * TODO
  *
  * @author zhongshengwang
  * @description TODO
- * @date 2022/12/27 20:40
+ * @date 2023/1/5 20:50
  * @email 18668485565163.com
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DisGrantRoleMenusCommand extends BaseCommand {
+public class RoleMenuSearchParam extends BaseQuery {
 
     private String appCode;
 

@@ -24,6 +24,6 @@ public class UserRoleDomainService {
     }
 
     public Boolean update(UserRole userRole) {
-        return roleRepository.saveUserRole(userRole);
+        return roleRepository.updateUserRole(userRole);
     }
 }
