@@ -1,6 +1,7 @@
 package com.rany.acl.common.dto.menu;
 
 import com.rany.acl.common.base.DTO;
+import com.rany.acl.common.dto.permission.PermissionDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,4 +21,9 @@ public class MenuTreeDTO extends DTO {
     private Integer sort;
 
     private List<MenuTreeDTO> children;
+
+    /**
+     * 权限集合
+     */
+    private List<PermissionDTO> permissions;
 }

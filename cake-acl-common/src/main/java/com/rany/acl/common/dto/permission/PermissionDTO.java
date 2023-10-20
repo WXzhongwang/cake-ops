@@ -46,5 +46,8 @@ public class PermissionDTO extends DTO {
      */
     private String status;
 
+    /**
+     * 是否删除
+     */
     private String isDeleted;
 }
