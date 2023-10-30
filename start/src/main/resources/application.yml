@@ -27,7 +27,6 @@ spring:
   application:
     name: rany-acl-service
   profiles:
-    #active: @activatedProperties@
     active: dev
   datasource:
     druid:
