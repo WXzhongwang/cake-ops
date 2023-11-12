@@ -1,7 +1,7 @@
 package com.rany.acl.common.exception;
 
-import com.rany.acl.common.exception.enums.BusinessErrorMessage;
-import com.rany.acl.common.exception.enums.CommonReturnCode;
+import com.cake.framework.common.exception.CommonReturnCode;
+import lombok.Getter;
 
 /**
  * BusinessException
@@ -12,27 +12,16 @@ import com.rany.acl.common.exception.enums.CommonReturnCode;
  * @email zhongshengwang@shuwen.com
  */
 
+@Getter
 public class BusinessException extends RuntimeException {
 
-    private String code;
+    private final String code;
 
-    private String message;
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
+    private final String message;
 
     @Override
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public BusinessException(String code, String message) {

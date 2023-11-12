@@ -1,6 +1,5 @@
 package com.rany.acl.service.remote;
 
-import com.alibaba.dubbo.config.annotation.Service;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.api.command.permission.*;
 import com.rany.acl.api.facade.PermissionFacade;
@@ -9,8 +8,8 @@ import com.rany.acl.common.Constants;
 import com.rany.acl.common.dto.permission.PermissionDTO;
 import com.rany.acl.common.enums.CommonStatusEnum;
 import com.rany.acl.common.enums.DeleteStatusEnum;
+import com.rany.acl.common.exception.BusinessErrorMessage;
 import com.rany.acl.common.exception.BusinessException;
-import com.rany.acl.common.exception.enums.BusinessErrorMessage;
 import com.rany.acl.common.util.SnowflakeIdWorker;
 import com.rany.acl.domain.aggregate.Application;
 import com.rany.acl.domain.aggregate.Menu;
@@ -24,6 +23,7 @@ import com.rany.acl.infra.convertor.PermissionDataConvertor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.Service;
 
 import java.util.Objects;
 

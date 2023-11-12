@@ -1,6 +1,7 @@
-package com.rany.acl.common.exception.enums;
+package com.rany.acl.common.exception;
 
 import cn.hutool.core.util.StrUtil;
+import com.cake.framework.common.exception.ErrorCodeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,20 +12,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum BusinessErrorMessage {
 
-    ISV_NOT_FOUND("2500", "isv未找到"),
-    ISV_DELETED("2501", "isv已删除"),
-    ISV_DISABLED("2502", "isv已禁用"),
-    ISV_INVALID("2503", "isv不可用"),
-    ISV_CHECK_NOT_PASS("2504", "isv校验不通过"),
-
-    TENANT_NOT_FOUND("3500", "租户未找到"),
-    TENANT_DELETED("3501", "租户已删除"),
-    TENANT_DISABLED("3502", "租户已禁用"),
-
-    TENANT_INVALID("3503", "租户不可用"),
-    TENANT_CHECK_NOT_PASS("3504", "isv校验不通过"),
-    TENANT_SHORT_NAME_EXISTED("3505", "租户简称已存在，换个试试"),
-    TENANT_OVER_MAX_SIZE("3506", "租户个数已超过限制"),
 
     APP_NAME_DUPLICATED("4500", "应用名已重复"),
     APP_NOT_FOUND("4501", "应用未找到"),
