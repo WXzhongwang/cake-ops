@@ -118,4 +118,9 @@ public class Role extends BaseAggregateRoot implements IAggregate<RoleId> {
         this.registerEvent(new RoleModifiedEvent(this, this.gmtModified));
         return Boolean.TRUE;
     }
+
+    @Override
+    public RoleId getBizID() {
+        return id;
+    }
 }

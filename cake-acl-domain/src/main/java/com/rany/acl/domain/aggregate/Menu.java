@@ -127,4 +127,9 @@ public class Menu extends BaseAggregateRoot implements IAggregate<MenuId> {
         this.registerEvent(new MenuModifiedEvent(this, this.gmtModified));
         return Boolean.TRUE;
     }
+
+    @Override
+    public MenuId getBizID() {
+        return id;
+    }
 }

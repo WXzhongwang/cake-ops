@@ -124,4 +124,9 @@ public class Permission extends BaseAggregateRoot implements IAggregate<Permissi
         this.registerEvent(new PermissionModifiedEvent(this, this.gmtModified));
         return Boolean.TRUE;
     }
+
+    @Override
+    public PermissionId getBizID() {
+        return id;
+    }
 }

@@ -88,4 +88,9 @@ public class Application extends BaseAggregateRoot implements IAggregate<Applica
         this.registerEvent(new ApplicationModifiedEvent(this, this.gmtModified));
         return Boolean.TRUE;
     }
+
+    @Override
+    public ApplicationId getBizID() {
+        return id;
+    }
 }
