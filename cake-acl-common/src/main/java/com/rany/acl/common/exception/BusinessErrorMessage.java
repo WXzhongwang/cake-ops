@@ -2,6 +2,7 @@ package com.rany.acl.common.exception;
 
 import cn.hutool.core.util.StrUtil;
 import com.cake.framework.common.exception.ErrorCodeEnum;
+import com.cake.framework.common.exception.ResponseCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum BusinessErrorMessage {
+public enum BusinessErrorMessage implements ResponseCode {
 
 
     APP_NAME_DUPLICATED("4500", "应用名已重复"),
@@ -55,5 +56,15 @@ public enum BusinessErrorMessage {
 
     public String getCode() {
         return StrUtil.join("-", ErrorCodeEnum.BIZ.getCode(), this.code);
+    }
+
+    @Override
+    public String getErrorCode() {
+        return this.getCode();
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return this.message;
     }
 }

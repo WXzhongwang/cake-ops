@@ -1,5 +1,6 @@
 package com.rany.acl.service.remote;
 
+import com.cake.framework.common.exception.BusinessException;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.api.command.permission.*;
 import com.rany.acl.api.facade.PermissionFacade;
@@ -9,7 +10,6 @@ import com.rany.acl.common.dto.permission.PermissionDTO;
 import com.rany.acl.common.enums.CommonStatusEnum;
 import com.rany.acl.common.enums.DeleteStatusEnum;
 import com.rany.acl.common.exception.BusinessErrorMessage;
-import com.rany.acl.common.exception.BusinessException;
 import com.rany.acl.common.util.SnowflakeIdWorker;
 import com.rany.acl.domain.aggregate.Application;
 import com.rany.acl.domain.aggregate.Menu;
