@@ -20,6 +20,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.rany.cms</groupId>
+            <artifactId>cake-cms-client</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
