@@ -6,7 +6,7 @@
 
 1. springboot 2.2.6.RELEASE
 2. RBAC+ABAC
-3. UIC
+3. UIC (为简化部署，将这两部分融合开发)
 
 **特性:**
 
