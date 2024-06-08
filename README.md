@@ -1,16 +1,18 @@
-# CAKE ACL
+# CAKE ops
 
 # 介绍
 
-**cake-acl** 是一个基于 SpringBoot + ACL + RBAC + ABAC 的服务端应用, 角色统一管控。
+**cake-ops** 是一个基于 SpringBoot + UIC + ACL + RBAC + ABAC 的服务端应用, 应用，账号，角色，菜单，授权 统一管控。
 
 1. springboot 2.2.6.RELEASE
 2. RBAC+ABAC
+3. UIC
 
 **特性:**
 
 - [x] ** springboot **  : 接入快速，支持tomcat+webflux快速接入
 - [x] ** 自定义错误处理 ** : 支持自定义错误处理
+- [x] ** 多租户 ** : 多租户
 - [x] ** RBAC 模型 ** :  支持应用级别+租户级别 RBAC模型
 - [ ] ** ACL 模型 ** :   计划支持应用级别+租户级别 ACL 模型
 - [ ] ** ABAC 模型 ** :  计划支持应用级别+租户级别 ABAC 模型
@@ -40,9 +42,9 @@
 ```xml
 
 <parent>
-    <artifactId>cake-acl-api</artifactId>
-    <groupId>com.rany.acl</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>cake-ops-api</artifactId>
+    <groupId>com.rany.ops</groupId>
+    <version>1.0.0-SNAPSHOT</version>
 </parent>
 
 ```
@@ -59,7 +61,7 @@ import com.rany.acl.api.command.application.*;
 import com.rany.acl.api.query.application.ApplicationBasicQuery;
 import com.rany.acl.api.query.application.ApplicationPageQuery;
 import com.rany.acl.api.query.application.ApplicationQuery;
-import com.rany.acl.common.dto.application.ApplicationDTO;
+import com.rany.ops.common.dto.application.ApplicationDTO;
 
 /**
  * 应用管理
@@ -159,8 +161,8 @@ import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.api.command.menu.*;
 import com.rany.acl.api.query.menu.MenuBasicQuery;
 import com.rany.acl.api.query.menu.MenuTreeQuery;
-import com.rany.acl.common.dto.menu.MenuDTO;
-import com.rany.acl.common.dto.menu.MenuTreeDTO;
+import com.rany.ops.common.dto.menu.MenuDTO;
+import com.rany.ops.common.dto.menu.MenuTreeDTO;
 
 /**
  * 菜单管理
@@ -243,8 +245,8 @@ import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.api.command.role.*;
 import com.rany.acl.api.query.role.RoleBasicQuery;
 import com.rany.acl.api.query.role.RoleTreeQuery;
-import com.rany.acl.common.dto.role.RoleDTO;
-import com.rany.acl.common.dto.role.RoleTreeDTO;
+import com.rany.ops.common.dto.role.RoleDTO;
+import com.rany.ops.common.dto.role.RoleTreeDTO;
 
 
 /**
@@ -324,7 +326,7 @@ package com.rany.acl.api.facade;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.acl.api.command.permission.*;
 import com.rany.acl.api.query.permission.PermissionBasicQuery;
-import com.rany.acl.common.dto.permission.PermissionDTO;
+import com.rany.ops.common.dto.permission.PermissionDTO;
 
 
 /**

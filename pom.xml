@@ -4,18 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.rany.acl</groupId>
-    <artifactId>cake-acl-center</artifactId>
+    <groupId>com.rany.ops</groupId>
+    <artifactId>cake-ops</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>cake-acl-application</name>
+    <name>cake-ops</name>
     <modules>
         <module>start</module>
-        <module>cake-acl-api</module>
-        <module>cake-acl-domain</module>
-        <module>cake-acl-service</module>
-        <module>cake-acl-web</module>
-        <module>cake-acl-common</module>
-        <module>cake-acl-infrastructure</module>
+        <module>cake-ops-api</module>
+        <module>cake-ops-domain</module>
+        <module>cake-ops-service</module>
+        <module>cake-ops-web</module>
+        <module>cake-ops-common</module>
+        <module>cake-ops-infrastructure</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -175,33 +175,33 @@
             </dependency>
 
             <dependency>
-                <groupId>com.rany.acl</groupId>
-                <artifactId>cake-acl-api</artifactId>
+                <groupId>com.rany.ops</groupId>
+                <artifactId>cake-ops-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.rany.acl</groupId>
-                <artifactId>cake-acl-common</artifactId>
+                <groupId>com.rany.ops</groupId>
+                <artifactId>cake-ops-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.rany.acl</groupId>
-                <artifactId>cake-acl-domain</artifactId>
+                <groupId>com.rany.ops</groupId>
+                <artifactId>cake-ops-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.rany.acl</groupId>
-                <artifactId>cake-acl-service</artifactId>
+                <groupId>com.rany.ops</groupId>
+                <artifactId>cake-ops-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.rany.acl</groupId>
-                <artifactId>cake-acl-web</artifactId>
+                <groupId>com.rany.ops</groupId>
+                <artifactId>cake-ops-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.rany.acl</groupId>
-                <artifactId>cake-acl-infrastructure</artifactId>
+                <groupId>com.rany.ops</groupId>
+                <artifactId>cake-ops-infrastructure</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

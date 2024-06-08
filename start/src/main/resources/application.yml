@@ -31,7 +31,7 @@ dubbo:
   metadata-report:
     address: zookeeper://127.0.0.1:2181
   scan:
-    basePackages: com.rany.acl
+    basePackages: com.rany.ops
 
 spring:
   application:
@@ -78,5 +78,5 @@ warn:
     time: 300
 
 mybatis:
-  mapper-locations: classpath:com/rany/uic/infra/dao/*.xml, classpath:com/rany/acl/infra/mapper/*.xml
-  type-aliases-package: com.rany.acl.infra
+  mapper-locations: classpath:com/rany/ops/infra/mapper/*.xml, classpath:com/rany/ops/infra/mapper/*.xml
+  type-aliases-package: com.rany.ops.infra
