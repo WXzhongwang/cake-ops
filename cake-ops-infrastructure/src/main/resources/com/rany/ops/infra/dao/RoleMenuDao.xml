@@ -11,12 +11,12 @@
         <result column="creator" jdbcType="VARCHAR" property="creator"/>
         <result column="modifier" jdbcType="VARCHAR" property="modifier"/>
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
-        <result column="gmt_modifier" jdbcType="TIMESTAMP" property="gmtModifier"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
     </resultMap>
     <sql id="Base_Column_List">
         id
         , app_code, tenant_id, role_id, menu_id, is_deleted, creator, modifier, gmt_create,
-    gmt_modifier
+    gmt_modified
     </sql>
 
     <insert id="save" parameterType="com.rany.ops.domain.entity.RoleMenu">
@@ -49,7 +49,7 @@
             <if test="gmtCreate != null">
                 gmt_create,
             </if>
-            <if test="gmtModifier != null">
+            <if test="gmtModified != null">
                 gmt_modifier,
             </if>
         </trim>
@@ -81,8 +81,8 @@
             <if test="gmtCreate != null">
                 #{gmtCreate,jdbcType=TIMESTAMP},
             </if>
-            <if test="gmtModifier != null">
-                #{gmtModifier,jdbcType=TIMESTAMP},
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
@@ -113,8 +113,8 @@
             <if test="gmtCreate != null">
                 gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
             </if>
-            <if test="gmtModifier != null">
-                gmt_modifier = #{gmtModifier,jdbcType=TIMESTAMP},
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
@@ -126,15 +126,21 @@
         <include refid="Base_Column_List"/>
         from role_menu
         <where>
-            is_deleted = '0' and role_id = #{roleId}
+            is_deleted = '0'
             <if test="appCode != null and appCode != ''">
                 and app_code = #{appCode}
             </if>
             <if test="tenantId != null">
                 and tenant_id = #{tenantId}
             </if>
-            <if test="tenantId == null">
-                and tenant_id is null
+            <if test="roleId != null">
+                and role_id = #{roleId}
+            </if>
+            <if test="roleIds != null and roleIds.size() > 0">
+                and role_id in
+                <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
+                    #{roleId}
+                </foreach>
             </if>
         </where>
         order by gmt_modified asc

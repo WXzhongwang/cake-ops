@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -19,6 +20,10 @@ public class UserRoleDomainService {
         return roleRepository.findUserRole(userRoleSearchParam);
     }
 
+    public List<UserRole> listUserRoles(UserRoleSearchParam userRoleSearchParam) {
+        return roleRepository.findUserRoles(userRoleSearchParam);
+    }
+    
     public Boolean save(UserRole userRole) {
         return roleRepository.saveUserRole(userRole);
     }

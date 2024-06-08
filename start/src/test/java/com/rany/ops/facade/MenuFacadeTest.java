@@ -4,8 +4,11 @@ import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.BaseTests;
 import com.rany.ops.api.command.menu.CreateMenuCommand;
+import com.rany.ops.api.facade.grant.RbacQueryFacade;
 import com.rany.ops.api.facade.menu.MenuFacade;
+import com.rany.ops.api.query.grant.UserRoleMenuPermissionQuery;
 import com.rany.ops.api.query.menu.MenuTreeQuery;
+import com.rany.ops.common.dto.application.UserRoleMenuDTO;
 import com.rany.ops.common.dto.menu.MenuTreeDTO;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,6 +28,8 @@ public class MenuFacadeTest extends BaseTests {
 
     @Resource
     private MenuFacade menuFacade;
+    @Resource
+    private RbacQueryFacade rbacQueryFacade;
     private static final String APP_CODE = "ACL_12580";
 
     @Test
@@ -74,6 +79,15 @@ public class MenuFacadeTest extends BaseTests {
         MenuTreeQuery menuTreeQuery = new MenuTreeQuery();
         menuTreeQuery.setAppCode(APP_CODE);
         ListResult<MenuTreeDTO> menuTree = menuFacade.getMenuTree(menuTreeQuery);
+        Assert.assertTrue(menuTree.getSuccess());
+    }
+
+    @Test
+    public void getUserMenuTree() {
+        UserRoleMenuPermissionQuery query = new UserRoleMenuPermissionQuery();
+        query.setAppCode("CAKE_DEVOPS");
+        query.setAccountId(768460662077796352L);
+        PojoResult<UserRoleMenuDTO> menuTree = rbacQueryFacade.getUserRbacModel(query);
         Assert.assertTrue(menuTree.getSuccess());
     }
 }

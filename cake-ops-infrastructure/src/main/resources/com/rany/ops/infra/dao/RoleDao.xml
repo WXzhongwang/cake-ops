@@ -26,7 +26,7 @@
     <select id="selectByRoleKey" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from role
+        from acl_role
         where
         is_deleted = '0' and status = '0'
         and role_key = #{roleKey}
@@ -42,7 +42,7 @@
             parameterType="com.rany.ops.common.params.SubRoleSearchParam" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from role
+        from acl_role
         <where>
             is_deleted = '0' and parent_role_id = #{roleId}
             <if test="appCode != null and appCode != ''">
@@ -62,7 +62,7 @@
             parameterType="com.rany.ops.common.params.RoleSearchParam" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from role
+        from acl_role
         <where>
             is_deleted = '0' and status = '0'
             <if test="appCode != null and appCode != ''">
@@ -71,15 +71,18 @@
             <if test="tenantId != null">
                 and tenant_id = #{tenantId}
             </if>
-            <if test="tenantId == null">
-                and tenant_id is null
+            <if test="roleIds != null and roleIds.size() > 0">
+                and id in
+                <foreach collection="roleIds" close=")" open="(" separator="," item="roleId">
+                    #{roleId}
+                </foreach>
             </if>
         </where>
         order by gmt_modified asc
     </select>
 
     <insert id="save" parameterType="com.rany.ops.domain.aggregate.Role">
-        insert into role
+        insert into acl_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -165,7 +168,7 @@
     </insert>
 
     <update id="update" parameterType="com.rany.ops.domain.aggregate.Role">
-        update role
+        update acl_role
         <set>
             <if test="appCode != null">
                 app_code = #{appCode,jdbcType=VARCHAR},

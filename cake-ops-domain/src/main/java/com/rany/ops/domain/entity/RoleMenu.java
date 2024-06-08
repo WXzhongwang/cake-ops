@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class RoleMenu extends BaseEntity<Long> {
     private String appCode;
     private Long tenantId;
-    private Long userId;
+    private Long menuId;
     private Long roleId;
 
     public Boolean delete() {

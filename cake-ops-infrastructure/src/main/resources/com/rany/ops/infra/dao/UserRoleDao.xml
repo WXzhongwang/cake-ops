@@ -161,9 +161,6 @@
             <if test="tenantId != null">
                 and tenant_id = #{tenantId}
             </if>
-            <if test="tenantId == null">
-                and tenant_id is null
-            </if>
             <if test="userId != null">
                 and user_id = #{userId}
             </if>

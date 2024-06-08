@@ -4,6 +4,8 @@ import com.rany.ops.common.base.BaseQuery;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 /**
  * TODO
  *
@@ -21,4 +23,6 @@ public class RoleMenuSearchParam extends BaseQuery {
     private Long tenantId;
 
     private Long roleId;
+    
+    private List<Long> roleIds;
 }

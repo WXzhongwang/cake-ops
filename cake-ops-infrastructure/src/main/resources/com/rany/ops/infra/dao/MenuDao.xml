@@ -193,8 +193,11 @@
             <if test="tenantId != null">
                 and tenant_id = #{tenantId}
             </if>
-            <if test="tenantId == null">
-                and tenant_id is null
+            <if test="menuIds != null and menuIds.size() > 0">
+                and id in
+                <foreach collection="menuIds" close=")" open="(" separator="," item="roleId">
+                    #{roleId}
+                </foreach>
             </if>
         </where>
         order by sort asc
@@ -212,9 +215,6 @@
             </if>
             <if test="tenantId != null">
                 and tenant_id = #{tenantId}
-            </if>
-            <if test="tenantId == null">
-                and tenant_id is null
             </if>
         </where>
         order by sort asc

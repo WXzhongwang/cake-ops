@@ -24,7 +24,7 @@
     </sql>
 
     <insert id="save" parameterType="com.rany.ops.domain.aggregate.Permission">
-        insert into permission
+        insert into acl_permission
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
@@ -111,7 +111,7 @@
 
 
     <update id="update" parameterType="com.rany.ops.domain.aggregate.Permission">
-        update permission
+        update acl_permission
         <set>
             <if test="appCode != null">
                 app_code = #{appCode,jdbcType=VARCHAR},
@@ -157,7 +157,7 @@
             parameterType="com.rany.ops.common.params.PermissionSearchParam" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from permission
+        from acl_permission
         <where>
             is_deleted = '0'
             <if test="appCode != null and appCode != ''">

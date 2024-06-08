@@ -4,6 +4,8 @@ import com.rany.ops.common.base.BaseQuery;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 /**
  * TODO
  *
@@ -15,8 +17,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class MenuSearchParam extends BaseQuery {
-    
+
     private String appCode;
 
     private Long tenantId;
+
+    private List<Long> menuIds;
 }

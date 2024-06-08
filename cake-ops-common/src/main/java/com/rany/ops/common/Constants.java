@@ -29,10 +29,11 @@ public final class Constants {
     };
 
     public static final String TRACE_ID = "__trace_id__";
-    public static final String APPLICATION_NAME = "cake-acl";
-    public static final String ACL_PROJECT = "cake-acl";
+    public static final String APPLICATION_NAME = "cake-ops";
+    public static final String ACL_PROJECT = "cake-ops";
     public static final Integer DEFAULT_MAX_TENANTS = 100;
     public static final String INITIAL_TENANT_ADMIN_NAME = "%s租户管理员";
     public static final String INITIAL_TENANT_ADMIN_LOGIN_NAME = "admin@%s";
     public static final String RESOURCE_TYPE_ACTION = "action";
+    public static final String SUPER_ADMINISTRATOR_ROLE_KEY = "SUPER_ADMINISTRATOR";
 }
