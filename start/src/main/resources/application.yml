@@ -11,14 +11,6 @@ cms:
   site:
     name: cake-acl-frontend
 
-
-logging:
-  level:
-    root: info
-  path: "logs/"
-  config:
-    classpath: logback-spring.xml
-
 dubbo:
   application:
     id: rany-acl-service

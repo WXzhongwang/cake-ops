@@ -1,11 +1,25 @@
-#jdk版本
 FROM openjdk:8-jdk-alpine
+# 定义构建参数 ENV
+ARG ENV=dev
+# 设置 spring.profiles.active 环境变量
+ENV SPRING_PROFILES_ACTIVE=${ENV}
 
-#挂载目录
+APP_NAME=cake-devops
+
+RUN apk add --no-cache bash && \
+    mkdir -p /home/admin/$APP_NAME && \
+    mkdir -p /home/admin/$APP_NAME/logs
+
+# 添加 appctl.sh 脚本
+ADD appctl.sh /home/admin/appctl.sh
+RUN chmod +x /home/admin/appctl.sh
+
+# 挂载目录
 VOLUME /tmp
 
-#将jar包添加到容器中并更名为demosw.jar
-ADD /start/target/cake-ops-service.jar cake-ops-service.jar
 
-#docker运行命令
-ENTRYPOINT ["java","-Dspring.profiles.active=test","-jar","/cake-acl-service.jar"]
+
+ADD /start/target/cake-ops-service.jar /home/admin/cake-ops/cake-ops-service.jar
+
+# 设置 ENTRYPOINT
+ENTRYPOINT ["/home/admin/appctl.sh", "cake-ops", "start"]
