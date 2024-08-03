@@ -7,7 +7,7 @@ ARG ENV=dev
 ENV SPRING_PROFILES_ACTIVE=${ENV}
 
 # 应用名称
-APP_NAME=cake-ops
+ENV APP_NAME=cake-ops
 
 # 安装必要的工具并创建目录
 RUN apk add --no-cache bash && \
