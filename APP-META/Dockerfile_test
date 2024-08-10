@@ -2,7 +2,7 @@ FROM openjdk:8-jdk-alpine
 # 定义构建参数 ENV
 ARG ENV=dev
 
-ENV APP_NAME=cake-devops-base
+ENV APP_NAME=cake-ops
 
 RUN apk add --no-cache bash curl wget netcat-openbsd && \
     mkdir -p /home/admin/$APP_NAME && \
