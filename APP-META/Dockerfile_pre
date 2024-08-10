@@ -4,7 +4,7 @@ ARG ENV=pre
 
 ENV APP_NAME=cake-ops
 
-RUN apk add --no-cache bash && \
+RUN apk add --no-cache bash curl wget netcat-openbsd && \
     mkdir -p /home/admin/$APP_NAME && \
     mkdir -p /home/admin/$APP_NAME/logs
 
@@ -18,4 +18,4 @@ VOLUME /tmp
 ADD /start/target/cake-ops-service.jar /home/admin/cake-ops/cake-ops-service.jar
 
 # 设置 ENTRYPOINT
-ENTRYPOINT ["/home/admin/appctl.sh", "cake-devops-base", "start", "pre"]
+ENTRYPOINT ["/home/admin/appctl.sh", "cake-ops", "start", "pre"]

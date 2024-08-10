@@ -1,5 +1,12 @@
 server:
-  port: 6322
+  port: 8300
+  tomcat:
+    connection-timeout: 18000000
+
+logging:
+  file:
+    path: /home/admin/cake-ops/logs
+
 
 cms:
   env: test

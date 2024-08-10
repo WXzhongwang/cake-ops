@@ -1,3 +1,10 @@
+server:
+  port: 6322
+
+logging:
+  file:
+    path: /Users/yuanjinxiu/cake-ops/logs
+
 dubbo:
   registry:
     address: zookeeper://127.0.0.1:2181

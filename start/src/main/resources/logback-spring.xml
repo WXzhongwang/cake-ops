@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
-    <property name="APP_NAME" value="cake-ops"/>
-    <property name="log.path" value="${user.home}/${APP_NAME}/logs"/>
+    <property name="APP_NAME" value="cake-devops-base"/>
     <property name="ENCODING" value="UTF-8"/>
+    <springProperty scope="context" name="log.path" source="logging.file.path"
+                    defaultValue="/home/admin/cake-devops/logs"/>
 
     <property name="CONSOLE_LOG_PATTERN"
               value="%yellow(%date{yyyy-MM-dd HH:mm:ss})|%X{traceId}|%highlight([%-5level])|%green(%logger)|%msg%n"/>
