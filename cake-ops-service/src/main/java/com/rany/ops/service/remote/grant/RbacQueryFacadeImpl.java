@@ -1,6 +1,5 @@
 package com.rany.ops.service.remote.grant;
 
-import com.cake.framework.common.exception.BusinessException;
 import com.rany.ops.api.facade.grant.RbacQueryFacade;
 import com.rany.ops.api.query.grant.UserRoleMenuPermissionQuery;
 import com.rany.ops.common.Constants;
@@ -8,7 +7,6 @@ import com.rany.ops.common.dto.application.UserRoleMenuDTO;
 import com.rany.ops.common.dto.menu.MenuDTO;
 import com.rany.ops.common.dto.menu.MenuTreeDTO;
 import com.rany.ops.common.dto.role.RoleDTO;
-import com.rany.ops.common.exception.BusinessErrorMessage;
 import com.rany.ops.common.params.MenuSearchParam;
 import com.rany.ops.common.params.RoleMenuSearchParam;
 import com.rany.ops.common.params.RoleSearchParam;
@@ -51,7 +49,8 @@ public class RbacQueryFacadeImpl implements RbacQueryFacade {
     public UserRoleMenuDTO getUserRbacModel(UserRoleMenuPermissionQuery query) {
         Application application = applicationDomainService.findByAppCode(query.getAppCode());
         if (application == null) {
-            throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
+            // throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
+            return new UserRoleMenuDTO();
         }
         UserRoleMenuDTO userRoleMenuPermissionDTO = new UserRoleMenuDTO().setRoles(new ArrayList<>())
                 .setMenuTree(new ArrayList<>());
