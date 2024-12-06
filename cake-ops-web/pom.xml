@@ -54,6 +54,11 @@
             <artifactId>cake-ops-service</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.rany.cake.dingtalk.sso</groupId>
+            <artifactId>cake-dingtalk-sso-starter</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

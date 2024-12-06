@@ -3,9 +3,12 @@ package com.rany.ops.infra.convertor;
 import com.rany.ops.common.dto.isv.IsvDTO;
 import com.rany.ops.domain.aggregate.Isv;
 import com.rany.ops.infra.po.IsvPO;
+import org.mapstruct.InheritConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
+
+import java.util.List;
 
 /**
  * TODO
@@ -65,4 +68,7 @@ public interface IsvDataConvertor extends BaseConvertor<Isv, IsvPO> {
             @Mapping(target = "phone", source = "phone.phone")
     })
     IsvDTO sourceToDTO(Isv isv);
+
+    @InheritConfiguration(name = "sourceToDTO")
+    List<IsvDTO> sourceToDTO(List<Isv> isvList);
 }

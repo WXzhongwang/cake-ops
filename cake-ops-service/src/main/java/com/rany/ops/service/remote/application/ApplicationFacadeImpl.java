@@ -2,10 +2,7 @@ package com.rany.ops.service.remote.application;
 
 import com.cake.framework.common.exception.BusinessException;
 import com.cake.framework.common.exception.CommonReturnCode;
-import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.Page;
-import com.cake.framework.common.response.PageResult;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.command.application.*;
 import com.rany.ops.api.facade.application.ApplicationFacade;
 import com.rany.ops.api.query.application.ApplicationBasicQuery;
@@ -29,13 +26,14 @@ import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
- * TODO
+ * 应用服务
  *
  * @author zhongshengwang
- * @description TODO
+ * @description 应用服务
  * @date 2022/12/30 23:25
  * @email 18668485565163.com
  */
@@ -43,14 +41,15 @@ import java.util.Objects;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class ApplicationRemoteServiceProvider implements ApplicationFacade {
+public class ApplicationFacadeImpl implements ApplicationFacade {
 
     private final ApplicationDomainService applicationDomainService;
     private final ApplicationDataConvertor accountDataConvertor;
     private final SnowflakeIdWorker snowflakeIdWorker;
 
+
     @Override
-    public PojoResult<Long> createApplication(CreateApplicationCommand createApplicationCommand) {
+    public Long createApplication(CreateApplicationCommand createApplicationCommand) {
         Application application = new Application(new ApplicationId(snowflakeIdWorker.nextId()),
                 createApplicationCommand.getAppName(),
                 createApplicationCommand.getAppCode());
@@ -64,11 +63,11 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         }
         application.save(createApplicationCommand.getUser());
         applicationDomainService.save(application);
-        return PojoResult.succeed(application.getId().getId());
+        return application.getId().getId();
     }
 
     @Override
-    public PojoResult<ApplicationDTO> getApplication(ApplicationBasicQuery applicationBasicQuery) {
+    public ApplicationDTO getApplication(ApplicationBasicQuery applicationBasicQuery) {
         Application application = applicationDomainService.findById(new ApplicationId(applicationBasicQuery.getAppId()));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
@@ -79,12 +78,11 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         if (StringUtils.equals(application.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.APP_DELETED);
         }
-        ApplicationDTO accountDTO = accountDataConvertor.sourceToDTO(application);
-        return PojoResult.succeed(accountDTO);
+        return accountDataConvertor.sourceToDTO(application);
     }
 
     @Override
-    public PojoResult<ApplicationDTO> getApplicationByAppCode(ApplicationBasicQuery accountBasicQuery) {
+    public ApplicationDTO getApplicationByAppCode(ApplicationBasicQuery accountBasicQuery) {
         Application application = applicationDomainService.findByAppCode(accountBasicQuery.getAppCode());
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
@@ -95,12 +93,11 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         if (StringUtils.equals(application.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
             throw new BusinessException(BusinessErrorMessage.APP_DISABLED);
         }
-        ApplicationDTO applicationDTO = accountDataConvertor.sourceToDTO(application);
-        return PojoResult.succeed(applicationDTO);
+        return accountDataConvertor.sourceToDTO(application);
     }
 
     @Override
-    public PojoResult<Boolean> disableApplication(DisableApplicationCommand disableApplicationCommand) {
+    public Boolean disableApplication(DisableApplicationCommand disableApplicationCommand) {
         Application application = applicationDomainService.findById(new ApplicationId(disableApplicationCommand.getAppId()));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
@@ -110,11 +107,11 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         }
         application.disable(disableApplicationCommand.getUser());
         applicationDomainService.update(application);
-        return PojoResult.succeed(Boolean.TRUE);
+        return true;
     }
 
     @Override
-    public PojoResult<Boolean> enableApplication(EnableApplicationCommand enableApplicationCommand) {
+    public Boolean enableApplication(EnableApplicationCommand enableApplicationCommand) {
         Application application = applicationDomainService.findById(new ApplicationId(enableApplicationCommand.getAppId()));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
@@ -124,11 +121,11 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         }
         application.enable(enableApplicationCommand.getUser());
         applicationDomainService.update(application);
-        return PojoResult.succeed(Boolean.TRUE);
+        return true;
     }
 
     @Override
-    public PojoResult<Boolean> deleteApplication(DeleteApplicationCommand deleteApplicationCommand) {
+    public Boolean deleteApplication(DeleteApplicationCommand deleteApplicationCommand) {
         Application application
                 = applicationDomainService.findById(new ApplicationId(deleteApplicationCommand.getAppId()));
         if (Objects.isNull(application)) {
@@ -136,11 +133,11 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         }
         application.delete(deleteApplicationCommand.getUser());
         applicationDomainService.update(application);
-        return PojoResult.succeed(Boolean.TRUE);
+        return true;
     }
 
     @Override
-    public PojoResult<Boolean> modifyApplication(ModifyApplicationCommand modifyApplicationCommand) {
+    public Boolean modifyApplication(ModifyApplicationCommand modifyApplicationCommand) {
         Application application = applicationDomainService.findById(new ApplicationId(modifyApplicationCommand.getAppId()));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
@@ -159,12 +156,12 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         }
         application.modify(modifyApplicationCommand.getUser());
         applicationDomainService.update(application);
-        return PojoResult.succeed(Boolean.TRUE);
+        return true;
     }
 
 
     @Override
-    public ListResult<ApplicationDTO> findApplications(ApplicationQuery applicationQuery) {
+    public List<ApplicationDTO> findApplications(ApplicationQuery applicationQuery) {
         ApplicationSearchParam searchParam = new ApplicationSearchParam();
         if (StringUtils.isNotEmpty(applicationQuery.getAppName())) {
             searchParam.setAppName(applicationQuery.getAppName());
@@ -175,11 +172,11 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         if (StringUtils.isNotEmpty(applicationQuery.getAuthType())) {
             searchParam.setAuthType(applicationQuery.getAuthType());
         }
-        return ListResult.succeed(applicationDomainService.selectApplications(searchParam));
+        return applicationDomainService.selectApplications(searchParam);
     }
 
     @Override
-    public PageResult<ApplicationDTO> pageApplications(ApplicationPageQuery applicationPageQuery) {
+    public Page<ApplicationDTO> pageApplications(ApplicationPageQuery applicationPageQuery) {
         ApplicationPageSearchParam searchParam = new ApplicationPageSearchParam();
         searchParam.setPageNo(applicationPageQuery.getPageNo());
         searchParam.setPageSize(applicationPageQuery.getPageSize());
@@ -193,7 +190,6 @@ public class ApplicationRemoteServiceProvider implements ApplicationFacade {
         if (StringUtils.isNotEmpty(applicationPageQuery.getAuthType())) {
             searchParam.setAuthType(applicationPageQuery.getAuthType());
         }
-        Page<ApplicationDTO> page = applicationDomainService.pageApplications(searchParam);
-        return PageResult.succeed(page);
+        return applicationDomainService.pageApplications(searchParam);
     }
 }

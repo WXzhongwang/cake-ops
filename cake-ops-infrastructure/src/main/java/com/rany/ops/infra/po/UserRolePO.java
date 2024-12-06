@@ -96,7 +96,6 @@ public class UserRolePO {
      * This method returns the value of the database column user_role.id
      *
      * @return the value of user_role.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getId() {
@@ -108,7 +107,6 @@ public class UserRolePO {
      * This method sets the value of the database column user_role.id
      *
      * @param id the value for user_role.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setId(Long id) {
@@ -120,7 +118,6 @@ public class UserRolePO {
      * This method returns the value of the database column user_role.app_code
      *
      * @return the value of user_role.app_code
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getAppCode() {
@@ -132,7 +129,6 @@ public class UserRolePO {
      * This method sets the value of the database column user_role.app_code
      *
      * @param appCode the value for user_role.app_code
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setAppCode(String appCode) {
@@ -144,7 +140,6 @@ public class UserRolePO {
      * This method returns the value of the database column user_role.tenant_id
      *
      * @return the value of user_role.tenant_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getTenantId() {
@@ -156,7 +151,6 @@ public class UserRolePO {
      * This method sets the value of the database column user_role.tenant_id
      *
      * @param tenantId the value for user_role.tenant_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setTenantId(Long tenantId) {
@@ -168,7 +162,6 @@ public class UserRolePO {
      * This method returns the value of the database column user_role.user_id
      *
      * @return the value of user_role.user_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getUserId() {
@@ -180,7 +173,6 @@ public class UserRolePO {
      * This method sets the value of the database column user_role.user_id
      *
      * @param userId the value for user_role.user_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setUserId(Long userId) {
@@ -192,7 +184,6 @@ public class UserRolePO {
      * This method returns the value of the database column user_role.role_id
      *
      * @return the value of user_role.role_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getRoleId() {
@@ -204,7 +195,6 @@ public class UserRolePO {
      * This method sets the value of the database column user_role.role_id
      *
      * @param roleId the value for user_role.role_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setRoleId(Long roleId) {
@@ -216,7 +206,6 @@ public class UserRolePO {
      * This method returns the value of the database column user_role.creator
      *
      * @return the value of user_role.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getCreator() {
@@ -228,7 +217,6 @@ public class UserRolePO {
      * This method sets the value of the database column user_role.creator
      *
      * @param creator the value for user_role.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setCreator(String creator) {
@@ -240,7 +228,6 @@ public class UserRolePO {
      * This method returns the value of the database column user_role.modifier
      *
      * @return the value of user_role.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getModifier() {
@@ -252,7 +239,6 @@ public class UserRolePO {
      * This method sets the value of the database column user_role.modifier
      *
      * @param modifier the value for user_role.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setModifier(String modifier) {
@@ -264,7 +250,6 @@ public class UserRolePO {
      * This method returns the value of the database column user_role.gmt_create
      *
      * @return the value of user_role.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtCreate() {
@@ -276,7 +261,6 @@ public class UserRolePO {
      * This method sets the value of the database column user_role.gmt_create
      *
      * @param gmtCreate the value for user_role.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtCreate(Date gmtCreate) {
@@ -288,7 +272,6 @@ public class UserRolePO {
      * This method returns the value of the database column user_role.gmt_modified
      *
      * @return the value of user_role.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtModified() {
@@ -300,7 +283,6 @@ public class UserRolePO {
      * This method sets the value of the database column user_role.gmt_modified
      *
      * @param gmtModified the value for user_role.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtModified(Date gmtModified) {
@@ -312,7 +294,6 @@ public class UserRolePO {
      * This method returns the value of the database column user_role.is_deleted
      *
      * @return the value of user_role.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getIsDeleted() {
@@ -324,7 +305,6 @@ public class UserRolePO {
      * This method sets the value of the database column user_role.is_deleted
      *
      * @param isDeleted the value for user_role.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setIsDeleted(String isDeleted) {
@@ -336,7 +316,6 @@ public class UserRolePO {
      * This method returns the value of the database column user_role.status
      *
      * @return the value of user_role.status
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getStatus() {
@@ -348,7 +327,6 @@ public class UserRolePO {
      * This method sets the value of the database column user_role.status
      *
      * @param status the value for user_role.status
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setStatus(String status) {

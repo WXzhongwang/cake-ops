@@ -8,6 +8,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author zhongshengwang
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +23,6 @@ public class RoleMenu extends BaseEntity<Long> {
 
     public Boolean delete() {
         this.gmtModified = DateUtil.date();
-        // this.modifier = user;
         this.isDeleted = DeleteStatusEnum.YES.getValue();
         return Boolean.TRUE;
     }

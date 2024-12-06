@@ -47,6 +47,8 @@
         <pagehelper-spring-starter.version>1.3.0</pagehelper-spring-starter.version>
         <lombok.version>1.18.12</lombok.version>
         <mapstruct.version>1.3.0.Final</mapstruct.version>
+
+        <cake-sso.version>1.0-SNAPSHOT</cake-sso.version>
     </properties>
 
     <dependencyManagement>
@@ -68,6 +70,13 @@
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>${pagehelper-spring-starter.version}</version>
             </dependency>
+            
+            <dependency>
+                <groupId>com.rany.cake.dingtalk.sso</groupId>
+                <artifactId>cake-dingtalk-sso-starter</artifactId>
+                <version>${cake-sso.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis</artifactId>

@@ -123,7 +123,7 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <select id="selectRolePermissionList" resultType="com.rany.ops.infra.po.RoleMenuPO"
+    <select id="selectRolePermissionList"
             parameterType="com.rany.ops.common.params.RolePermissionSearchParam" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -138,6 +138,9 @@
             </if>
             <if test="tenantId == null">
                 and tenant_id is null
+            </if>
+            <if test="roleId != null">
+                and role_id = #{roleId}
             </if>
         </where>
         order by gmt_modified asc

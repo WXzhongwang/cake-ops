@@ -2,7 +2,6 @@ package com.rany.ops.service.remote.grant;
 
 
 import com.cake.framework.common.exception.BusinessException;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.command.grant.DisGrantUserRoleCommand;
 import com.rany.ops.api.command.grant.GrantUserRoleCommand;
 import com.rany.ops.api.facade.grant.GrantUserRoleFacade;
@@ -21,16 +20,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 
+/**
+ * @author zhongshengwang
+ */
 @Slf4j
 @Service
 @AllArgsConstructor
-public class GrantUserRoleRemoteServiceProvider implements GrantUserRoleFacade {
+public class GrantUserRoleFacadeImpl implements GrantUserRoleFacade {
     private final SnowflakeIdWorker snowflakeIdWorker;
     private final UserRoleDomainService userRoleDomainService;
     private final RoleDomainService roleDomainService;
 
     @Override
-    public PojoResult<Boolean> grantUserRole(GrantUserRoleCommand grantUserRoleCommand) {
+    public Boolean grantUserRole(GrantUserRoleCommand grantUserRoleCommand) {
         UserRoleSearchParam userRoleSearchParam = new UserRoleSearchParam();
         userRoleSearchParam.setUserId(userRoleSearchParam.getUserId());
         userRoleSearchParam.setAppCode(userRoleSearchParam.getAppCode());
@@ -55,11 +57,11 @@ public class GrantUserRoleRemoteServiceProvider implements GrantUserRoleFacade {
         UserRole userRole = new UserRole(userRoleSearchParam.getAppCode(), userRoleSearchParam.getTenantId(),
                 userRoleSearchParam.getUserId(), userRoleSearchParam.getRoleId());
         userRoleDomainService.save(userRole);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public PojoResult<Boolean> disGrantUserRole(DisGrantUserRoleCommand disGrantUserRoleCommand) {
+    public Boolean disGrantUserRole(DisGrantUserRoleCommand disGrantUserRoleCommand) {
         UserRoleSearchParam userRoleSearchParam = new UserRoleSearchParam();
         userRoleSearchParam.setUserId(userRoleSearchParam.getUserId());
         userRoleSearchParam.setAppCode(userRoleSearchParam.getAppCode());
@@ -83,6 +85,6 @@ public class GrantUserRoleRemoteServiceProvider implements GrantUserRoleFacade {
         }
         userRole.delete();
         userRoleDomainService.update(userRole);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 }

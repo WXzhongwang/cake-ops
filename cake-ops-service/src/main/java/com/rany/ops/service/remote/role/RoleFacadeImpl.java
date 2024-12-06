@@ -1,8 +1,6 @@
 package com.rany.ops.service.remote.role;
 
 import com.cake.framework.common.exception.BusinessException;
-import com.cake.framework.common.response.ListResult;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.command.role.*;
 import com.rany.ops.api.facade.role.RoleFacade;
 import com.rany.ops.api.query.role.RoleBasicQuery;
@@ -30,10 +28,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * 角色
+ *
+ * @author zhongshengwang
+ */
 @Slf4j
 @Service
 @AllArgsConstructor
-public class RoleRemoteServiceProvider implements RoleFacade {
+public class RoleFacadeImpl implements RoleFacade {
 
     private final ApplicationDomainService applicationDomainService;
     private final RoleDomainService roleDomainService;
@@ -41,7 +44,7 @@ public class RoleRemoteServiceProvider implements RoleFacade {
     private final SnowflakeIdWorker snowflakeIdWorker;
 
     @Override
-    public PojoResult<Long> createRole(CreateRoleCommand createRoleCommand) {
+    public Long createRole(CreateRoleCommand createRoleCommand) {
         Application application = applicationDomainService.findByAppCode(createRoleCommand.getAppCode());
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
@@ -82,12 +85,12 @@ public class RoleRemoteServiceProvider implements RoleFacade {
         }
         role.save(createRoleCommand.getUser());
         roleDomainService.save(role);
-        return PojoResult.succeed(role.getId().getId());
+        return role.getId().getId();
     }
 
     @Override
-    public PojoResult<RoleDTO> getRole(RoleBasicQuery RoleBasicQuery) {
-        Role role = roleDomainService.findById(new RoleId(RoleBasicQuery.getRoleId()));
+    public RoleDTO getRole(RoleBasicQuery roleBasicQuery) {
+        Role role = roleDomainService.findById(new RoleId(roleBasicQuery.getRoleId()));
         if (Objects.isNull(role)) {
             throw new BusinessException(BusinessErrorMessage.ROLE_NOT_FOUND);
         }
@@ -97,12 +100,11 @@ public class RoleRemoteServiceProvider implements RoleFacade {
         if (StringUtils.equals(role.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.ROLE_DELETED);
         }
-        RoleDTO roleDTO = roleDataConvertor.sourceToDTO(role);
-        return PojoResult.succeed(roleDTO);
+        return roleDataConvertor.sourceToDTO(role);
     }
 
     @Override
-    public ListResult<RoleTreeDTO> getRoleTree(RoleTreeQuery roleTreeQuery) {
+    public List<RoleTreeDTO> getRoleTree(RoleTreeQuery roleTreeQuery) {
         Application application = applicationDomainService.findByAppCode(roleTreeQuery.getAppCode());
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
@@ -123,7 +125,26 @@ public class RoleRemoteServiceProvider implements RoleFacade {
         for (RoleTreeDTO menuDTO : treeDTO) {
             recursive(menuDTO, roleDTOS);
         }
-        return ListResult.succeed(treeDTO);
+        return treeDTO;
+    }
+
+    @Override
+    public List<RoleDTO> listRoles(RoleTreeQuery roleTreeQuery) {
+        Application application = applicationDomainService.findByAppCode(roleTreeQuery.getAppCode());
+        if (Objects.isNull(application)) {
+            throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
+        }
+        if (StringUtils.equals(application.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.APP_DELETED);
+        }
+        if (StringUtils.equals(application.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
+            throw new BusinessException(BusinessErrorMessage.APP_DISABLED);
+        }
+
+        RoleSearchParam searchParam = new RoleSearchParam();
+        searchParam.setAppCode(roleTreeQuery.getAppCode());
+        searchParam.setTenantId(roleTreeQuery.getTenantId());
+        return roleDomainService.selectRoleList(searchParam);
     }
 
     public void recursive(RoleTreeDTO treeDTO, List<RoleDTO> menuDTOS) {
@@ -136,7 +157,7 @@ public class RoleRemoteServiceProvider implements RoleFacade {
     }
 
     @Override
-    public PojoResult<Boolean> disableRole(DisableRoleCommand disableRoleCommand) {
+    public Boolean disableRole(DisableRoleCommand disableRoleCommand) {
         Role role = roleDomainService.findById(new RoleId(disableRoleCommand.getRoleId()));
         if (Objects.isNull(role)) {
             throw new BusinessException(BusinessErrorMessage.ROLE_NOT_FOUND);
@@ -153,11 +174,11 @@ public class RoleRemoteServiceProvider implements RoleFacade {
                 roleDomainService.update(role);
             }
         }
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public PojoResult<Boolean> enableRole(EnableRoleCommand enableRoleCommand) {
+    public Boolean enableRole(EnableRoleCommand enableRoleCommand) {
         Role role = roleDomainService.findById(new RoleId(enableRoleCommand.getRoleId()));
         if (Objects.isNull(role)) {
             throw new BusinessException(BusinessErrorMessage.ROLE_NOT_FOUND);
@@ -167,11 +188,11 @@ public class RoleRemoteServiceProvider implements RoleFacade {
         }
         role.enable(enableRoleCommand.getUser());
         roleDomainService.update(role);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public PojoResult<Boolean> deleteRole(DeleteRoleCommand deleteRoleCommand) {
+    public Boolean deleteRole(DeleteRoleCommand deleteRoleCommand) {
         Role role = roleDomainService.findById(new RoleId(deleteRoleCommand.getRoleId()));
         if (Objects.isNull(role)) {
             throw new BusinessException(BusinessErrorMessage.ROLE_NOT_FOUND);
@@ -182,11 +203,11 @@ public class RoleRemoteServiceProvider implements RoleFacade {
         }
         role.delete(deleteRoleCommand.getUser());
         roleDomainService.update(role);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public PojoResult<Boolean> modifyRole(ModifyRoleCommand modifyRoleCommand) {
+    public Boolean modifyRole(ModifyRoleCommand modifyRoleCommand) {
         Role role = roleDomainService.findById(new RoleId(modifyRoleCommand.getRoleId()));
         if (Objects.isNull(role)) {
             throw new BusinessException(BusinessErrorMessage.MENU_NOT_FOUND);
@@ -213,6 +234,6 @@ public class RoleRemoteServiceProvider implements RoleFacade {
         }
         role.modify(modifyRoleCommand.getUser());
         roleDomainService.update(role);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 }

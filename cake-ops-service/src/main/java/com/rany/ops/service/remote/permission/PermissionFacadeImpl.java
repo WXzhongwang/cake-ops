@@ -1,15 +1,16 @@
 package com.rany.ops.service.remote.permission;
 
 import com.cake.framework.common.exception.BusinessException;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.command.permission.*;
 import com.rany.ops.api.facade.permission.PermissionFacade;
+import com.rany.ops.api.query.permission.MenuPermissionQuery;
 import com.rany.ops.api.query.permission.PermissionBasicQuery;
 import com.rany.ops.common.Constants;
 import com.rany.ops.common.dto.permission.PermissionDTO;
 import com.rany.ops.common.enums.CommonStatusEnum;
 import com.rany.ops.common.enums.DeleteStatusEnum;
 import com.rany.ops.common.exception.BusinessErrorMessage;
+import com.rany.ops.common.params.PermissionSearchParam;
 import com.rany.ops.common.util.SnowflakeIdWorker;
 import com.rany.ops.domain.aggregate.Application;
 import com.rany.ops.domain.aggregate.Menu;
@@ -25,12 +26,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 
+import java.util.List;
 import java.util.Objects;
 
+/**
+ * 权限点
+ *
+ * @author zhongshengwang
+ */
 @Slf4j
 @Service
 @AllArgsConstructor
-public class PermissionRemoteServiceProvider implements PermissionFacade {
+public class PermissionFacadeImpl implements PermissionFacade {
 
     private final ApplicationDomainService applicationDomainService;
     private final MenuDomainService menuDomainService;
@@ -39,7 +46,7 @@ public class PermissionRemoteServiceProvider implements PermissionFacade {
     private final SnowflakeIdWorker snowflakeIdWorker;
 
     @Override
-    public PojoResult<Long> createPermission(CreatePermissionCommand createPermissionCommand) {
+    public Long createPermission(CreatePermissionCommand createPermissionCommand) {
         Application application = applicationDomainService.findByAppCode(createPermissionCommand.getAppCode());
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
@@ -74,27 +81,35 @@ public class PermissionRemoteServiceProvider implements PermissionFacade {
         }
         permission.save(createPermissionCommand.getUser());
         permissionDomainService.save(permission);
-        return PojoResult.succeed(permission.getId().getId());
+        return permission.getId().getId();
     }
 
     @Override
-    public PojoResult<PermissionDTO> getPermission(PermissionBasicQuery PermissionBasicQuery) {
-        Permission Permission = permissionDomainService.findById(new PermissionId(PermissionBasicQuery.getPermissionId()));
-        if (Objects.isNull(Permission)) {
+    public PermissionDTO getPermission(PermissionBasicQuery permissionBasicQuery) {
+        Permission permission = permissionDomainService.findById(new PermissionId(permissionBasicQuery.getPermissionId()));
+        if (Objects.isNull(permission)) {
             throw new BusinessException(BusinessErrorMessage.PERMISSION_NOT_FOUND);
         }
-        if (StringUtils.equals(Permission.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
+        if (StringUtils.equals(permission.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
             throw new BusinessException(BusinessErrorMessage.PERMISSION_DISABLED);
         }
-        if (StringUtils.equals(Permission.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
+        if (StringUtils.equals(permission.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.PERMISSION_DELETED);
         }
-        PermissionDTO permissionDTO = permissionDataConvertor.sourceToDTO(Permission);
-        return PojoResult.succeed(permissionDTO);
+        return permissionDataConvertor.sourceToDTO(permission);
     }
 
     @Override
-    public PojoResult<Boolean> disablePermission(DisablePermissionCommand disablePermissionCommand) {
+    public List<PermissionDTO> listMenuPermission(MenuPermissionQuery menuPermissionQuery) {
+        PermissionSearchParam searchParam = new PermissionSearchParam();
+        searchParam.setRefMenuId(menuPermissionQuery.getRefMenuId());
+        searchParam.setAppCode(menuPermissionQuery.getAppCode());
+        searchParam.setTenantId(menuPermissionQuery.getTenantId());
+        return permissionDomainService.selectPermissionList(searchParam);
+    }
+
+    @Override
+    public Boolean disablePermission(DisablePermissionCommand disablePermissionCommand) {
         Permission permission = permissionDomainService.findById(new PermissionId(disablePermissionCommand.getPermissionId()));
         if (Objects.isNull(permission)) {
             throw new BusinessException(BusinessErrorMessage.PERMISSION_NOT_FOUND);
@@ -104,11 +119,11 @@ public class PermissionRemoteServiceProvider implements PermissionFacade {
         }
         permission.disable(disablePermissionCommand.getUser());
         permissionDomainService.update(permission);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public PojoResult<Boolean> enablePermission(EnablePermissionCommand enablePermissionCommand) {
+    public Boolean enablePermission(EnablePermissionCommand enablePermissionCommand) {
         Permission permission = permissionDomainService.findById(new PermissionId(enablePermissionCommand.getPermissionId()));
         if (Objects.isNull(permission)) {
             throw new BusinessException(BusinessErrorMessage.PERMISSION_NOT_FOUND);
@@ -118,22 +133,22 @@ public class PermissionRemoteServiceProvider implements PermissionFacade {
         }
         permission.enable(enablePermissionCommand.getUser());
         permissionDomainService.update(permission);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public PojoResult<Boolean> deletePermission(DeletePermissionCommand deletePermissionCommand) {
+    public Boolean deletePermission(DeletePermissionCommand deletePermissionCommand) {
         Permission permission = permissionDomainService.findById(new PermissionId(deletePermissionCommand.getPermissionId()));
         if (Objects.isNull(permission)) {
             throw new BusinessException(BusinessErrorMessage.PERMISSION_NOT_FOUND);
         }
         permission.delete(deletePermissionCommand.getUser());
         permissionDomainService.update(permission);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public PojoResult<Boolean> modifyPermission(ModifyPermissionCommand modifyPermissionCommand) {
+    public Boolean modifyPermission(ModifyPermissionCommand modifyPermissionCommand) {
         Permission permission = permissionDomainService.findById(new PermissionId(modifyPermissionCommand.getPermissionId()));
         if (Objects.isNull(permission)) {
             throw new BusinessException(BusinessErrorMessage.PERMISSION_NOT_FOUND);
@@ -155,6 +170,6 @@ public class PermissionRemoteServiceProvider implements PermissionFacade {
         }
         permission.modify(modifyPermissionCommand.getUser());
         permissionDomainService.update(permission);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 }

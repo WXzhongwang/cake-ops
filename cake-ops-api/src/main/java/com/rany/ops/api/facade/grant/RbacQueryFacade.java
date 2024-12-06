@@ -1,6 +1,5 @@
 package com.rany.ops.api.facade.grant;
 
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.query.grant.UserRoleMenuPermissionQuery;
 import com.rany.ops.common.dto.application.UserRoleMenuDTO;
 
@@ -18,8 +17,8 @@ public interface RbacQueryFacade {
     /**
      * 获取单一用户应用下权限集合
      *
-     * @param query
-     * @return
+     * @param query 查询条件
+     * @return 单一用户应用下权限集合
      */
-    PojoResult<UserRoleMenuDTO> getUserRbacModel(UserRoleMenuPermissionQuery query);
+    UserRoleMenuDTO getUserRbacModel(UserRoleMenuPermissionQuery query);
 }

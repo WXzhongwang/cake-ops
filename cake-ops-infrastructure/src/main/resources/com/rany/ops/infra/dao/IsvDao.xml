@@ -41,4 +41,20 @@
                 now(),
                 now())
     </insert>
+
+    <select id="page" resultMap="BaseResultMap" parameterType="com.rany.ops.common.params.IsvSearchParam">
+        select
+        <include refid="Base_Column_List"/>
+        from isv
+        <where>
+            is_deleted = 'N'
+            <if test="name != null">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        order by gmt_create desc, id desc
+    </select>
 </mapper>

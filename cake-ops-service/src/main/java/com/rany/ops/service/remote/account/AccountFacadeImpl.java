@@ -2,11 +2,7 @@ package com.rany.ops.service.remote.account;
 
 import cn.hutool.core.util.BooleanUtil;
 import com.cake.framework.common.exception.BusinessException;
-import com.cake.framework.common.exception.CommonReturnCode;
-import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.Page;
-import com.cake.framework.common.response.PageResult;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.command.account.*;
 import com.rany.ops.api.facade.account.AccountFacade;
 import com.rany.ops.api.query.account.AccountBasicQuery;
@@ -14,37 +10,24 @@ import com.rany.ops.api.query.account.AccountDingIdQuery;
 import com.rany.ops.api.query.account.AccountPageQuery;
 import com.rany.ops.api.query.account.AccountQuery;
 import com.rany.ops.common.dto.account.AccountDTO;
-import com.rany.ops.common.enums.AccountTypeEnum;
 import com.rany.ops.common.enums.CommonStatusEnum;
 import com.rany.ops.common.enums.DeleteStatusEnum;
-import com.rany.ops.common.enums.LoginSafeStrategyEnum;
 import com.rany.ops.common.exception.BusinessErrorMessage;
 import com.rany.ops.common.params.AccountPageSearchParam;
 import com.rany.ops.common.params.AccountSearchParam;
-import com.rany.ops.common.util.AccountUtil;
-import com.rany.ops.common.util.SnowflakeIdWorker;
 import com.rany.ops.domain.aggregate.Account;
-import com.rany.ops.domain.aggregate.Tenant;
-import com.rany.ops.domain.dp.AccountName;
-import com.rany.ops.domain.dp.EmailAddress;
-import com.rany.ops.domain.dp.HeadImage;
-import com.rany.ops.domain.dp.Phone;
 import com.rany.ops.domain.entity.SafeStrategy;
 import com.rany.ops.domain.pk.AccountId;
-import com.rany.ops.domain.pk.TenantId;
 import com.rany.ops.domain.service.AccountDomainService;
-import com.rany.ops.domain.service.TenantDomainService;
 import com.rany.ops.infra.convertor.AccountDataConvertor;
 import com.rany.ops.service.aop.annotation.TenantValidCheck;
+import com.rany.ops.service.factory.account.AccountFactory;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -60,166 +43,90 @@ import java.util.Objects;
 
 @Slf4j
 @Service
-// @ShenyuService("/account/**")
 @AllArgsConstructor
-public class AccountRemoteServiceProvider implements AccountFacade {
+public class AccountFacadeImpl implements AccountFacade {
 
     private final AccountDomainService accountDomainService;
-    private final TenantDomainService tenantDomainService;
     private final AccountDataConvertor accountDataConvertor;
-    private final SnowflakeIdWorker snowflakeIdWorker;
+    private final AccountFactory accountFactory;
 
     @Override
     @TenantValidCheck(expression = "#createAccountCommand.tenantId")
-    public PojoResult<Long> createAccount(CreateAccountCommand createAccountCommand) {
-        List<SafeStrategy> strategyList = new ArrayList<>();
-        Account account = new Account(new AccountId(snowflakeIdWorker.nextId()),
-                new TenantId(createAccountCommand.getTenantId()),
-                new AccountName(createAccountCommand.getAccountName()),
-                strategyList);
-        if (StringUtils.isNotEmpty(createAccountCommand.getEmail())) {
-            account.setEmailAddress(new EmailAddress(createAccountCommand.getEmail()));
-        }
-        if (StringUtils.isNotEmpty(createAccountCommand.getPhone())) {
-            account.setPhone(new Phone(createAccountCommand.getPhone()));
-        }
-        if (StringUtils.isNotEmpty(createAccountCommand.getHeadImage())) {
-            account.setHeadImage(new HeadImage(createAccountCommand.getHeadImage()));
-        }
-        account.setAccountType(AccountTypeEnum.BASIC.name());
-        if (StringUtils.isNotEmpty(createAccountCommand.getAccountType())) {
-            if (!EnumUtils.isValidEnum(AccountTypeEnum.class, createAccountCommand.getAccountType())) {
-                throw new BusinessException(CommonReturnCode.PARAMETER_ILLEGAL);
-            }
-            AccountTypeEnum accountTypeEnum = EnumUtils.getEnum(AccountTypeEnum.class, createAccountCommand.getAccountType());
-            account.setAccountType(accountTypeEnum.name());
-        }
-        if (StringUtils.isNotEmpty(createAccountCommand.getLoginName()) && StringUtils.isNotEmpty(createAccountCommand.getLoginPwd())) {
-            Tenant tenant = tenantDomainService.findById(account.getTenantId());
-            String loginName = AccountUtil.buildAccountLoginName(createAccountCommand.getLoginName(), tenant.getTenantName().getShortName());
-            Account hasAccount = accountDomainService.findAccountByLoginName(loginName);
-            if (Objects.nonNull(hasAccount)) {
-                throw new BusinessException(BusinessErrorMessage.ACCOUNT_NAME_DUPLICATED);
-            }
-            SafeStrategy safeStrategy = new SafeStrategy(account.getId().getId(),
-                    LoginSafeStrategyEnum.BASIC_AUTH.name(),
-                    AccountUtil.buildAccountLoginName(createAccountCommand.getLoginName(), tenant.getTenantName().getShortName()),
-                    AccountUtil.md5(createAccountCommand.getLoginPwd()));
-            strategyList.add(safeStrategy);
-        }
-
-        account.setIsAdmin(BooleanUtils.isTrue(createAccountCommand.getIsAdmin()));
-        if (StringUtils.isNotEmpty(createAccountCommand.getDingUnionId())) {
-            account.setDingUnionId(createAccountCommand.getDingUnionId());
-        }
-        if (StringUtils.isNotEmpty(createAccountCommand.getOpenId())) {
-            account.setDingUserId(createAccountCommand.getOpenId());
-        }
+    public Long createAccount(CreateAccountCommand createAccountCommand) {
+        Account account = accountFactory.build(createAccountCommand);
         account.save();
         accountDomainService.save(account);
-        return PojoResult.succeed(account.getId().getId());
+        return account.getId().getId();
     }
 
     @Override
     @TenantValidCheck(expression = "#accountBasicQuery.tenantId")
-    public PojoResult<AccountDTO> getAccount(AccountBasicQuery accountBasicQuery) {
+    public AccountDTO getAccount(AccountBasicQuery accountBasicQuery) {
         Account account = accountDomainService.findById(new AccountId(accountBasicQuery.getAccountId()));
         if (Objects.isNull(account)) {
             throw new BusinessException(BusinessErrorMessage.ACCOUNT_NOT_FOUND);
         }
-        AccountDTO accountDTO = accountDataConvertor.sourceToDTO(account);
-        return PojoResult.succeed(accountDTO);
+        return accountDataConvertor.sourceToDTO(account);
     }
 
     @Override
     @TenantValidCheck(expression = "#accountBasicQuery.tenantId")
-    public PojoResult<AccountDTO> getAccountByDingId(AccountDingIdQuery accountBasicQuery) {
+    public AccountDTO getAccountByDingId(AccountDingIdQuery accountBasicQuery) {
         Account account = accountDomainService.findAccountByDingUnionId(accountBasicQuery.getTenantId(), accountBasicQuery.getDingUnionId());
         if (Objects.isNull(account)) {
             throw new BusinessException(BusinessErrorMessage.ACCOUNT_NOT_FOUND);
         }
-        AccountDTO accountDTO = accountDataConvertor.sourceToDTO(account);
-        return PojoResult.succeed(accountDTO);
+        return accountDataConvertor.sourceToDTO(account);
     }
 
     @Override
     @TenantValidCheck(expression = "#disableAccountCommand.tenantId")
-    public PojoResult<Boolean> disableAccount(DisableAccountCommand disableAccountCommand) {
+    public Boolean disableAccount(DisableAccountCommand disableAccountCommand) {
         Account account = accountDomainService.findById(new AccountId(disableAccountCommand.getAccountId()));
         if (Objects.isNull(account)) {
             throw new BusinessException(BusinessErrorMessage.ACCOUNT_NOT_FOUND);
         }
         account.disable();
         accountDomainService.update(account);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
     @TenantValidCheck(expression = "#enableAccountCommand.tenantId")
-    public PojoResult<Boolean> enableAccount(EnableAccountCommand enableAccountCommand) {
+    public Boolean enableAccount(EnableAccountCommand enableAccountCommand) {
         Account account = accountDomainService.findById(new AccountId(enableAccountCommand.getAccountId()));
         if (Objects.isNull(account)) {
             throw new BusinessException(BusinessErrorMessage.ACCOUNT_NOT_FOUND);
         }
         account.enable();
         accountDomainService.update(account);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
     @TenantValidCheck(expression = "#deleteAccountCommand.tenantId")
-    public PojoResult<Boolean> deleteAccount(DeleteAccountCommand deleteAccountCommand) {
+    public Boolean deleteAccount(DeleteAccountCommand deleteAccountCommand) {
         Account account = accountDomainService.findById(new AccountId(deleteAccountCommand.getAccountId()));
         if (Objects.isNull(account)) {
             throw new BusinessException(BusinessErrorMessage.ACCOUNT_NOT_FOUND);
         }
         account.delete();
         accountDomainService.update(account);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
     @TenantValidCheck(expression = "#modifyAccountCommand.tenantId")
-    public PojoResult<Boolean> modifyAccount(ModifyAccountCommand modifyAccountCommand) {
-        Account account = accountDomainService.findById(new AccountId(modifyAccountCommand.getAccountId()));
-        if (Objects.isNull(account)) {
-            throw new BusinessException(BusinessErrorMessage.ACCOUNT_NOT_FOUND);
-        }
-        if (StringUtils.isNotEmpty(modifyAccountCommand.getEmail())) {
-            account.setEmailAddress(new EmailAddress(modifyAccountCommand.getEmail()));
-        }
-        if (StringUtils.isNotEmpty(modifyAccountCommand.getPhone())) {
-            account.setPhone(new Phone(modifyAccountCommand.getPhone()));
-        }
-        if (StringUtils.isNotEmpty(modifyAccountCommand.getHeadImage())) {
-            account.setHeadImage(new HeadImage(modifyAccountCommand.getHeadImage()));
-        }
-        if (StringUtils.isNotEmpty(modifyAccountCommand.getQq())) {
-            account.setQq(modifyAccountCommand.getQq());
-        }
-        if (StringUtils.isNotEmpty(modifyAccountCommand.getWechat())) {
-            account.setWechat(modifyAccountCommand.getWechat());
-        }
-        if (StringUtils.isNotEmpty(modifyAccountCommand.getDingding())) {
-            account.setDingding(modifyAccountCommand.getDingding());
-        }
-        if (StringUtils.isNotEmpty(modifyAccountCommand.getFeature())) {
-            account.setFeature(modifyAccountCommand.getFeature());
-        }
-        if (StringUtils.isNotEmpty(modifyAccountCommand.getTags())) {
-            account.setTags(modifyAccountCommand.getTags());
-        }
-        if (Objects.nonNull(modifyAccountCommand.getBirthday())) {
-            account.setBirthday(modifyAccountCommand.getBirthday());
-        }
+    public Boolean modifyAccount(ModifyAccountCommand modifyAccountCommand) {
+        Account account = accountFactory.build(modifyAccountCommand);
         account.modify();
         accountDomainService.update(account);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
     @TenantValidCheck(expression = "#createSafeStrategyCommand.tenantId")
-    public PojoResult<Boolean> createSafeStrategy(CreateSafeStrategyCommand createSafeStrategyCommand) {
+    public Boolean createSafeStrategy(CreateSafeStrategyCommand createSafeStrategyCommand) {
         Account account = accountDomainService.findById(new AccountId(createSafeStrategyCommand.getAccountId()));
         if (Objects.isNull(account)) {
             throw new BusinessException(BusinessErrorMessage.ACCOUNT_NOT_FOUND);
@@ -242,12 +149,12 @@ public class AccountRemoteServiceProvider implements AccountFacade {
         }
         account.setSafeStrategies(Collections.singletonList(safeStrategy));
         accountDomainService.saveSafeStrategy(account);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
     @TenantValidCheck(expression = "#updateSafeStrategyCommand.tenantId")
-    public PojoResult<Boolean> updateSafeStrategy(UpdateSafeStrategyCommand updateSafeStrategyCommand) {
+    public Boolean updateSafeStrategy(UpdateSafeStrategyCommand updateSafeStrategyCommand) {
         Account account = accountDomainService.findById(new AccountId(updateSafeStrategyCommand.getAccountId()));
         if (Objects.isNull(account)) {
             throw new BusinessException(BusinessErrorMessage.ACCOUNT_NOT_FOUND);
@@ -270,12 +177,12 @@ public class AccountRemoteServiceProvider implements AccountFacade {
             throw new BusinessException(BusinessErrorMessage.ACCOUNT_STRATEGY_NOT_FOUND);
         }
         accountDomainService.updateSafeStrategy(account);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
     @TenantValidCheck(expression = "#accountQuery.tenantId")
-    public ListResult<AccountDTO> findAccounts(AccountQuery accountQuery) {
+    public List<AccountDTO> findAccounts(AccountQuery accountQuery) {
         AccountSearchParam searchParam = new AccountSearchParam();
         if (Objects.nonNull(accountQuery.getTenantId())) {
             searchParam.setTenantId(accountQuery.getTenantId());
@@ -304,12 +211,12 @@ public class AccountRemoteServiceProvider implements AccountFacade {
         if (CollectionUtils.isNotEmpty(accountQuery.getAccountIds())) {
             searchParam.setAccountIds(accountQuery.getAccountIds());
         }
-        return ListResult.succeed(accountDomainService.selectAccounts(searchParam));
+        return accountDomainService.selectAccounts(searchParam);
     }
 
     @Override
     @TenantValidCheck(expression = "#accountPageQuery.tenantId")
-    public PageResult<AccountDTO> pageAccounts(AccountPageQuery accountPageQuery) {
+    public Page<AccountDTO> pageAccounts(AccountPageQuery accountPageQuery) {
         AccountPageSearchParam searchParam = new AccountPageSearchParam();
         searchParam.setPageNo(accountPageQuery.getPageNo());
         searchParam.setPageSize(accountPageQuery.getPageSize());
@@ -337,7 +244,6 @@ public class AccountRemoteServiceProvider implements AccountFacade {
         if (BooleanUtil.isTrue(accountPageQuery.getExcludeDisabled())) {
             searchParam.setStatus(CommonStatusEnum.ENABLE.getValue());
         }
-        Page<AccountDTO> page = accountDomainService.pageAccounts(searchParam);
-        return PageResult.succeed(page);
+        return accountDomainService.pageAccounts(searchParam);
     }
 }

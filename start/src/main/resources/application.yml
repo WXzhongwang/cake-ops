@@ -13,15 +13,15 @@ cms:
   oss:
     endpoint: https://rany-ops.oss-cn-hangzhou.aliyuncs.com
   page:
-    version: 1.0.0
-    path: cake-acl-frontend/${cms.page.version}/index.html
+    version: 1.0.18
+    path: cake-ops-frontend/${cms.page.version}/index.html
   site:
-    name: cake-acl-frontend
+    name: cake-ops-frontend
 
 dubbo:
   application:
-    id: rany-acl-service
-    name: rany-acl-service
+    id: rany-ops-service
+    name: rany-ops-service
   protocol:
     name: dubbo
     port: -1
@@ -34,7 +34,7 @@ dubbo:
 
 spring:
   application:
-    name: rany-acl-service
+    name: rany-ops-service
   profiles:
     active: dev
   datasource:

@@ -136,7 +136,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.id
      *
      * @return the value of menu.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getId() {
@@ -148,7 +147,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.id
      *
      * @param id the value for menu.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setId(Long id) {
@@ -160,7 +158,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.app_code
      *
      * @return the value of menu.app_code
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getAppCode() {
@@ -172,7 +169,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.app_code
      *
      * @param appCode the value for menu.app_code
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setAppCode(String appCode) {
@@ -184,7 +180,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.tenant_id
      *
      * @return the value of menu.tenant_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getTenantId() {
@@ -196,7 +191,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.tenant_id
      *
      * @param tenantId the value for menu.tenant_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setTenantId(Long tenantId) {
@@ -208,7 +202,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.name
      *
      * @return the value of menu.name
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getName() {
@@ -220,7 +213,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.name
      *
      * @param name the value for menu.name
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setName(String name) {
@@ -232,7 +224,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.path
      *
      * @return the value of menu.path
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getPath() {
@@ -244,7 +235,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.path
      *
      * @param path the value for menu.path
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setPath(String path) {
@@ -256,7 +246,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.parent_id
      *
      * @return the value of menu.parent_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getParentId() {
@@ -268,7 +257,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.parent_id
      *
      * @param parentId the value for menu.parent_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setParentId(Long parentId) {
@@ -280,7 +268,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.level
      *
      * @return the value of menu.level
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Integer getLevel() {
@@ -292,7 +279,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.level
      *
      * @param level the value for menu.level
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setLevel(Integer level) {
@@ -304,7 +290,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.icon
      *
      * @return the value of menu.icon
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getIcon() {
@@ -316,7 +301,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.icon
      *
      * @param icon the value for menu.icon
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setIcon(String icon) {
@@ -328,7 +312,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.hidden
      *
      * @return the value of menu.hidden
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getHidden() {
@@ -340,7 +323,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.hidden
      *
      * @param hidden the value for menu.hidden
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setHidden(String hidden) {
@@ -352,7 +334,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.creator
      *
      * @return the value of menu.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getCreator() {
@@ -364,7 +345,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.creator
      *
      * @param creator the value for menu.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setCreator(String creator) {
@@ -376,7 +356,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.modifier
      *
      * @return the value of menu.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getModifier() {
@@ -388,7 +367,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.modifier
      *
      * @param modifier the value for menu.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setModifier(String modifier) {
@@ -400,7 +378,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.gmt_create
      *
      * @return the value of menu.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtCreate() {
@@ -412,7 +389,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.gmt_create
      *
      * @param gmtCreate the value for menu.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtCreate(Date gmtCreate) {
@@ -424,7 +400,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.gmt_modified
      *
      * @return the value of menu.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtModified() {
@@ -436,7 +411,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.gmt_modified
      *
      * @param gmtModified the value for menu.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtModified(Date gmtModified) {
@@ -448,7 +422,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.is_deleted
      *
      * @return the value of menu.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getIsDeleted() {
@@ -460,7 +433,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.is_deleted
      *
      * @param isDeleted the value for menu.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setIsDeleted(String isDeleted) {
@@ -472,7 +444,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.sort
      *
      * @return the value of menu.sort
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Integer getSort() {
@@ -484,7 +455,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.sort
      *
      * @param sort the value for menu.sort
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setSort(Integer sort) {
@@ -496,7 +466,6 @@ public class MenuPO {
      * This method returns the value of the database column menu.status
      *
      * @return the value of menu.status
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getStatus() {
@@ -508,7 +477,6 @@ public class MenuPO {
      * This method sets the value of the database column menu.status
      *
      * @param status the value for menu.status
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setStatus(String status) {

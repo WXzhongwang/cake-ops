@@ -208,7 +208,6 @@ public class AccountPO {
      * This method returns the value of the database column account.id
      *
      * @return the value of account.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getId() {
@@ -220,7 +219,6 @@ public class AccountPO {
      * This method sets the value of the database column account.id
      *
      * @param id the value for account.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setId(Long id) {
@@ -232,7 +230,6 @@ public class AccountPO {
      * This method returns the value of the database column account.account_name
      *
      * @return the value of account.account_name
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getAccountName() {
@@ -244,7 +241,6 @@ public class AccountPO {
      * This method sets the value of the database column account.account_name
      *
      * @param accountName the value for account.account_name
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setAccountName(String accountName) {
@@ -256,7 +252,6 @@ public class AccountPO {
      * This method returns the value of the database column account.phone
      *
      * @return the value of account.phone
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getPhone() {
@@ -268,7 +263,6 @@ public class AccountPO {
      * This method sets the value of the database column account.phone
      *
      * @param phone the value for account.phone
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setPhone(String phone) {
@@ -280,7 +274,6 @@ public class AccountPO {
      * This method returns the value of the database column account.email
      *
      * @return the value of account.email
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getEmail() {
@@ -292,7 +285,6 @@ public class AccountPO {
      * This method sets the value of the database column account.email
      *
      * @param email the value for account.email
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setEmail(String email) {
@@ -304,7 +296,6 @@ public class AccountPO {
      * This method returns the value of the database column account.tenant_id
      *
      * @return the value of account.tenant_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getTenantId() {
@@ -316,7 +307,6 @@ public class AccountPO {
      * This method sets the value of the database column account.tenant_id
      *
      * @param tenantId the value for account.tenant_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setTenantId(Long tenantId) {
@@ -328,7 +318,6 @@ public class AccountPO {
      * This method returns the value of the database column account.is_admin
      *
      * @return the value of account.is_admin
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getIsAdmin() {
@@ -340,7 +329,6 @@ public class AccountPO {
      * This method sets the value of the database column account.is_admin
      *
      * @param isAdmin the value for account.is_admin
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setIsAdmin(String isAdmin) {
@@ -352,7 +340,6 @@ public class AccountPO {
      * This method returns the value of the database column account.account_type
      *
      * @return the value of account.account_type
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getAccountType() {
@@ -364,7 +351,6 @@ public class AccountPO {
      * This method sets the value of the database column account.account_type
      *
      * @param accountType the value for account.account_type
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setAccountType(String accountType) {
@@ -376,7 +362,6 @@ public class AccountPO {
      * This method returns the value of the database column account.status
      *
      * @return the value of account.status
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getStatus() {
@@ -388,7 +373,6 @@ public class AccountPO {
      * This method sets the value of the database column account.status
      *
      * @param status the value for account.status
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setStatus(String status) {
@@ -400,7 +384,6 @@ public class AccountPO {
      * This method returns the value of the database column account.is_deleted
      *
      * @return the value of account.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getIsDeleted() {
@@ -412,7 +395,6 @@ public class AccountPO {
      * This method sets the value of the database column account.is_deleted
      *
      * @param isDeleted the value for account.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setIsDeleted(String isDeleted) {
@@ -424,7 +406,6 @@ public class AccountPO {
      * This method returns the value of the database column account.last_login_ip
      *
      * @return the value of account.last_login_ip
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getLastLoginIp() {
@@ -436,7 +417,6 @@ public class AccountPO {
      * This method sets the value of the database column account.last_login_ip
      *
      * @param lastLoginIp the value for account.last_login_ip
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setLastLoginIp(String lastLoginIp) {
@@ -448,7 +428,6 @@ public class AccountPO {
      * This method returns the value of the database column account.last_login_time
      *
      * @return the value of account.last_login_time
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getLastLoginTime() {
@@ -460,7 +439,6 @@ public class AccountPO {
      * This method sets the value of the database column account.last_login_time
      *
      * @param lastLoginTime the value for account.last_login_time
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setLastLoginTime(Date lastLoginTime) {
@@ -472,7 +450,6 @@ public class AccountPO {
      * This method returns the value of the database column account.feature
      *
      * @return the value of account.feature
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getFeature() {
@@ -484,7 +461,6 @@ public class AccountPO {
      * This method sets the value of the database column account.feature
      *
      * @param feature the value for account.feature
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setFeature(String feature) {
@@ -496,7 +472,6 @@ public class AccountPO {
      * This method returns the value of the database column account.gmt_create
      *
      * @return the value of account.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtCreate() {
@@ -508,7 +483,6 @@ public class AccountPO {
      * This method sets the value of the database column account.gmt_create
      *
      * @param gmtCreate the value for account.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtCreate(Date gmtCreate) {
@@ -520,7 +494,6 @@ public class AccountPO {
      * This method returns the value of the database column account.gmt_modified
      *
      * @return the value of account.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtModified() {
@@ -532,7 +505,6 @@ public class AccountPO {
      * This method sets the value of the database column account.gmt_modified
      *
      * @param gmtModified the value for account.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtModified(Date gmtModified) {
@@ -544,7 +516,6 @@ public class AccountPO {
      * This method returns the value of the database column account.head_image
      *
      * @return the value of account.head_image
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getHeadImage() {
@@ -556,7 +527,6 @@ public class AccountPO {
      * This method sets the value of the database column account.head_image
      *
      * @param headImage the value for account.head_image
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setHeadImage(String headImage) {
@@ -568,7 +538,6 @@ public class AccountPO {
      * This method returns the value of the database column account.dingding
      *
      * @return the value of account.dingding
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getDingding() {
@@ -580,7 +549,6 @@ public class AccountPO {
      * This method sets the value of the database column account.dingding
      *
      * @param dingding the value for account.dingding
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setDingding(String dingding) {
@@ -592,7 +560,6 @@ public class AccountPO {
      * This method returns the value of the database column account.qq
      *
      * @return the value of account.qq
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getQq() {
@@ -604,7 +571,6 @@ public class AccountPO {
      * This method sets the value of the database column account.qq
      *
      * @param qq the value for account.qq
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setQq(String qq) {
@@ -616,7 +582,6 @@ public class AccountPO {
      * This method returns the value of the database column account.wechat
      *
      * @return the value of account.wechat
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getWechat() {
@@ -628,7 +593,6 @@ public class AccountPO {
      * This method sets the value of the database column account.wechat
      *
      * @param wechat the value for account.wechat
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setWechat(String wechat) {
@@ -640,7 +604,6 @@ public class AccountPO {
      * This method returns the value of the database column account.birthday
      *
      * @return the value of account.birthday
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getBirthday() {
@@ -652,7 +615,6 @@ public class AccountPO {
      * This method sets the value of the database column account.birthday
      *
      * @param birthday the value for account.birthday
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setBirthday(Date birthday) {
@@ -664,7 +626,6 @@ public class AccountPO {
      * This method returns the value of the database column account.tags
      *
      * @return the value of account.tags
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getTags() {
@@ -676,7 +637,6 @@ public class AccountPO {
      * This method sets the value of the database column account.tags
      *
      * @param tags the value for account.tags
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setTags(String tags) {
@@ -688,7 +648,6 @@ public class AccountPO {
      * This method returns the value of the database column account.ding_union_id
      *
      * @return the value of account.ding_union_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getDingUnionId() {
@@ -700,7 +659,6 @@ public class AccountPO {
      * This method sets the value of the database column account.ding_union_id
      *
      * @param dingUnionId the value for account.ding_union_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setDingUnionId(String dingUnionId) {
@@ -712,7 +670,6 @@ public class AccountPO {
      * This method returns the value of the database column account.ding_user_id
      *
      * @return the value of account.ding_user_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getDingUserId() {
@@ -724,7 +681,6 @@ public class AccountPO {
      * This method sets the value of the database column account.ding_user_id
      *
      * @param dingUserId the value for account.ding_user_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setDingUserId(String dingUserId) {
@@ -736,7 +692,6 @@ public class AccountPO {
      * This method returns the value of the database column account.work_no
      *
      * @return the value of account.work_no
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getWorkNo() {
@@ -748,7 +703,6 @@ public class AccountPO {
      * This method sets the value of the database column account.work_no
      *
      * @param workNo the value for account.work_no
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setWorkNo(String workNo) {
@@ -760,7 +714,6 @@ public class AccountPO {
      * This method returns the value of the database column account.creator
      *
      * @return the value of account.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getCreator() {
@@ -772,7 +725,6 @@ public class AccountPO {
      * This method sets the value of the database column account.creator
      *
      * @param creator the value for account.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setCreator(String creator) {
@@ -784,7 +736,6 @@ public class AccountPO {
      * This method returns the value of the database column account.modifier
      *
      * @return the value of account.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getModifier() {
@@ -796,7 +747,6 @@ public class AccountPO {
      * This method sets the value of the database column account.modifier
      *
      * @param modifier the value for account.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setModifier(String modifier) {

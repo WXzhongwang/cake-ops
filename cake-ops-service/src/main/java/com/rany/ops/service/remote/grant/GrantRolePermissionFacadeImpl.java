@@ -1,7 +1,5 @@
 package com.rany.ops.service.remote.grant;
 
-import com.alibaba.dubbo.config.annotation.Service;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.command.grant.DisGrantRolePermissionsCommand;
 import com.rany.ops.api.command.grant.GrantRolePermissionsCommand;
 import com.rany.ops.api.facade.grant.GrantRolePermissionFacade;
@@ -13,19 +11,23 @@ import com.rany.ops.domain.service.RolePermissionDomainService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.dubbo.config.annotation.Service;
 
 import java.util.List;
 
+/**
+ * @author zhongshengwang
+ */
 @Slf4j
 @Service
 @AllArgsConstructor
-public class GrantRolePermissionRemoteServiceProvider implements GrantRolePermissionFacade {
+public class GrantRolePermissionFacadeImpl implements GrantRolePermissionFacade {
     private final SnowflakeIdWorker snowflakeIdWorker;
     private final RolePermissionDomainService rolePermissionDomainService;
     private final RoleDomainService roleDomainService;
 
     @Override
-    public PojoResult<Boolean> grantRolePermissions(GrantRolePermissionsCommand grantRolePermissionsCommand) {
+    public Boolean grantRolePermissions(GrantRolePermissionsCommand grantRolePermissionsCommand) {
         RolePermissionSearchParam roleMenuSearchParam = new RolePermissionSearchParam();
         roleMenuSearchParam.setAppCode(grantRolePermissionsCommand.getAppCode());
         roleMenuSearchParam.setRoleId(grantRolePermissionsCommand.getRoleId());
@@ -46,11 +48,11 @@ public class GrantRolePermissionRemoteServiceProvider implements GrantRolePermis
                     grantRolePermissionsCommand.getTenantId(), grantRolePermissionsCommand.getRoleId(), permissionId);
             rolePermissionDomainService.save(roleMenu);
         }
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public PojoResult<Boolean> disGrantRolePermissions(DisGrantRolePermissionsCommand disGrantRolePermissionsCommand) {
+    public Boolean disGrantRolePermissions(DisGrantRolePermissionsCommand disGrantRolePermissionsCommand) {
         RolePermissionSearchParam roleMenuSearchParam = new RolePermissionSearchParam();
         roleMenuSearchParam.setAppCode(disGrantRolePermissionsCommand.getAppCode());
         roleMenuSearchParam.setRoleId(disGrantRolePermissionsCommand.getRoleId());
@@ -66,6 +68,6 @@ public class GrantRolePermissionRemoteServiceProvider implements GrantRolePermis
                 rolePermissionDomainService.update(currentPermission);
             }
         }
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 }

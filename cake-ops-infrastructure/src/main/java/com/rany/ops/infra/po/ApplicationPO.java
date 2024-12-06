@@ -88,7 +88,6 @@ public class ApplicationPO {
      * This method returns the value of the database column application.id
      *
      * @return the value of application.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getId() {
@@ -100,7 +99,6 @@ public class ApplicationPO {
      * This method sets the value of the database column application.id
      *
      * @param id the value for application.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setId(Long id) {
@@ -112,7 +110,6 @@ public class ApplicationPO {
      * This method returns the value of the database column application.app_name
      *
      * @return the value of application.app_name
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getAppName() {
@@ -124,7 +121,6 @@ public class ApplicationPO {
      * This method sets the value of the database column application.app_name
      *
      * @param appName the value for application.app_name
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setAppName(String appName) {
@@ -136,7 +132,6 @@ public class ApplicationPO {
      * This method returns the value of the database column application.app_code
      *
      * @return the value of application.app_code
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getAppCode() {
@@ -148,7 +143,6 @@ public class ApplicationPO {
      * This method sets the value of the database column application.app_code
      *
      * @param appCode the value for application.app_code
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setAppCode(String appCode) {
@@ -160,7 +154,6 @@ public class ApplicationPO {
      * This method returns the value of the database column application.auth_type
      *
      * @return the value of application.auth_type
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getAuthType() {
@@ -172,7 +165,6 @@ public class ApplicationPO {
      * This method sets the value of the database column application.auth_type
      *
      * @param authType the value for application.auth_type
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setAuthType(String authType) {
@@ -184,7 +176,6 @@ public class ApplicationPO {
      * This method returns the value of the database column application.creator
      *
      * @return the value of application.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getCreator() {
@@ -196,7 +187,6 @@ public class ApplicationPO {
      * This method sets the value of the database column application.creator
      *
      * @param creator the value for application.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setCreator(String creator) {
@@ -208,7 +198,6 @@ public class ApplicationPO {
      * This method returns the value of the database column application.modifier
      *
      * @return the value of application.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getModifier() {
@@ -220,7 +209,6 @@ public class ApplicationPO {
      * This method sets the value of the database column application.modifier
      *
      * @param modifier the value for application.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setModifier(String modifier) {
@@ -232,7 +220,6 @@ public class ApplicationPO {
      * This method returns the value of the database column application.gmt_create
      *
      * @return the value of application.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtCreate() {
@@ -244,7 +231,6 @@ public class ApplicationPO {
      * This method sets the value of the database column application.gmt_create
      *
      * @param gmtCreate the value for application.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtCreate(Date gmtCreate) {
@@ -256,7 +242,6 @@ public class ApplicationPO {
      * This method returns the value of the database column application.gmt_modified
      *
      * @return the value of application.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtModified() {
@@ -268,7 +253,6 @@ public class ApplicationPO {
      * This method sets the value of the database column application.gmt_modified
      *
      * @param gmtModified the value for application.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtModified(Date gmtModified) {
@@ -280,7 +264,6 @@ public class ApplicationPO {
      * This method returns the value of the database column application.is_deleted
      *
      * @return the value of application.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getIsDeleted() {
@@ -292,7 +275,6 @@ public class ApplicationPO {
      * This method sets the value of the database column application.is_deleted
      *
      * @param isDeleted the value for application.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setIsDeleted(String isDeleted) {
@@ -304,7 +286,6 @@ public class ApplicationPO {
      * This method returns the value of the database column application.status
      *
      * @return the value of application.status
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getStatus() {
@@ -316,7 +297,6 @@ public class ApplicationPO {
      * This method sets the value of the database column application.status
      *
      * @param status the value for application.status
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setStatus(String status) {

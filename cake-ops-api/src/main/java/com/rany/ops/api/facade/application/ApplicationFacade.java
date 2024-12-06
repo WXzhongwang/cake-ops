@@ -1,13 +1,13 @@
 package com.rany.ops.api.facade.application;
 
-import com.cake.framework.common.response.ListResult;
-import com.cake.framework.common.response.PageResult;
-import com.cake.framework.common.response.PojoResult;
+import com.cake.framework.common.response.Page;
 import com.rany.ops.api.command.application.*;
 import com.rany.ops.api.query.application.ApplicationBasicQuery;
 import com.rany.ops.api.query.application.ApplicationPageQuery;
 import com.rany.ops.api.query.application.ApplicationQuery;
 import com.rany.ops.common.dto.application.ApplicationDTO;
+
+import java.util.List;
 
 /**
  * 应用管理
@@ -23,74 +23,74 @@ public interface ApplicationFacade {
     /**
      * 创建应用
      *
-     * @param createApplicationCommand
-     * @return
+     * @param command 指令
+     * @return 应用id
      */
-    PojoResult<Long> createApplication(CreateApplicationCommand createApplicationCommand);
+    Long createApplication(CreateApplicationCommand command);
 
     /**
      * 获取应用信息
      *
-     * @param applicationBasicQuery
-     * @return
+     * @param applicationBasicQuery 查询
+     * @return 应用信息
      */
-    PojoResult<ApplicationDTO> getApplication(ApplicationBasicQuery applicationBasicQuery);
+    ApplicationDTO getApplication(ApplicationBasicQuery applicationBasicQuery);
 
     /**
      * 获取应用信息
      *
-     * @param applicationBasicQuery
-     * @return
+     * @param applicationBasicQuery 查询
+     * @return 应用信息
      */
-    PojoResult<ApplicationDTO> getApplicationByAppCode(ApplicationBasicQuery applicationBasicQuery);
+    ApplicationDTO getApplicationByAppCode(ApplicationBasicQuery applicationBasicQuery);
 
     /**
      * 应用禁用
      *
-     * @param disableApplicationCommand
-     * @return
+     * @param disableApplicationCommand 指令
+     * @return boolean
      */
-    PojoResult<Boolean> disableApplication(DisableApplicationCommand disableApplicationCommand);
+    Boolean disableApplication(DisableApplicationCommand disableApplicationCommand);
 
     /**
      * 启用应用
      *
-     * @param enableApplicationCommand
-     * @return
+     * @param enableApplicationCommand 指令
+     * @return boolean
      */
-    PojoResult<Boolean> enableApplication(EnableApplicationCommand enableApplicationCommand);
+    Boolean enableApplication(EnableApplicationCommand enableApplicationCommand);
 
     /**
      * 删除应用
      *
-     * @param deleteApplicationCommand
-     * @return
+     * @param deleteApplicationCommand 指令
+     * @return boolean
      */
-    PojoResult<Boolean> deleteApplication(DeleteApplicationCommand deleteApplicationCommand);
+    Boolean deleteApplication(DeleteApplicationCommand deleteApplicationCommand);
 
     /**
      * 更新应用基本信息
      *
-     * @param modifyApplicationCommand
-     * @return
+     * @param modifyApplicationCommand 指令
+     * @return boolean
      */
-    PojoResult<Boolean> modifyApplication(ModifyApplicationCommand modifyApplicationCommand);
+    Boolean modifyApplication(ModifyApplicationCommand modifyApplicationCommand);
 
 
     /**
      * 分页查询应用
      *
-     * @param applicationQuery
-     * @return
+     * @param applicationQuery 查询
+     * @return 列表
      */
-    ListResult<ApplicationDTO> findApplications(ApplicationQuery applicationQuery);
+    List<ApplicationDTO> findApplications(ApplicationQuery applicationQuery);
 
     /**
      * 查询应用分页
      *
-     * @param applicationPageQuery
-     * @return
+     * @param applicationPageQuery 查询
+     * @return 分页
      */
-    PageResult<ApplicationDTO> pageApplications(ApplicationPageQuery applicationPageQuery);
+    Page<ApplicationDTO> pageApplications(ApplicationPageQuery applicationPageQuery);
 
 }

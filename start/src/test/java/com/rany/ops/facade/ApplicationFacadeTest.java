@@ -1,8 +1,6 @@
 package com.rany.ops.facade;
 
-import com.cake.framework.common.response.ListResult;
-import com.cake.framework.common.response.PageResult;
-import com.cake.framework.common.response.PojoResult;
+import com.cake.framework.common.response.Page;
 import com.rany.ops.BaseTests;
 import com.rany.ops.api.command.application.*;
 import com.rany.ops.api.facade.application.ApplicationFacade;
@@ -15,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * TODO
@@ -37,40 +36,40 @@ public class ApplicationFacadeTest extends BaseTests {
         createApplicationCommand.setAppName("测试APP");
         createApplicationCommand.setAppCode("ACL_12580");
         createApplicationCommand.setAuthType(AuthTypeEnum.RBAC0.name());
-        PojoResult<Long> account = applicationFacade.createApplication(createApplicationCommand);
-        Assert.assertTrue(account.getSuccess());
+        Long application = applicationFacade.createApplication(createApplicationCommand);
+        Assert.assertNotNull(application);
     }
 
     @Test
     public void getAccount() {
         ApplicationBasicQuery applicationBasicQuery = new ApplicationBasicQuery();
         applicationBasicQuery.setAppId(APP_ID);
-        PojoResult<ApplicationDTO> account = applicationFacade.getApplication(applicationBasicQuery);
-        Assert.assertTrue(account.getSuccess());
+        ApplicationDTO application = applicationFacade.getApplication(applicationBasicQuery);
+        Assert.assertNotNull(application);
     }
 
     @Test
     public void disableAccount() {
         DisableApplicationCommand disableApplicationCommand = new DisableApplicationCommand();
         disableApplicationCommand.setAppId(APP_ID);
-        PojoResult<Boolean> account = applicationFacade.disableApplication(disableApplicationCommand);
-        Assert.assertTrue(account.getContent());
+        Boolean success = applicationFacade.disableApplication(disableApplicationCommand);
+        Assert.assertTrue(success);
     }
 
     @Test
     public void enableAccount() {
         EnableApplicationCommand enableApplicationCommand = new EnableApplicationCommand();
         enableApplicationCommand.setAppId(APP_ID);
-        PojoResult<Boolean> account = applicationFacade.enableApplication(enableApplicationCommand);
-        Assert.assertTrue(account.getContent());
+        Boolean success = applicationFacade.enableApplication(enableApplicationCommand);
+        Assert.assertTrue(success);
     }
 
     @Test
     public void deleteAccount() {
         DeleteApplicationCommand deleteApplicationCommand = new DeleteApplicationCommand();
         deleteApplicationCommand.setAppId(APP_ID);
-        PojoResult<Boolean> account = applicationFacade.deleteApplication(deleteApplicationCommand);
-        Assert.assertTrue(account.getContent());
+        Boolean success = applicationFacade.deleteApplication(deleteApplicationCommand);
+        Assert.assertTrue(success);
     }
 
     @Test
@@ -78,22 +77,22 @@ public class ApplicationFacadeTest extends BaseTests {
         ModifyApplicationCommand modifyApplicationCommand = new ModifyApplicationCommand();
         modifyApplicationCommand.setAppId(APP_ID);
         modifyApplicationCommand.setAppName("测试ACL");
-        PojoResult<Boolean> account = applicationFacade.modifyApplication(modifyApplicationCommand);
-        Assert.assertTrue(account.getContent());
+        Boolean success = applicationFacade.modifyApplication(modifyApplicationCommand);
+        Assert.assertTrue(success);
     }
 
 
     @Test
     public void findAccounts() {
         ApplicationQuery applicationQuery = new ApplicationQuery();
-        ListResult<ApplicationDTO> applications = applicationFacade.findApplications(applicationQuery);
-        Assert.assertTrue(applications.getSuccess());
+        List<ApplicationDTO> applications = applicationFacade.findApplications(applicationQuery);
+        Assert.assertTrue(applications.isEmpty());
     }
 
     @Test
     public void pageTenants() {
         ApplicationPageQuery applicationPageQuery = new ApplicationPageQuery();
-        PageResult<ApplicationDTO> applications = applicationFacade.pageApplications(applicationPageQuery);
-        Assert.assertTrue(applications.getSuccess());
+        Page<ApplicationDTO> applications = applicationFacade.pageApplications(applicationPageQuery);
+        Assert.assertTrue(applications.getItems().isEmpty());
     }
 }

@@ -4,6 +4,9 @@ import com.rany.ops.common.base.DTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * @author zhongshengwang
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class PermissionDTO extends DTO {

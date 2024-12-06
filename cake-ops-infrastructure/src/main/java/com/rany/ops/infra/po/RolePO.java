@@ -112,7 +112,6 @@ public class RolePO {
      * This method returns the value of the database column acl_role.id
      *
      * @return the value of acl_role.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getId() {
@@ -124,7 +123,6 @@ public class RolePO {
      * This method sets the value of the database column acl_role.id
      *
      * @param id the value for acl_role.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setId(Long id) {
@@ -136,7 +134,6 @@ public class RolePO {
      * This method returns the value of the database column acl_role.app_code
      *
      * @return the value of acl_role.app_code
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getAppCode() {
@@ -148,7 +145,6 @@ public class RolePO {
      * This method sets the value of the database column acl_role.app_code
      *
      * @param appCode the value for acl_role.app_code
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setAppCode(String appCode) {
@@ -160,7 +156,6 @@ public class RolePO {
      * This method returns the value of the database column acl_role.tenant_id
      *
      * @return the value of acl_role.tenant_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getTenantId() {
@@ -172,7 +167,6 @@ public class RolePO {
      * This method sets the value of the database column acl_role.tenant_id
      *
      * @param tenantId the value for acl_role.tenant_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setTenantId(Long tenantId) {
@@ -184,7 +178,6 @@ public class RolePO {
      * This method returns the value of the database column acl_role.role_name
      *
      * @return the value of acl_role.role_name
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getRoleName() {
@@ -196,7 +189,6 @@ public class RolePO {
      * This method sets the value of the database column acl_role.role_name
      *
      * @param roleName the value for acl_role.role_name
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setRoleName(String roleName) {
@@ -208,7 +200,6 @@ public class RolePO {
      * This method returns the value of the database column acl_role.role_key
      *
      * @return the value of acl_role.role_key
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getRoleKey() {
@@ -220,7 +211,6 @@ public class RolePO {
      * This method sets the value of the database column acl_role.role_key
      *
      * @param roleKey the value for acl_role.role_key
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setRoleKey(String roleKey) {
@@ -232,7 +222,6 @@ public class RolePO {
      * This method returns the value of the database column acl_role.role_desc
      *
      * @return the value of acl_role.role_desc
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getRoleDesc() {
@@ -244,7 +233,6 @@ public class RolePO {
      * This method sets the value of the database column acl_role.role_desc
      *
      * @param roleDesc the value for acl_role.role_desc
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setRoleDesc(String roleDesc) {
@@ -256,7 +244,6 @@ public class RolePO {
      * This method returns the value of the database column acl_role.creator
      *
      * @return the value of acl_role.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getCreator() {
@@ -268,7 +255,6 @@ public class RolePO {
      * This method sets the value of the database column acl_role.creator
      *
      * @param creator the value for acl_role.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setCreator(String creator) {
@@ -280,7 +266,6 @@ public class RolePO {
      * This method returns the value of the database column acl_role.modifier
      *
      * @return the value of acl_role.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getModifier() {
@@ -292,7 +277,6 @@ public class RolePO {
      * This method sets the value of the database column acl_role.modifier
      *
      * @param modifier the value for acl_role.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setModifier(String modifier) {
@@ -304,7 +288,6 @@ public class RolePO {
      * This method returns the value of the database column acl_role.gmt_create
      *
      * @return the value of acl_role.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtCreate() {
@@ -316,7 +299,6 @@ public class RolePO {
      * This method sets the value of the database column acl_role.gmt_create
      *
      * @param gmtCreate the value for acl_role.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtCreate(Date gmtCreate) {
@@ -328,7 +310,6 @@ public class RolePO {
      * This method returns the value of the database column acl_role.gmt_modified
      *
      * @return the value of acl_role.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtModified() {
@@ -340,7 +321,6 @@ public class RolePO {
      * This method sets the value of the database column acl_role.gmt_modified
      *
      * @param gmtModified the value for acl_role.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtModified(Date gmtModified) {
@@ -352,7 +332,6 @@ public class RolePO {
      * This method returns the value of the database column acl_role.is_deleted
      *
      * @return the value of acl_role.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getIsDeleted() {
@@ -364,7 +343,6 @@ public class RolePO {
      * This method sets the value of the database column acl_role.is_deleted
      *
      * @param isDeleted the value for acl_role.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setIsDeleted(String isDeleted) {
@@ -376,7 +354,6 @@ public class RolePO {
      * This method returns the value of the database column acl_role.parent_role_id
      *
      * @return the value of acl_role.parent_role_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getParentRoleId() {
@@ -388,7 +365,6 @@ public class RolePO {
      * This method sets the value of the database column acl_role.parent_role_id
      *
      * @param parentRoleId the value for acl_role.parent_role_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setParentRoleId(Long parentRoleId) {
@@ -400,7 +376,6 @@ public class RolePO {
      * This method returns the value of the database column acl_role.status
      *
      * @return the value of acl_role.status
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getStatus() {
@@ -412,7 +387,6 @@ public class RolePO {
      * This method sets the value of the database column acl_role.status
      *
      * @param status the value for acl_role.status
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setStatus(String status) {

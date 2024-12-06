@@ -12,10 +12,10 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * TODO
+ * PermissionDomainService
  *
  * @author zhongshengwang
- * @description TODO
+ * @description PermissionDomainService
  * @date 2022/12/1 22:36
  * @email 18668485565163.com
  */

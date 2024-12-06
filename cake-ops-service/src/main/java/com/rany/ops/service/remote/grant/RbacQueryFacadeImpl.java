@@ -1,8 +1,6 @@
 package com.rany.ops.service.remote.grant;
 
-import com.alibaba.dubbo.config.annotation.Service;
 import com.cake.framework.common.exception.BusinessException;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.facade.grant.RbacQueryFacade;
 import com.rany.ops.api.query.grant.UserRoleMenuPermissionQuery;
 import com.rany.ops.common.Constants;
@@ -24,16 +22,20 @@ import com.rany.ops.infra.convertor.RoleDataConvertor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.dubbo.config.annotation.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * @author zhongshengwang
+ */
 @Slf4j
 @Service
 @AllArgsConstructor
-public class RbacQueryRemoteProvider implements RbacQueryFacade {
+public class RbacQueryFacadeImpl implements RbacQueryFacade {
 
     private final ApplicationDomainService applicationDomainService;
     private final UserRoleDomainService userRoleDomainService;
@@ -46,7 +48,7 @@ public class RbacQueryRemoteProvider implements RbacQueryFacade {
     private final MenuDataConvertor menuDataConvertor;
 
     @Override
-    public PojoResult<UserRoleMenuDTO> getUserRbacModel(UserRoleMenuPermissionQuery query) {
+    public UserRoleMenuDTO getUserRbacModel(UserRoleMenuPermissionQuery query) {
         Application application = applicationDomainService.findByAppCode(query.getAppCode());
         if (application == null) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
@@ -61,7 +63,7 @@ public class RbacQueryRemoteProvider implements RbacQueryFacade {
         // 获取用户角色
         List<UserRole> userRoles = userRoleDomainService.listUserRoles(userRoleSearchParam);
         if (CollectionUtils.isEmpty(userRoles)) {
-            return PojoResult.succeed(userRoleMenuPermissionDTO);
+            return userRoleMenuPermissionDTO;
         }
 
         List<Long> ownRoleIds = userRoles.stream().map(UserRole::getRoleId).collect(Collectors.toList());
@@ -83,7 +85,7 @@ public class RbacQueryRemoteProvider implements RbacQueryFacade {
         roleMenuSearchParam.setRoleIds(superAdminRole != null ? null : ownRoleIds);
         List<RoleMenu> roleRefMenus = roleMenuDomainService.getRoleMenus(roleMenuSearchParam);
         if (CollectionUtils.isEmpty(roleRefMenus)) {
-            return PojoResult.succeed(userRoleMenuPermissionDTO);
+            return userRoleMenuPermissionDTO;
         }
 
         List<Long> roleRefMenuIds = roleRefMenus.stream().map(RoleMenu::getMenuId).collect(Collectors.toList());
@@ -98,7 +100,7 @@ public class RbacQueryRemoteProvider implements RbacQueryFacade {
             recursive(menuDTO, menuDTOS);
         }
         userRoleMenuPermissionDTO.setMenuTree(treeDTO);
-        return PojoResult.succeed(userRoleMenuPermissionDTO);
+        return userRoleMenuPermissionDTO;
     }
 
 

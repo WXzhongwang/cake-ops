@@ -9,9 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+/**
+ * 页面资源托管
+ *
+ * @author zhongshengwang
+ */
 @Slf4j
 @RestController
-public class PageController {
+public class IndexController {
 
     @Value("${cms.page.path}")
     private String cmsPagePath;
@@ -19,7 +24,7 @@ public class PageController {
     @Resource
     private CmsClient cmsClient;
 
-    @RequestMapping(value = {"/**", "/app/**"}, produces = "text/html;charset=utf-8", method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/uic", "/uic/**"}, produces = "text/html;charset=utf-8", method = RequestMethod.GET)
     public String index() {
         try {
             log.info("CMS load page from {}.", cmsPagePath);

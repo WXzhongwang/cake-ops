@@ -1,7 +1,5 @@
 package com.rany.ops.facade;
 
-import com.cake.framework.common.response.ListResult;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.BaseTests;
 import com.rany.ops.api.command.menu.CreateMenuCommand;
 import com.rany.ops.api.facade.grant.RbacQueryFacade;
@@ -14,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * TODO
@@ -41,8 +40,8 @@ public class MenuFacadeTest extends BaseTests {
         createMenuCommand.setIcon("https://avatars.githubusercontent.com/u/27359059?v=4");
         createMenuCommand.setSort(1);
         createMenuCommand.setHidden(false);
-        PojoResult<Long> app = menuFacade.createMenu(createMenuCommand);
-        Assert.assertTrue(app.getSuccess());
+        Long menuId = menuFacade.createMenu(createMenuCommand);
+        Assert.assertNotNull(menuId);
 
 
         createMenuCommand.setAppCode(APP_CODE);
@@ -51,8 +50,8 @@ public class MenuFacadeTest extends BaseTests {
         createMenuCommand.setIcon("https://avatars.githubusercontent.com/u/27359059?v=4");
         createMenuCommand.setSort(2);
         createMenuCommand.setHidden(false);
-        PojoResult<Long> menu = menuFacade.createMenu(createMenuCommand);
-        Assert.assertTrue(menu.getSuccess());
+        Long menu = menuFacade.createMenu(createMenuCommand);
+        Assert.assertNotNull(menu);
 
         createMenuCommand.setAppCode(APP_CODE);
         createMenuCommand.setName("角色管理");
@@ -60,8 +59,8 @@ public class MenuFacadeTest extends BaseTests {
         createMenuCommand.setIcon("https://avatars.githubusercontent.com/u/27359059?v=4");
         createMenuCommand.setSort(2);
         createMenuCommand.setHidden(false);
-        PojoResult<Long> role = menuFacade.createMenu(createMenuCommand);
-        Assert.assertTrue(role.getSuccess());
+        Long role = menuFacade.createMenu(createMenuCommand);
+        Assert.assertNotNull(role);
 
         createMenuCommand.setAppCode(APP_CODE);
         createMenuCommand.setName("页面权限管理");
@@ -69,8 +68,8 @@ public class MenuFacadeTest extends BaseTests {
         createMenuCommand.setIcon("https://avatars.githubusercontent.com/u/27359059?v=4");
         createMenuCommand.setSort(2);
         createMenuCommand.setHidden(false);
-        PojoResult<Long> permission = menuFacade.createMenu(createMenuCommand);
-        Assert.assertTrue(permission.getSuccess());
+        Long permission = menuFacade.createMenu(createMenuCommand);
+        Assert.assertNotNull(permission);
     }
 
 
@@ -78,8 +77,8 @@ public class MenuFacadeTest extends BaseTests {
     public void getMenuTree() {
         MenuTreeQuery menuTreeQuery = new MenuTreeQuery();
         menuTreeQuery.setAppCode(APP_CODE);
-        ListResult<MenuTreeDTO> menuTree = menuFacade.getMenuTree(menuTreeQuery);
-        Assert.assertTrue(menuTree.getSuccess());
+        List<MenuTreeDTO> menuTree = menuFacade.getMenuTree(menuTreeQuery);
+        Assert.assertFalse(menuTree.isEmpty());
     }
 
     @Test
@@ -87,7 +86,7 @@ public class MenuFacadeTest extends BaseTests {
         UserRoleMenuPermissionQuery query = new UserRoleMenuPermissionQuery();
         query.setAppCode("CAKE_DEVOPS");
         query.setAccountId(768460662077796352L);
-        PojoResult<UserRoleMenuDTO> menuTree = rbacQueryFacade.getUserRbacModel(query);
-        Assert.assertTrue(menuTree.getSuccess());
+        UserRoleMenuDTO menuTree = rbacQueryFacade.getUserRbacModel(query);
+        Assert.assertNotNull(menuTree);
     }
 }

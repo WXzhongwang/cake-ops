@@ -104,7 +104,6 @@ public class SafeStrategyPO {
      * This method returns the value of the database column safe_strategy.id
      *
      * @return the value of safe_strategy.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getId() {
@@ -116,7 +115,6 @@ public class SafeStrategyPO {
      * This method sets the value of the database column safe_strategy.id
      *
      * @param id the value for safe_strategy.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setId(Long id) {
@@ -128,7 +126,6 @@ public class SafeStrategyPO {
      * This method returns the value of the database column safe_strategy.account_id
      *
      * @return the value of safe_strategy.account_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getAccountId() {
@@ -140,7 +137,6 @@ public class SafeStrategyPO {
      * This method sets the value of the database column safe_strategy.account_id
      *
      * @param accountId the value for safe_strategy.account_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setAccountId(Long accountId) {
@@ -152,7 +148,6 @@ public class SafeStrategyPO {
      * This method returns the value of the database column safe_strategy.login_strategy
      *
      * @return the value of safe_strategy.login_strategy
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getLoginStrategy() {
@@ -164,7 +159,6 @@ public class SafeStrategyPO {
      * This method sets the value of the database column safe_strategy.login_strategy
      *
      * @param loginStrategy the value for safe_strategy.login_strategy
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setLoginStrategy(String loginStrategy) {
@@ -176,7 +170,6 @@ public class SafeStrategyPO {
      * This method returns the value of the database column safe_strategy.auth_code
      *
      * @return the value of safe_strategy.auth_code
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getAuthCode() {
@@ -188,7 +181,6 @@ public class SafeStrategyPO {
      * This method sets the value of the database column safe_strategy.auth_code
      *
      * @param authCode the value for safe_strategy.auth_code
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setAuthCode(String authCode) {
@@ -200,7 +192,6 @@ public class SafeStrategyPO {
      * This method returns the value of the database column safe_strategy.auth_value
      *
      * @return the value of safe_strategy.auth_value
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getAuthValue() {
@@ -212,7 +203,6 @@ public class SafeStrategyPO {
      * This method sets the value of the database column safe_strategy.auth_value
      *
      * @param authValue the value for safe_strategy.auth_value
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setAuthValue(String authValue) {
@@ -224,7 +214,6 @@ public class SafeStrategyPO {
      * This method returns the value of the database column safe_strategy.block_at
      *
      * @return the value of safe_strategy.block_at
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getBlockAt() {
@@ -236,7 +225,6 @@ public class SafeStrategyPO {
      * This method sets the value of the database column safe_strategy.block_at
      *
      * @param blockAt the value for safe_strategy.block_at
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setBlockAt(Date blockAt) {
@@ -248,7 +236,6 @@ public class SafeStrategyPO {
      * This method returns the value of the database column safe_strategy.expired_at
      *
      * @return the value of safe_strategy.expired_at
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getExpiredAt() {
@@ -260,7 +247,6 @@ public class SafeStrategyPO {
      * This method sets the value of the database column safe_strategy.expired_at
      *
      * @param expiredAt the value for safe_strategy.expired_at
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setExpiredAt(Date expiredAt) {
@@ -272,7 +258,6 @@ public class SafeStrategyPO {
      * This method returns the value of the database column safe_strategy.is_deleted
      *
      * @return the value of safe_strategy.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getIsDeleted() {
@@ -284,7 +269,6 @@ public class SafeStrategyPO {
      * This method sets the value of the database column safe_strategy.is_deleted
      *
      * @param isDeleted the value for safe_strategy.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setIsDeleted(String isDeleted) {
@@ -296,7 +280,6 @@ public class SafeStrategyPO {
      * This method returns the value of the database column safe_strategy.creator
      *
      * @return the value of safe_strategy.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getCreator() {
@@ -308,7 +291,6 @@ public class SafeStrategyPO {
      * This method sets the value of the database column safe_strategy.creator
      *
      * @param creator the value for safe_strategy.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setCreator(String creator) {
@@ -320,7 +302,6 @@ public class SafeStrategyPO {
      * This method returns the value of the database column safe_strategy.modifier
      *
      * @return the value of safe_strategy.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getModifier() {
@@ -332,7 +313,6 @@ public class SafeStrategyPO {
      * This method sets the value of the database column safe_strategy.modifier
      *
      * @param modifier the value for safe_strategy.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setModifier(String modifier) {
@@ -344,7 +324,6 @@ public class SafeStrategyPO {
      * This method returns the value of the database column safe_strategy.gmt_create
      *
      * @return the value of safe_strategy.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtCreate() {
@@ -356,7 +335,6 @@ public class SafeStrategyPO {
      * This method sets the value of the database column safe_strategy.gmt_create
      *
      * @param gmtCreate the value for safe_strategy.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtCreate(Date gmtCreate) {
@@ -368,7 +346,6 @@ public class SafeStrategyPO {
      * This method returns the value of the database column safe_strategy.gmt_modified
      *
      * @return the value of safe_strategy.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtModified() {
@@ -380,7 +357,6 @@ public class SafeStrategyPO {
      * This method sets the value of the database column safe_strategy.gmt_modified
      *
      * @param gmtModified the value for safe_strategy.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtModified(Date gmtModified) {

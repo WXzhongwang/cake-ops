@@ -1,8 +1,6 @@
 package com.rany.ops.facade.account;
 
-import com.cake.framework.common.response.ListResult;
-import com.cake.framework.common.response.PageResult;
-import com.cake.framework.common.response.PojoResult;
+import com.cake.framework.common.response.Page;
 import com.rany.ops.BaseTests;
 import com.rany.ops.api.command.account.*;
 import com.rany.ops.api.facade.account.AccountFacade;
@@ -19,6 +17,7 @@ import org.junit.Test;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * TODO
@@ -47,8 +46,8 @@ public class AccountFacadeTest extends BaseTests {
         createAccountCommand.setIsAdmin(true);
         createAccountCommand.setLoginName("test");
         createAccountCommand.setLoginPwd("123456");
-        PojoResult<Long> account = accountFacade.createAccount(createAccountCommand);
-        Assert.assertTrue(account.getSuccess());
+        Long account = accountFacade.createAccount(createAccountCommand);
+        Assert.assertTrue(account > 0);
     }
 
     @Test
@@ -56,8 +55,8 @@ public class AccountFacadeTest extends BaseTests {
         AccountBasicQuery accountBasicQuery = new AccountBasicQuery();
         accountBasicQuery.setAccountId(ACCOUNT_ID);
         accountBasicQuery.setTenantId(TENANT_ID);
-        PojoResult<AccountDTO> account = accountFacade.getAccount(accountBasicQuery);
-        Assert.assertTrue(account.getSuccess());
+        AccountDTO account = accountFacade.getAccount(accountBasicQuery);
+        Assert.assertNotNull(account);
     }
 
     @Test
@@ -65,8 +64,8 @@ public class AccountFacadeTest extends BaseTests {
         DisableAccountCommand disableAccountCommand = new DisableAccountCommand();
         disableAccountCommand.setAccountId(ACCOUNT_ID);
         disableAccountCommand.setTenantId(TENANT_ID);
-        PojoResult<Boolean> account = accountFacade.disableAccount(disableAccountCommand);
-        Assert.assertTrue(account.getContent());
+        Boolean account = accountFacade.disableAccount(disableAccountCommand);
+        Assert.assertTrue(account);
     }
 
     @Test
@@ -74,8 +73,8 @@ public class AccountFacadeTest extends BaseTests {
         EnableAccountCommand enableAccountCommand = new EnableAccountCommand();
         enableAccountCommand.setAccountId(ACCOUNT_ID);
         enableAccountCommand.setTenantId(TENANT_ID);
-        PojoResult<Boolean> account = accountFacade.enableAccount(enableAccountCommand);
-        Assert.assertTrue(account.getContent());
+        Boolean account = accountFacade.enableAccount(enableAccountCommand);
+        Assert.assertTrue(account);
     }
 
     @Test
@@ -83,8 +82,8 @@ public class AccountFacadeTest extends BaseTests {
         DeleteAccountCommand deleteAccountCommand = new DeleteAccountCommand();
         deleteAccountCommand.setAccountId(ACCOUNT_ID);
         deleteAccountCommand.setTenantId(TENANT_ID);
-        PojoResult<Boolean> account = accountFacade.deleteAccount(deleteAccountCommand);
-        Assert.assertTrue(account.getContent());
+        Boolean success = accountFacade.deleteAccount(deleteAccountCommand);
+        Assert.assertTrue(success);
     }
 
     @Test
@@ -94,8 +93,8 @@ public class AccountFacadeTest extends BaseTests {
         modifyAccountCommand.setAccountId(ACCOUNT_ID);
         modifyAccountCommand.setQq("108719251");
         modifyAccountCommand.setWechat("WxZhongWang");
-        PojoResult<Boolean> account = accountFacade.modifyAccount(modifyAccountCommand);
-        Assert.assertTrue(account.getContent());
+        Boolean success = accountFacade.modifyAccount(modifyAccountCommand);
+        Assert.assertTrue(success);
     }
 
     @Test
@@ -108,8 +107,8 @@ public class AccountFacadeTest extends BaseTests {
         createSafeStrategyCommand.setStrategy(LoginSafeStrategyEnum.LDAP);
         createSafeStrategyCommand.setBlockAt(DateUtils.parseDate("2023-01-15 00:00:00", "yyyy-MM-dd HH:mm:ss"));
         createSafeStrategyCommand.setExpiredAt(DateUtils.parseDate("2023-01-10 00:00:00", "yyyy-MM-dd HH:mm:ss"));
-        PojoResult<Boolean> account = accountFacade.createSafeStrategy(createSafeStrategyCommand);
-        Assert.assertTrue(account.getContent());
+        Boolean success = accountFacade.createSafeStrategy(createSafeStrategyCommand);
+        Assert.assertTrue(success);
     }
 
     @Test
@@ -122,8 +121,8 @@ public class AccountFacadeTest extends BaseTests {
         updateSafeStrategyCommand.setStrategy(LoginSafeStrategyEnum.LDAP);
         updateSafeStrategyCommand.setBlockAt(DateUtils.parseDate("2023-01-15 00:00:00", "yyyy-MM-dd HH:mm:ss"));
         updateSafeStrategyCommand.setExpiredAt(DateUtils.parseDate("2023-01-10 00:00:00", "yyyy-MM-dd HH:mm:ss"));
-        PojoResult<Boolean> account = accountFacade.updateSafeStrategy(updateSafeStrategyCommand);
-        Assert.assertTrue(account.getContent());
+        Boolean success = accountFacade.updateSafeStrategy(updateSafeStrategyCommand);
+        Assert.assertTrue(success);
     }
 
 
@@ -133,15 +132,15 @@ public class AccountFacadeTest extends BaseTests {
         accountQuery.setTenantId(TENANT_ID);
         accountQuery.setContainsAdmin(false);
         accountQuery.setAccountIds(Lists.newArrayList(771342305708879872L));
-        ListResult<AccountDTO> accounts = accountFacade.findAccounts(accountQuery);
-        Assert.assertTrue(accounts.getSuccess());
+        List<AccountDTO> accounts = accountFacade.findAccounts(accountQuery);
+        Assert.assertFalse(accounts.isEmpty());
     }
 
     @Test
     public void pageTenants() {
         AccountPageQuery accountPageQuery = new AccountPageQuery();
         accountPageQuery.setTenantId(TENANT_ID);
-        PageResult<AccountDTO> accounts = accountFacade.pageAccounts(accountPageQuery);
-        Assert.assertTrue(accounts.getSuccess());
+        Page<AccountDTO> accounts = accountFacade.pageAccounts(accountPageQuery);
+        Assert.assertFalse(accounts.getItems().isEmpty());
     }
 }

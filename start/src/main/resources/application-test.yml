@@ -14,3 +14,22 @@ spring:
   datasource:
     druid:
       url: jdbc:mysql://mysql.default.svc.cluster.local:3306/cake_acl?allowPublicKeyRetrieval=true&serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+
+
+easy:
+  sso:
+    client:
+      enable: true
+      client-type: web
+      sso-server: http://test.sso.rany.com/
+      login-url: http://test.sso.rany.com/sso/loginPage
+      sso-callback-url: http://test.sso.rany.com/sso/code
+      logout-url: /sso/logout
+      ignore-urls: /ok,/sso/loginPage,/sso/login,/oauth/login
+      ignore-resources: .js, .css, .jpg, .png, .ico, .html
+      ajax-failure-response:
+        content-type: application/json
+        code: 401
+        msg: 用户未登录
+    redis:
+      address: redis://redis.default.svc.cluster.local:6379

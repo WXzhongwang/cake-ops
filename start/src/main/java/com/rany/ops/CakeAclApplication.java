@@ -1,6 +1,7 @@
 package com.rany.ops;
 
 import com.cake.framework.mybatis.ParamLimitInterceptor;
+import com.rany.cake.dingtalk.starter.EnableCakeSso;
 import org.apache.dubbo.config.spring.context.annotation.EnableDubboConfig;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @date 2021/11/3 10:40 下午
  * @email 18668485565@163.com
  */
+@EnableCakeSso
 @EnableDubboConfig
 @EnableTransactionManagement
 @SpringBootApplication(exclude = {ParamLimitInterceptor.class})

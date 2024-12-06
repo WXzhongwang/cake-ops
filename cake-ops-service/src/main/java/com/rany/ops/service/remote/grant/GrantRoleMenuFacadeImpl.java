@@ -1,7 +1,5 @@
 package com.rany.ops.service.remote.grant;
 
-import com.alibaba.dubbo.config.annotation.Service;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.command.grant.DisGrantRoleMenusCommand;
 import com.rany.ops.api.command.grant.GrantRoleMenusCommand;
 import com.rany.ops.api.facade.grant.GrantRoleMenuFacade;
@@ -13,19 +11,23 @@ import com.rany.ops.domain.service.RoleMenuDomainService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.dubbo.config.annotation.Service;
 
 import java.util.List;
 
+/**
+ * @author zhongshengwang
+ */
 @Slf4j
-@Service
 @AllArgsConstructor
-public class GrantRoleMenuRemoteServiceProvider implements GrantRoleMenuFacade {
+@Service
+public class GrantRoleMenuFacadeImpl implements GrantRoleMenuFacade {
     private final SnowflakeIdWorker snowflakeIdWorker;
     private final RoleMenuDomainService roleMenuDomainService;
     private final RoleDomainService roleDomainService;
 
     @Override
-    public PojoResult<Boolean> grantRoleMenus(GrantRoleMenusCommand grantRoleMenusCommand) {
+    public Boolean grantRoleMenus(GrantRoleMenusCommand grantRoleMenusCommand) {
         RoleMenuSearchParam roleMenuSearchParam = new RoleMenuSearchParam();
         roleMenuSearchParam.setAppCode(grantRoleMenusCommand.getAppCode());
         roleMenuSearchParam.setRoleId(grantRoleMenusCommand.getRoleId());
@@ -41,16 +43,17 @@ public class GrantRoleMenuRemoteServiceProvider implements GrantRoleMenuFacade {
                 roleMenuDomainService.update(currentMenu);
             }
         }
-        for (Long menuId : grantRoleMenusCommand.getMenuIds()) {
+        List<Long> menuIds = grantRoleMenusCommand.getMenuIds();
+        for (Long menuId : menuIds) {
             RoleMenu roleMenu = new RoleMenu(grantRoleMenusCommand.getAppCode(),
                     grantRoleMenusCommand.getTenantId(), grantRoleMenusCommand.getRoleId(), menuId);
             roleMenuDomainService.save(roleMenu);
         }
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public PojoResult<Boolean> disGrantRoleMenus(DisGrantRoleMenusCommand disGrantRoleMenusCommand) {
+    public Boolean disGrantRoleMenus(DisGrantRoleMenusCommand disGrantRoleMenusCommand) {
         RoleMenuSearchParam roleMenuSearchParam = new RoleMenuSearchParam();
         roleMenuSearchParam.setAppCode(disGrantRoleMenusCommand.getAppCode());
         roleMenuSearchParam.setRoleId(disGrantRoleMenusCommand.getRoleId());
@@ -66,6 +69,6 @@ public class GrantRoleMenuRemoteServiceProvider implements GrantRoleMenuFacade {
                 roleMenuDomainService.update(currentMenu);
             }
         }
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 }

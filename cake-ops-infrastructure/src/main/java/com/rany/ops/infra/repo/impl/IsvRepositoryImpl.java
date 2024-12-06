@@ -1,9 +1,12 @@
 package com.rany.ops.infra.repo.impl;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.BooleanUtil;
+import com.cake.framework.common.response.Page;
+import com.github.pagehelper.PageInfo;
 import com.rany.ops.common.enums.DeleteStatusEnum;
+import com.rany.ops.common.params.IsvSearchParam;
 import com.rany.ops.domain.aggregate.Isv;
+import com.rany.ops.domain.page.annotation.PagingQuery;
 import com.rany.ops.domain.pk.IsvId;
 import com.rany.ops.domain.repository.IsvRepository;
 import com.rany.ops.infra.convertor.IsvDataConvertor;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * TODO
@@ -58,7 +62,22 @@ public class IsvRepositoryImpl implements IsvRepository {
     @Override
     public Boolean updateIsv(Isv isv) {
         IsvPO isvPO = isvDataConvertor.sourceToTarget(isv);
-        int update = isvPOMapper.updateByPrimaryKey(isvPO);
-        return BooleanUtil.isTrue(update > 0);
+        isvPOMapper.updateByPrimaryKey(isvPO);
+        return Boolean.TRUE;
     }
+
+    @PagingQuery
+    public Page<Isv> page(IsvSearchParam isvPageQuery) {
+        List<IsvPO> list = isvDao.page(isvPageQuery);
+        PageInfo<IsvPO> pageInfo = new PageInfo<>(list);
+        List<Isv> isvList = isvDataConvertor.targetToSource(list);
+        Page<Isv> pageDTO = new Page<>();
+        pageDTO.setPageNo(pageInfo.getPageNum());
+        pageDTO.setPageSize(pageInfo.getPageSize());
+        pageDTO.setTotalPage(pageInfo.getPages());
+        pageDTO.setTotal(Long.valueOf(pageInfo.getTotal()).intValue());
+        pageDTO.setItems(isvList);
+        return pageDTO;
+    }
+
 }

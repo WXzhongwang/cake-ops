@@ -1,7 +1,5 @@
 package com.rany.ops.facade;
 
-import com.cake.framework.common.response.ListResult;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.BaseTests;
 import com.rany.ops.api.command.role.CreateRoleCommand;
 import com.rany.ops.api.facade.role.RoleFacade;
@@ -13,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * TODO
@@ -36,8 +35,8 @@ public class RoleFacadeTest extends BaseTests {
         createRoleCommand.setRoleName("应用超级管理员");
         createRoleCommand.setRoleDesc("应用超级管理员");
         createRoleCommand.setRoleKey("SUPER_ADMINISTRATOR");
-        PojoResult<Long> app = roleFacade.createRole(createRoleCommand);
-        Assert.assertTrue(app.getSuccess());
+        Long roleId = roleFacade.createRole(createRoleCommand);
+        Assert.assertNotNull(roleId);
     }
 
     @Test
@@ -45,15 +44,15 @@ public class RoleFacadeTest extends BaseTests {
         RoleBasicQuery roleBasicQuery = new RoleBasicQuery();
         roleBasicQuery.setAppCode(APP_CODE);
         roleBasicQuery.setRoleId(872090360875200512L);
-        PojoResult<RoleDTO> app = roleFacade.getRole(roleBasicQuery);
-        Assert.assertTrue(app.getSuccess());
+        RoleDTO role = roleFacade.getRole(roleBasicQuery);
+        Assert.assertNotNull(role);
     }
 
     @Test
     public void getMenuTree() {
         RoleTreeQuery roleTreeQuery = new RoleTreeQuery();
         roleTreeQuery.setAppCode(APP_CODE);
-        ListResult<RoleTreeDTO> app = roleFacade.getRoleTree(roleTreeQuery);
-        Assert.assertTrue(app.getSuccess());
+        List<RoleTreeDTO> roleTree = roleFacade.getRoleTree(roleTreeQuery);
+        Assert.assertFalse(roleTree.isEmpty());
     }
 }

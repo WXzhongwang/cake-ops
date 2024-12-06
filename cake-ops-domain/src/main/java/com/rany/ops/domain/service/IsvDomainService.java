@@ -1,5 +1,7 @@
 package com.rany.ops.domain.service;
 
+import com.cake.framework.common.response.Page;
+import com.rany.ops.common.params.IsvSearchParam;
 import com.rany.ops.domain.aggregate.Isv;
 import com.rany.ops.domain.pk.IsvId;
 import com.rany.ops.domain.repository.IsvRepository;
@@ -35,6 +37,10 @@ public class IsvDomainService {
 
     public Isv findById(IsvId isvId) {
         return isvRepository.find(isvId);
+    }
+
+    public Page<Isv> page(IsvSearchParam isvPageQuery) {
+        return isvRepository.page(isvPageQuery);
     }
 
 

@@ -1,7 +1,6 @@
 package com.rany.ops.facade.isv;
 
 import cn.hutool.core.lang.Assert;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.BaseTests;
 import com.rany.ops.api.command.isv.CreateIsvCommand;
 import com.rany.ops.api.command.isv.DeleteIsvCommand;
@@ -36,31 +35,31 @@ public class IsvFacadeTest extends BaseTests {
         createIsvCommand.setCountry("中国");
         createIsvCommand.setRegisterIp("127.0.0.1");
         createIsvCommand.setPhone("18668485565");
-        PojoResult<Boolean> isv = isvFacade.createIsv(createIsvCommand);
-        Assert.isTrue(isv.getSuccess());
+        Long isv = isvFacade.createIsv(createIsvCommand);
+        Assert.notNull(isv);
     }
 
     @Test
     public void deleteIsv() {
         DeleteIsvCommand deleteIsvCommand = new DeleteIsvCommand();
         deleteIsvCommand.setId(768060752375459840L);
-        PojoResult<Boolean> isv = isvFacade.deleteIsv(deleteIsvCommand);
-        Assert.isTrue(isv.getSuccess());
+        Boolean isv = isvFacade.deleteIsv(deleteIsvCommand);
+        Assert.isTrue(isv);
     }
 
     @Test
     public void disableIsv() {
         DisableIsvCommand disableIsvCommand = new DisableIsvCommand();
         disableIsvCommand.setId(768060752375459840L);
-        PojoResult<Boolean> isv = isvFacade.disableIsv(disableIsvCommand);
-        Assert.isTrue(isv.getSuccess());
+        Boolean isv = isvFacade.disableIsv(disableIsvCommand);
+        Assert.isTrue(isv);
     }
 
     @Test
     public void basicQueryIsv() {
         IsvBasicQuery isvBaseQuery = new IsvBasicQuery();
         isvBaseQuery.setIsvId(768060752375459840L);
-        PojoResult<IsvDTO> isv = isvFacade.findIsv(isvBaseQuery);
-        Assert.isTrue(isv.getSuccess());
+        IsvDTO isv = isvFacade.findIsv(isvBaseQuery);
+        Assert.notNull(isv);
     }
 }

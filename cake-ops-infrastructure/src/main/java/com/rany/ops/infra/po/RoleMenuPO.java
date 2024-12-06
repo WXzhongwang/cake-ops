@@ -88,7 +88,6 @@ public class RoleMenuPO {
      * This method returns the value of the database column role_menu.id
      *
      * @return the value of role_menu.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getId() {
@@ -100,7 +99,6 @@ public class RoleMenuPO {
      * This method sets the value of the database column role_menu.id
      *
      * @param id the value for role_menu.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setId(Long id) {
@@ -112,7 +110,6 @@ public class RoleMenuPO {
      * This method returns the value of the database column role_menu.app_code
      *
      * @return the value of role_menu.app_code
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getAppCode() {
@@ -124,7 +121,6 @@ public class RoleMenuPO {
      * This method sets the value of the database column role_menu.app_code
      *
      * @param appCode the value for role_menu.app_code
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setAppCode(String appCode) {
@@ -136,7 +132,6 @@ public class RoleMenuPO {
      * This method returns the value of the database column role_menu.tenant_id
      *
      * @return the value of role_menu.tenant_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getTenantId() {
@@ -148,7 +143,6 @@ public class RoleMenuPO {
      * This method sets the value of the database column role_menu.tenant_id
      *
      * @param tenantId the value for role_menu.tenant_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setTenantId(Long tenantId) {
@@ -160,7 +154,6 @@ public class RoleMenuPO {
      * This method returns the value of the database column role_menu.role_id
      *
      * @return the value of role_menu.role_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getRoleId() {
@@ -172,7 +165,6 @@ public class RoleMenuPO {
      * This method sets the value of the database column role_menu.role_id
      *
      * @param roleId the value for role_menu.role_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setRoleId(Long roleId) {
@@ -184,7 +176,6 @@ public class RoleMenuPO {
      * This method returns the value of the database column role_menu.menu_id
      *
      * @return the value of role_menu.menu_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getMenuId() {
@@ -196,7 +187,6 @@ public class RoleMenuPO {
      * This method sets the value of the database column role_menu.menu_id
      *
      * @param menuId the value for role_menu.menu_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setMenuId(Long menuId) {
@@ -208,7 +198,6 @@ public class RoleMenuPO {
      * This method returns the value of the database column role_menu.is_deleted
      *
      * @return the value of role_menu.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getIsDeleted() {
@@ -220,7 +209,6 @@ public class RoleMenuPO {
      * This method sets the value of the database column role_menu.is_deleted
      *
      * @param isDeleted the value for role_menu.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setIsDeleted(String isDeleted) {
@@ -232,7 +220,6 @@ public class RoleMenuPO {
      * This method returns the value of the database column role_menu.creator
      *
      * @return the value of role_menu.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getCreator() {
@@ -244,7 +231,6 @@ public class RoleMenuPO {
      * This method sets the value of the database column role_menu.creator
      *
      * @param creator the value for role_menu.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setCreator(String creator) {
@@ -256,7 +242,6 @@ public class RoleMenuPO {
      * This method returns the value of the database column role_menu.modifier
      *
      * @return the value of role_menu.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getModifier() {
@@ -268,7 +253,6 @@ public class RoleMenuPO {
      * This method sets the value of the database column role_menu.modifier
      *
      * @param modifier the value for role_menu.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setModifier(String modifier) {
@@ -280,7 +264,6 @@ public class RoleMenuPO {
      * This method returns the value of the database column role_menu.gmt_create
      *
      * @return the value of role_menu.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtCreate() {
@@ -292,7 +275,6 @@ public class RoleMenuPO {
      * This method sets the value of the database column role_menu.gmt_create
      *
      * @param gmtCreate the value for role_menu.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtCreate(Date gmtCreate) {
@@ -304,7 +286,6 @@ public class RoleMenuPO {
      * This method returns the value of the database column role_menu.gmt_modified
      *
      * @return the value of role_menu.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtModified() {
@@ -316,7 +297,6 @@ public class RoleMenuPO {
      * This method sets the value of the database column role_menu.gmt_modified
      *
      * @param gmtModified the value for role_menu.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtModified(Date gmtModified) {

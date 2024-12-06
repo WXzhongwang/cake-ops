@@ -128,7 +128,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.id
      *
      * @return the value of isv.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getId() {
@@ -140,7 +139,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.id
      *
      * @param id the value for isv.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setId(Long id) {
@@ -152,7 +150,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.name
      *
      * @return the value of isv.name
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getName() {
@@ -164,7 +161,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.name
      *
      * @param name the value for isv.name
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setName(String name) {
@@ -176,7 +172,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.url
      *
      * @return the value of isv.url
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getUrl() {
@@ -188,7 +183,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.url
      *
      * @param url the value for isv.url
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setUrl(String url) {
@@ -200,7 +194,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.short_name
      *
      * @return the value of isv.short_name
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getShortName() {
@@ -212,7 +205,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.short_name
      *
      * @param shortName the value for isv.short_name
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setShortName(String shortName) {
@@ -224,7 +216,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.country
      *
      * @return the value of isv.country
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getCountry() {
@@ -236,7 +227,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.country
      *
      * @param country the value for isv.country
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setCountry(String country) {
@@ -248,7 +238,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.status
      *
      * @return the value of isv.status
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getStatus() {
@@ -260,7 +249,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.status
      *
      * @param status the value for isv.status
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setStatus(String status) {
@@ -272,7 +260,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.is_deleted
      *
      * @return the value of isv.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getIsDeleted() {
@@ -284,7 +271,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.is_deleted
      *
      * @param isDeleted the value for isv.is_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setIsDeleted(String isDeleted) {
@@ -296,7 +282,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.register_ip
      *
      * @return the value of isv.register_ip
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getRegisterIp() {
@@ -308,7 +293,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.register_ip
      *
      * @param registerIp the value for isv.register_ip
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setRegisterIp(String registerIp) {
@@ -320,7 +304,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.phone
      *
      * @return the value of isv.phone
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getPhone() {
@@ -332,7 +315,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.phone
      *
      * @param phone the value for isv.phone
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setPhone(String phone) {
@@ -344,7 +326,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.email
      *
      * @return the value of isv.email
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getEmail() {
@@ -356,7 +337,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.email
      *
      * @param email the value for isv.email
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setEmail(String email) {
@@ -368,7 +348,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.creator
      *
      * @return the value of isv.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getCreator() {
@@ -380,7 +359,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.creator
      *
      * @param creator the value for isv.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setCreator(String creator) {
@@ -392,7 +370,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.modifier
      *
      * @return the value of isv.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getModifier() {
@@ -404,7 +381,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.modifier
      *
      * @param modifier the value for isv.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setModifier(String modifier) {
@@ -416,7 +392,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.gmt_create
      *
      * @return the value of isv.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtCreate() {
@@ -428,7 +403,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.gmt_create
      *
      * @param gmtCreate the value for isv.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtCreate(Date gmtCreate) {
@@ -440,7 +414,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.gmt_modified
      *
      * @return the value of isv.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtModified() {
@@ -452,7 +425,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.gmt_modified
      *
      * @param gmtModified the value for isv.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtModified(Date gmtModified) {
@@ -464,7 +436,6 @@ public class IsvPO {
      * This method returns the value of the database column isv.max_tenants
      *
      * @return the value of isv.max_tenants
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Integer getMaxTenants() {
@@ -476,7 +447,6 @@ public class IsvPO {
      * This method sets the value of the database column isv.max_tenants
      *
      * @param maxTenants the value for isv.max_tenants
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setMaxTenants(Integer maxTenants) {

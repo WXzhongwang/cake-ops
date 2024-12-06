@@ -1,8 +1,6 @@
 package com.rany.ops.service.remote.menu;
 
 import com.cake.framework.common.exception.BusinessException;
-import com.cake.framework.common.response.ListResult;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.command.menu.*;
 import com.rany.ops.api.facade.menu.MenuFacade;
 import com.rany.ops.api.query.menu.MenuBasicQuery;
@@ -32,10 +30,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * TODO
+ * 菜单接口
  *
  * @author zhongshengwang
- * @description TODO
+ * @description 菜单接口
  * @date 2022/12/30 23:25
  * @email 18668485565163.com
  */
@@ -43,7 +41,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class MenuRemoteServiceProvider implements MenuFacade {
+public class MenuFacadeImpl implements MenuFacade {
 
     private final ApplicationDomainService applicationDomainService;
     private final MenuDomainService menuDomainService;
@@ -51,7 +49,7 @@ public class MenuRemoteServiceProvider implements MenuFacade {
     private final SnowflakeIdWorker snowflakeIdWorker;
 
     @Override
-    public PojoResult<Long> createMenu(CreateMenuCommand createMenuCommand) {
+    public Long createMenu(CreateMenuCommand createMenuCommand) {
         Menu menu = new Menu(new MenuId(snowflakeIdWorker.nextId()),
                 createMenuCommand.getName(),
                 createMenuCommand.getAppCode(),
@@ -83,11 +81,11 @@ public class MenuRemoteServiceProvider implements MenuFacade {
 
         menu.save(createMenuCommand.getUser());
         menuDomainService.save(menu);
-        return PojoResult.succeed(menu.getId().getId());
+        return menu.getId().getId();
     }
 
     @Override
-    public PojoResult<MenuDTO> getMenu(MenuBasicQuery menuBasicQuery) {
+    public MenuDTO getMenu(MenuBasicQuery menuBasicQuery) {
         Menu menu = menuDomainService.findById(new MenuId(menuBasicQuery.getMenuId()));
         if (Objects.isNull(menu)) {
             throw new BusinessException(BusinessErrorMessage.MENU_NOT_FOUND);
@@ -98,12 +96,11 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         if (StringUtils.equals(menu.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
             throw new BusinessException(BusinessErrorMessage.MENU_DISABLED);
         }
-        MenuDTO menuDTO = menuDataConvertor.sourceToDTO(menu);
-        return PojoResult.succeed(menuDTO);
+        return menuDataConvertor.sourceToDTO(menu);
     }
 
     @Override
-    public ListResult<MenuTreeDTO> getMenuTree(MenuTreeQuery menuTreeQuery) {
+    public List<MenuTreeDTO> getMenuTree(MenuTreeQuery menuTreeQuery) {
         Application application = applicationDomainService.findByAppCode(menuTreeQuery.getAppCode());
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
@@ -111,27 +108,27 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         MenuSearchParam searchParam = new MenuSearchParam();
         searchParam.setAppCode(menuTreeQuery.getAppCode());
         searchParam.setTenantId(menuTreeQuery.getTenantId());
-        List<MenuDTO> menuDTOS = menuDomainService.selectMenuList(searchParam);
-        List<MenuDTO> top = menuDTOS.stream().filter(p -> Objects.equals(p.getLevel(), 1)).collect(Collectors.toList());
+        List<MenuDTO> menuDTOList = menuDomainService.selectMenuList(searchParam);
+        List<MenuDTO> top = menuDTOList.stream().filter(p -> Objects.equals(p.getLevel(), 1)).collect(Collectors.toList());
         List<MenuTreeDTO> treeDTO = menuDataConvertor.convertToTreeDTO(top);
         for (MenuTreeDTO menuDTO : treeDTO) {
-            recursive(menuDTO, menuDTOS);
+            recursive(menuDTO, menuDTOList);
         }
-        return ListResult.succeed(treeDTO);
+        return treeDTO;
     }
 
-    public void recursive(MenuTreeDTO treeDTO, List<MenuDTO> menuDTOS) {
-        List<MenuDTO> children = menuDTOS.stream().filter(p -> Objects.equals(treeDTO.getMenuId(), p.getParentId())).collect(Collectors.toList());
+    public void recursive(MenuTreeDTO treeDTO, List<MenuDTO> menuDTOList) {
+        List<MenuDTO> children = menuDTOList.stream().filter(p -> Objects.equals(treeDTO.getMenuId(), p.getParentId())).collect(Collectors.toList());
         List<MenuTreeDTO> childrenTreeItems = menuDataConvertor.convertToTreeDTO(children);
         treeDTO.setChildren(childrenTreeItems);
         for (MenuTreeDTO childrenItem : childrenTreeItems) {
-            recursive(childrenItem, menuDTOS);
+            recursive(childrenItem, menuDTOList);
         }
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PojoResult<Boolean> disableMenu(DisableMenuCommand disableMenuCommand) {
+    public Boolean disableMenu(DisableMenuCommand disableMenuCommand) {
         Menu menu = menuDomainService.findById(new MenuId(disableMenuCommand.getMenuId()));
         if (Objects.isNull(menu)) {
             throw new BusinessException(BusinessErrorMessage.MENU_NOT_FOUND);
@@ -148,11 +145,11 @@ public class MenuRemoteServiceProvider implements MenuFacade {
                 menuDomainService.update(menu);
             }
         }
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public PojoResult<Boolean> enableMenu(EnableMenuCommand enableMenuCommand) {
+    public Boolean enableMenu(EnableMenuCommand enableMenuCommand) {
         Menu menu = menuDomainService.findById(new MenuId(enableMenuCommand.getMenuId()));
         if (Objects.isNull(menu)) {
             throw new BusinessException(BusinessErrorMessage.MENU_NOT_FOUND);
@@ -162,11 +159,11 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         }
         menu.enable(enableMenuCommand.getUser());
         menuDomainService.update(menu);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public PojoResult<Boolean> deleteMenu(DeleteMenuCommand deleteMenuCommand) {
+    public Boolean deleteMenu(DeleteMenuCommand deleteMenuCommand) {
         Menu menu = menuDomainService.findById(new MenuId(deleteMenuCommand.getMenuId()));
         if (Objects.isNull(menu)) {
             throw new BusinessException(BusinessErrorMessage.MENU_NOT_FOUND);
@@ -177,11 +174,11 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         }
         menu.delete(deleteMenuCommand.getUser());
         menuDomainService.update(menu);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 
     @Override
-    public PojoResult<Boolean> modifyMenu(ModifyMenuCommand modifyMenuCommand) {
+    public Boolean modifyMenu(ModifyMenuCommand modifyMenuCommand) {
         Menu menu = menuDomainService.findById(new MenuId(modifyMenuCommand.getMenuId()));
         if (Objects.isNull(menu)) {
             throw new BusinessException(BusinessErrorMessage.MENU_NOT_FOUND);
@@ -209,6 +206,6 @@ public class MenuRemoteServiceProvider implements MenuFacade {
         }
         menu.modify(modifyMenuCommand.getUser());
         menuDomainService.update(menu);
-        return PojoResult.succeed(Boolean.TRUE);
+        return Boolean.TRUE;
     }
 }

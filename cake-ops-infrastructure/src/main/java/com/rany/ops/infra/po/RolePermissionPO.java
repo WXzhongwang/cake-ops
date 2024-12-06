@@ -88,7 +88,6 @@ public class RolePermissionPO {
      * This method returns the value of the database column role_permission.id
      *
      * @return the value of role_permission.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getId() {
@@ -100,7 +99,6 @@ public class RolePermissionPO {
      * This method sets the value of the database column role_permission.id
      *
      * @param id the value for role_permission.id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setId(Long id) {
@@ -112,7 +110,6 @@ public class RolePermissionPO {
      * This method returns the value of the database column role_permission.app_code
      *
      * @return the value of role_permission.app_code
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getAppCode() {
@@ -124,7 +121,6 @@ public class RolePermissionPO {
      * This method sets the value of the database column role_permission.app_code
      *
      * @param appCode the value for role_permission.app_code
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setAppCode(String appCode) {
@@ -136,7 +132,6 @@ public class RolePermissionPO {
      * This method returns the value of the database column role_permission.tenant_id
      *
      * @return the value of role_permission.tenant_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getTenantId() {
@@ -148,7 +143,6 @@ public class RolePermissionPO {
      * This method sets the value of the database column role_permission.tenant_id
      *
      * @param tenantId the value for role_permission.tenant_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setTenantId(Long tenantId) {
@@ -160,7 +154,6 @@ public class RolePermissionPO {
      * This method returns the value of the database column role_permission.role_id
      *
      * @return the value of role_permission.role_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getRoleId() {
@@ -172,7 +165,6 @@ public class RolePermissionPO {
      * This method sets the value of the database column role_permission.role_id
      *
      * @param roleId the value for role_permission.role_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setRoleId(Long roleId) {
@@ -184,7 +176,6 @@ public class RolePermissionPO {
      * This method returns the value of the database column role_permission.permission_id
      *
      * @return the value of role_permission.permission_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Long getPermissionId() {
@@ -196,7 +187,6 @@ public class RolePermissionPO {
      * This method sets the value of the database column role_permission.permission_id
      *
      * @param permissionId the value for role_permission.permission_id
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setPermissionId(Long permissionId) {
@@ -208,7 +198,6 @@ public class RolePermissionPO {
      * This method returns the value of the database column role_permission.creator
      *
      * @return the value of role_permission.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getCreator() {
@@ -220,7 +209,6 @@ public class RolePermissionPO {
      * This method sets the value of the database column role_permission.creator
      *
      * @param creator the value for role_permission.creator
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setCreator(String creator) {
@@ -232,7 +220,6 @@ public class RolePermissionPO {
      * This method returns the value of the database column role_permission.modifier
      *
      * @return the value of role_permission.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getModifier() {
@@ -244,7 +231,6 @@ public class RolePermissionPO {
      * This method sets the value of the database column role_permission.modifier
      *
      * @param modifier the value for role_permission.modifier
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setModifier(String modifier) {
@@ -256,7 +242,6 @@ public class RolePermissionPO {
      * This method returns the value of the database column role_permission.gmt_create
      *
      * @return the value of role_permission.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtCreate() {
@@ -268,7 +253,6 @@ public class RolePermissionPO {
      * This method sets the value of the database column role_permission.gmt_create
      *
      * @param gmtCreate the value for role_permission.gmt_create
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtCreate(Date gmtCreate) {
@@ -280,7 +264,6 @@ public class RolePermissionPO {
      * This method returns the value of the database column role_permission.gmt_modified
      *
      * @return the value of role_permission.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public Date getGmtModified() {
@@ -292,7 +275,6 @@ public class RolePermissionPO {
      * This method sets the value of the database column role_permission.gmt_modified
      *
      * @param gmtModified the value for role_permission.gmt_modified
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setGmtModified(Date gmtModified) {
@@ -304,7 +286,6 @@ public class RolePermissionPO {
      * This method returns the value of the database column role_permission.id_deleted
      *
      * @return the value of role_permission.id_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public String getIdDeleted() {
@@ -316,7 +297,6 @@ public class RolePermissionPO {
      * This method sets the value of the database column role_permission.id_deleted
      *
      * @param idDeleted the value for role_permission.id_deleted
-     *
      * @mbggenerated Sat Jun 08 15:31:03 CST 2024
      */
     public void setIdDeleted(String idDeleted) {

@@ -1,8 +1,6 @@
 package com.rany.ops.api.facade.account;
 
-import com.cake.framework.common.response.ListResult;
-import com.cake.framework.common.response.PageResult;
-import com.cake.framework.common.response.PojoResult;
+import com.cake.framework.common.response.Page;
 import com.rany.ops.api.command.account.*;
 import com.rany.ops.api.query.account.AccountBasicQuery;
 import com.rany.ops.api.query.account.AccountDingIdQuery;
@@ -10,11 +8,13 @@ import com.rany.ops.api.query.account.AccountPageQuery;
 import com.rany.ops.api.query.account.AccountQuery;
 import com.rany.ops.common.dto.account.AccountDTO;
 
+import java.util.List;
+
 /**
- * TODO
+ * 账号服务
  *
  * @author zhongshengwang
- * @description TODO
+ * @description 账号服务
  * @date 2022/12/27 20:39
  * @email 18668485565163.com
  */
@@ -24,91 +24,91 @@ public interface AccountFacade {
     /**
      * 创建租户账号
      *
-     * @param createAccountCommand
-     * @return
+     * @param command command
+     * @return accountId
      */
-    PojoResult<Long> createAccount(CreateAccountCommand createAccountCommand);
+    Long createAccount(CreateAccountCommand command);
 
     /**
      * 获取账号信息
      *
-     * @param accountBasicQuery
-     * @return
+     * @param accountBasicQuery query
+     * @return account
      */
-    PojoResult<AccountDTO> getAccount(AccountBasicQuery accountBasicQuery);
+    AccountDTO getAccount(AccountBasicQuery accountBasicQuery);
 
 
     /**
      * 获取账号信息
      *
-     * @param accountBasicQuery
-     * @return
+     * @param accountBasicQuery query
+     * @return account
      */
-    PojoResult<AccountDTO> getAccountByDingId(AccountDingIdQuery accountBasicQuery);
+    AccountDTO getAccountByDingId(AccountDingIdQuery accountBasicQuery);
 
     /**
      * 账号禁用
      *
-     * @param disableAccountCommand
-     * @return
+     * @param disableAccountCommand 指令
+     * @return success
      */
-    PojoResult<Boolean> disableAccount(DisableAccountCommand disableAccountCommand);
+    Boolean disableAccount(DisableAccountCommand disableAccountCommand);
 
     /**
      * 启用账号
      *
-     * @param enableAccountCommand
-     * @return
+     * @param enableAccountCommand 指令
+     * @return success
      */
-    PojoResult<Boolean> enableAccount(EnableAccountCommand enableAccountCommand);
+    Boolean enableAccount(EnableAccountCommand enableAccountCommand);
 
     /**
      * 删除账户
      *
-     * @param deleteAccountCommand
-     * @return
+     * @param deleteAccountCommand 指令
+     * @return success
      */
-    PojoResult<Boolean> deleteAccount(DeleteAccountCommand deleteAccountCommand);
+    Boolean deleteAccount(DeleteAccountCommand deleteAccountCommand);
 
     /**
      * 更新账号基本信息
      *
-     * @param modifyAccountCommand
-     * @return
+     * @param modifyAccountCommand 指令
+     * @return success
      */
-    PojoResult<Boolean> modifyAccount(ModifyAccountCommand modifyAccountCommand);
+    Boolean modifyAccount(ModifyAccountCommand modifyAccountCommand);
 
     /**
      * 创建登录策略
      *
-     * @param createSafeStrategyCommand
-     * @return
+     * @param createSafeStrategyCommand 指令
+     * @return success
      */
-    PojoResult<Boolean> createSafeStrategy(CreateSafeStrategyCommand createSafeStrategyCommand);
+    Boolean createSafeStrategy(CreateSafeStrategyCommand createSafeStrategyCommand);
 
     /**
      * 更新登录策略
      *
-     * @param updateSafeStrategyCommand
-     * @return
+     * @param updateSafeStrategyCommand 指令
+     * @return success
      */
-    PojoResult<Boolean> updateSafeStrategy(UpdateSafeStrategyCommand updateSafeStrategyCommand);
+    Boolean updateSafeStrategy(UpdateSafeStrategyCommand updateSafeStrategyCommand);
 
 
     /**
      * 分页查询账号
      *
-     * @param accountQuery
-     * @return
+     * @param accountQuery 查询
+     * @return 账号
      */
-    ListResult<AccountDTO> findAccounts(AccountQuery accountQuery);
+    List<AccountDTO> findAccounts(AccountQuery accountQuery);
 
     /**
      * 查询账号
      *
-     * @param accountPageQuery
-     * @return
+     * @param accountPageQuery 查询
+     * @return 分页
      */
-    PageResult<AccountDTO> pageAccounts(AccountPageQuery accountPageQuery);
+    Page<AccountDTO> pageAccounts(AccountPageQuery accountPageQuery);
 
 }

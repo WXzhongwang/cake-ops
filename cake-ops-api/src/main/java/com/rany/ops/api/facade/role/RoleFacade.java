@@ -1,12 +1,12 @@
 package com.rany.ops.api.facade.role;
 
-import com.cake.framework.common.response.ListResult;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.command.role.*;
 import com.rany.ops.api.query.role.RoleBasicQuery;
 import com.rany.ops.api.query.role.RoleTreeQuery;
 import com.rany.ops.common.dto.role.RoleDTO;
 import com.rany.ops.common.dto.role.RoleTreeDTO;
+
+import java.util.List;
 
 
 /**
@@ -22,56 +22,64 @@ public interface RoleFacade {
     /**
      * 创建角色
      *
-     * @param createRoleCommand
-     * @return
+     * @param createRoleCommand 角色创建参数
+     * @return 角色ID
      */
-    PojoResult<Long> createRole(CreateRoleCommand createRoleCommand);
+    Long createRole(CreateRoleCommand createRoleCommand);
 
     /**
      * 获取角色信息
      *
-     * @param RoleBasicQuery
-     * @return
+     * @param roleBasicQuery 查询参数
+     * @return 角色信息
      */
-    PojoResult<RoleDTO> getRole(RoleBasicQuery RoleBasicQuery);
+    RoleDTO getRole(RoleBasicQuery roleBasicQuery);
 
     /**
      * 获取角色树信息
      *
-     * @param RoleTreeQuery
-     * @return
+     * @param roleTreeQuery 角色树查询
+     * @return 角色树
      */
-    ListResult<RoleTreeDTO> getRoleTree(RoleTreeQuery RoleTreeQuery);
+    List<RoleTreeDTO> getRoleTree(RoleTreeQuery roleTreeQuery);
+
+    /**
+     * 获取角色列表信息
+     *
+     * @param roleTreeQuery 角色树查询
+     * @return 角色树
+     */
+    List<RoleDTO> listRoles(RoleTreeQuery roleTreeQuery);
 
     /**
      * 角色禁用
      *
-     * @param disableRoleCommand
-     * @return
+     * @param disableRoleCommand 角色禁用
+     * @return 是否禁用成功
      */
-    PojoResult<Boolean> disableRole(DisableRoleCommand disableRoleCommand);
+    Boolean disableRole(DisableRoleCommand disableRoleCommand);
 
     /**
      * 启用角色
      *
-     * @param enableRoleCommand
-     * @return
+     * @param enableRoleCommand 角色启用
+     * @return 是否启用成功
      */
-    PojoResult<Boolean> enableRole(EnableRoleCommand enableRoleCommand);
+    Boolean enableRole(EnableRoleCommand enableRoleCommand);
 
     /**
      * 删除角色
      *
-     * @param deleteRoleCommand
-     * @return
+     * @param deleteRoleCommand 角色删除
+     * @return 是否删除成功
      */
-    PojoResult<Boolean> deleteRole(DeleteRoleCommand deleteRoleCommand);
+    Boolean deleteRole(DeleteRoleCommand deleteRoleCommand);
 
     /**
      * 更新角色基本信息
      *
-     * @param modifyRoleCommand
-     * @return
+     * @param modifyRoleCommand 更新
+     * @return 是否更新成功
      */
-    PojoResult<Boolean> modifyRole(ModifyRoleCommand modifyRoleCommand);
+    Boolean modifyRole(ModifyRoleCommand modifyRoleCommand);
 }

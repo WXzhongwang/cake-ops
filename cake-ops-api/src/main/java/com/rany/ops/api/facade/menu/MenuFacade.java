@@ -1,12 +1,12 @@
 package com.rany.ops.api.facade.menu;
 
-import com.cake.framework.common.response.ListResult;
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.command.menu.*;
 import com.rany.ops.api.query.menu.MenuBasicQuery;
 import com.rany.ops.api.query.menu.MenuTreeQuery;
 import com.rany.ops.common.dto.menu.MenuDTO;
 import com.rany.ops.common.dto.menu.MenuTreeDTO;
+
+import java.util.List;
 
 /**
  * 菜单管理
@@ -22,57 +22,57 @@ public interface MenuFacade {
     /**
      * 创建菜单
      *
-     * @param createMenuCommand
-     * @return
+     * @param createMenuCommand 创建菜单
+     * @return 菜单ID
      */
-    PojoResult<Long> createMenu(CreateMenuCommand createMenuCommand);
+    Long createMenu(CreateMenuCommand createMenuCommand);
 
     /**
      * 获取菜单信息
      *
-     * @param menuBasicQuery
+     * @param menuBasicQuery 基础信息获取
      * @return
      */
-    PojoResult<MenuDTO> getMenu(MenuBasicQuery menuBasicQuery);
+    MenuDTO getMenu(MenuBasicQuery menuBasicQuery);
 
     /**
      * 获取菜单树信息
      *
-     * @param menuTreeQuery
-     * @return
+     * @param menuTreeQuery 获取菜单树
+     * @return 获取菜单树
      */
-    ListResult<MenuTreeDTO> getMenuTree(MenuTreeQuery menuTreeQuery);
+    List<MenuTreeDTO> getMenuTree(MenuTreeQuery menuTreeQuery);
 
     /**
      * 菜单禁用
      *
-     * @param disableMenuCommand
-     * @return
+     * @param disableMenuCommand 菜单禁用
+     * @return 是否成功
      */
-    PojoResult<Boolean> disableMenu(DisableMenuCommand disableMenuCommand);
+    Boolean disableMenu(DisableMenuCommand disableMenuCommand);
 
     /**
      * 启用菜单
      *
-     * @param enableMenuCommand
-     * @return
+     * @param enableMenuCommand 菜单启用
+     * @return 是否成功
      */
-    PojoResult<Boolean> enableMenu(EnableMenuCommand enableMenuCommand);
+    Boolean enableMenu(EnableMenuCommand enableMenuCommand);
 
     /**
      * 删除菜单
      *
-     * @param deleteMenuCommand
-     * @return
+     * @param deleteMenuCommand 菜单删除
+     * @return 是否成功
      */
-    PojoResult<Boolean> deleteMenu(DeleteMenuCommand deleteMenuCommand);
+    Boolean deleteMenu(DeleteMenuCommand deleteMenuCommand);
 
     /**
      * 更新菜单基本信息
      *
-     * @param modifyMenuCommand
-     * @return
+     * @param modifyMenuCommand 菜单更新
+     * @return 是否成功
      */
-    PojoResult<Boolean> modifyMenu(ModifyMenuCommand modifyMenuCommand);
+    Boolean modifyMenu(ModifyMenuCommand modifyMenuCommand);
 }
 

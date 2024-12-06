@@ -5,10 +5,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * TODO
+ * 创建权限点
  *
  * @author zhongshengwang
- * @description TODO
+ * @description 创建权限点
  * @date 2022/12/27 20:40
  * @email 18668485565163.com
  */
@@ -27,17 +27,18 @@ public class CreatePermissionCommand extends BaseCommand {
     private Long tenantId;
 
     /**
-     * 角色名称
+     * 权限点类型
+     * action
      */
     private String resourceType;
 
     /**
-     * 角色名称
+     * 权限点名称
      */
     private String resourceName;
 
     /**
-     * 角色名称
+     * 权限点路径
      */
     private String resourcePath;
 

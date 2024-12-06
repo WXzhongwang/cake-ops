@@ -1,13 +1,13 @@
 package com.rany.ops.api.facade.tenant;
 
-import com.cake.framework.common.response.ListResult;
-import com.cake.framework.common.response.PageResult;
-import com.cake.framework.common.response.PojoResult;
+import com.cake.framework.common.response.Page;
 import com.rany.ops.api.command.tenant.*;
 import com.rany.ops.api.query.tenant.TenantBasicQuery;
 import com.rany.ops.api.query.tenant.TenantPageQuery;
 import com.rany.ops.api.query.tenant.TenantQuery;
 import com.rany.ops.common.dto.tenant.TenantDTO;
+
+import java.util.List;
 
 /**
  * 租户管理
@@ -26,7 +26,7 @@ public interface TenantFacade {
      * @param createTenantCommand
      * @return
      */
-    PojoResult<Boolean> createTenant(CreateTenantCommand createTenantCommand);
+    Long createTenant(CreateTenantCommand createTenantCommand);
 
     /**
      * 更新租户
@@ -34,7 +34,7 @@ public interface TenantFacade {
      * @param modifyTenantCommand
      * @return
      */
-    PojoResult<Boolean> modifyTenant(ModifyTenantCommand modifyTenantCommand);
+    Boolean modifyTenant(ModifyTenantCommand modifyTenantCommand);
 
     /**
      * 租户禁用
@@ -42,7 +42,7 @@ public interface TenantFacade {
      * @param disableTenantCommand
      * @return
      */
-    PojoResult<Boolean> disableTenant(DisableTenantCommand disableTenantCommand);
+    Boolean disableTenant(DisableTenantCommand disableTenantCommand);
 
     /**
      * 启用租户
@@ -50,7 +50,7 @@ public interface TenantFacade {
      * @param enableTenantCommand
      * @return
      */
-    PojoResult<Boolean> enableTenant(EnableTenantCommand enableTenantCommand);
+    Boolean enableTenant(EnableTenantCommand enableTenantCommand);
 
     /**
      * 启用租户
@@ -58,7 +58,7 @@ public interface TenantFacade {
      * @param deleteTenantCommand
      * @return
      */
-    PojoResult<Boolean> deleteTenant(DeleteTenantCommand deleteTenantCommand);
+    Boolean deleteTenant(DeleteTenantCommand deleteTenantCommand);
 
 
     /**
@@ -67,7 +67,7 @@ public interface TenantFacade {
      * @param tenantBasicQuery
      * @return
      */
-    PojoResult<TenantDTO> getTenant(TenantBasicQuery tenantBasicQuery);
+    TenantDTO getTenant(TenantBasicQuery tenantBasicQuery);
 
 
     /**
@@ -76,7 +76,7 @@ public interface TenantFacade {
      * @param tenantQuery
      * @return
      */
-    ListResult<TenantDTO> findTenants(TenantQuery tenantQuery);
+    List<TenantDTO> findTenants(TenantQuery tenantQuery);
 
     /**
      * 分页查询租户信息
@@ -84,5 +84,5 @@ public interface TenantFacade {
      * @param tenantPageQuery
      * @return
      */
-    PageResult<TenantDTO> pageTenants(TenantPageQuery tenantPageQuery);
+    Page<TenantDTO> pageTenants(TenantPageQuery tenantPageQuery);
 }

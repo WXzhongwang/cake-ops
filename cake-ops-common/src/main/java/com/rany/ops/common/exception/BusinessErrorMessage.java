@@ -69,6 +69,7 @@ public enum BusinessErrorMessage implements ResponseCode {
 
     USER_ROLE_EXIST("6505", "用户已存在该角色"),
     USER_ROLE_NOT_EXIST("6505", "用户角色关系不存在"),
+    USER_ROLE_REL_NOT_EXIST("6506", "用户角色关系不存在"),
 
     ;
 

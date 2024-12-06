@@ -1,9 +1,7 @@
 package com.rany.ops.facade.tenant;
 
 import cn.hutool.core.util.RandomUtil;
-import com.cake.framework.common.response.ListResult;
-import com.cake.framework.common.response.PageResult;
-import com.cake.framework.common.response.PojoResult;
+import com.cake.framework.common.response.Page;
 import com.rany.ops.BaseTests;
 import com.rany.ops.api.command.tenant.*;
 import com.rany.ops.api.facade.tenant.TenantFacade;
@@ -15,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * TODO
@@ -81,8 +80,8 @@ public class TenantFacadeTest extends BaseTests {
     public void findTenant() {
         TenantBasicQuery tenantBasicQuery = new TenantBasicQuery();
         tenantBasicQuery.setTenantId(768821269968859136L);
-        PojoResult<TenantDTO> tenant = tenantFacade.getTenant(tenantBasicQuery);
-        Assert.assertTrue(tenant.getSuccess());
+        TenantDTO tenant = tenantFacade.getTenant(tenantBasicQuery);
+        Assert.assertNotNull(tenant);
     }
 
     @Test
@@ -90,8 +89,8 @@ public class TenantFacadeTest extends BaseTests {
         TenantQuery tenantQuery = new TenantQuery();
         tenantQuery.setIsvId(768060752375459840L);
         tenantQuery.setName("杭州锐尼科技有限公司");
-        ListResult<TenantDTO> tenant = tenantFacade.findTenants(tenantQuery);
-        Assert.assertTrue(tenant.getSuccess());
+        List<TenantDTO> tenant = tenantFacade.findTenants(tenantQuery);
+        Assert.assertFalse(tenant.isEmpty());
     }
 
     @Test
@@ -99,7 +98,7 @@ public class TenantFacadeTest extends BaseTests {
         TenantPageQuery tenantPageQuery = new TenantPageQuery();
         tenantPageQuery.setIsvId(768060752375459840L);
         tenantPageQuery.setName("杭州锐尼科技有限公司");
-        PageResult<TenantDTO> tenant = tenantFacade.pageTenants(tenantPageQuery);
-        Assert.assertTrue(tenant.getSuccess());
+        Page<TenantDTO> tenant = tenantFacade.pageTenants(tenantPageQuery);
+        Assert.assertFalse(tenant.getItems().isEmpty());
     }
 }

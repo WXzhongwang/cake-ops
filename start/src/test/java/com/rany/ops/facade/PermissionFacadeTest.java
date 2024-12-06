@@ -1,6 +1,5 @@
 package com.rany.ops.facade;
 
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.BaseTests;
 import com.rany.ops.api.command.permission.CreatePermissionCommand;
 import com.rany.ops.api.facade.permission.PermissionFacade;
@@ -32,28 +31,28 @@ public class PermissionFacadeTest extends BaseTests {
         createPermissionCommand.setResourceType("action");
         createPermissionCommand.setResourceName("创建菜单");
         createPermissionCommand.setResourcePath("acl:menu:add");
-        PojoResult<Long> app = permissionFacade.createPermission(createPermissionCommand);
-        Assert.assertTrue(app.getSuccess());
+        Long app = permissionFacade.createPermission(createPermissionCommand);
+        Assert.assertNotNull(app);
 
 
         createPermissionCommand.setResourcePath("acl:menu:update");
         createPermissionCommand.setResourceName("更新菜单");
-        PojoResult<Long> app1 = permissionFacade.createPermission(createPermissionCommand);
-        Assert.assertTrue(app1.getSuccess());
+        Long app1 = permissionFacade.createPermission(createPermissionCommand);
+        Assert.assertNotNull(app1);
 
         createPermissionCommand.setResourcePath("acl:menu:enable");
         createPermissionCommand.setResourceName("启用菜单");
-        PojoResult<Long> app2 = permissionFacade.createPermission(createPermissionCommand);
-        Assert.assertTrue(app2.getSuccess());
+        Long app2 = permissionFacade.createPermission(createPermissionCommand);
+        Assert.assertNotNull(app2);
 
         createPermissionCommand.setResourcePath("acl:menu:disable");
         createPermissionCommand.setResourceName("禁用菜单");
-        PojoResult<Long> app3 = permissionFacade.createPermission(createPermissionCommand);
-        Assert.assertTrue(app3.getSuccess());
+        Long app3 = permissionFacade.createPermission(createPermissionCommand);
+        Assert.assertNotNull(app3);
 
         createPermissionCommand.setResourcePath("acl:menu:delete");
         createPermissionCommand.setResourceName("删除菜单");
-        PojoResult<Long> app4 = permissionFacade.createPermission(createPermissionCommand);
-        Assert.assertTrue(app4.getSuccess());
+        Long app4 = permissionFacade.createPermission(createPermissionCommand);
+        Assert.assertNotNull(app4);
     }
 }

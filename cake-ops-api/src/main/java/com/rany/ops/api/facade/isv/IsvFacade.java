@@ -1,18 +1,16 @@
 package com.rany.ops.api.facade.isv;
 
-import com.cake.framework.common.response.PojoResult;
-import com.rany.ops.api.command.isv.CreateIsvCommand;
-import com.rany.ops.api.command.isv.DeleteIsvCommand;
-import com.rany.ops.api.command.isv.DisableIsvCommand;
-import com.rany.ops.api.command.isv.EnableIsvCommand;
+import com.cake.framework.common.response.Page;
+import com.rany.ops.api.command.isv.*;
 import com.rany.ops.api.query.isv.IsvBasicQuery;
+import com.rany.ops.api.query.isv.IsvPageQuery;
 import com.rany.ops.common.dto.isv.IsvDTO;
 
 /**
- * TODO
+ * IsvFacade
  *
  * @author zhongshengwang
- * @description TODO
+ * @description IsvFacade
  * @date 2022/11/15 22:21
  * @email 18668485565163.com
  */
@@ -22,43 +20,61 @@ public interface IsvFacade {
     /**
      * 创建ISV
      *
-     * @param createIsvCommand
-     * @return
+     * @param createIsvCommand 指令
+     * @return isv id
      */
-    PojoResult<Boolean> createIsv(CreateIsvCommand createIsvCommand);
+    Long createIsv(CreateIsvCommand createIsvCommand);
+
+    /**
+     * 更新ISV
+     *
+     * @param command 指令
+     * @return 是否成功
+     */
+    Boolean updateIsv(UpdateIsvCommand command);
+
 
     /**
      * ISV 删除
      *
-     * @param deleteIsvCommand
-     * @return
+     * @param deleteIsvCommand 指令
+     * @return 是否成功
      */
-    PojoResult<Boolean> deleteIsv(DeleteIsvCommand deleteIsvCommand);
+    Boolean deleteIsv(DeleteIsvCommand deleteIsvCommand);
 
 
     /**
      * 禁用ISV
      *
-     * @param disableIsvCommand
-     * @return
+     * @param disableIsvCommand 指令
+     * @return 是否成功
      */
-    PojoResult<Boolean> disableIsv(DisableIsvCommand disableIsvCommand);
+    Boolean disableIsv(DisableIsvCommand disableIsvCommand);
 
 
     /**
      * 启用ISV
      *
-     * @param enableIsvCommand
-     * @return
+     * @param enableIsvCommand 指令
+     * @return 是否成功
      */
-    PojoResult<Boolean> enableIsv(EnableIsvCommand enableIsvCommand);
+    Boolean enableIsv(EnableIsvCommand enableIsvCommand);
 
 
     /**
      * 查询ISV基本信息
      *
-     * @param isvBaseQuery
-     * @return
+     * @param isvBaseQuery isv查询
+     * @return isv
      */
-    PojoResult<IsvDTO> findIsv(IsvBasicQuery isvBaseQuery);
+    IsvDTO findIsv(IsvBasicQuery isvBaseQuery);
+
+
+    /**
+     * 分页查询ISV信息
+     *
+     * @param isvPageQuery 查询参数
+     * @return 分页结果
+     */
+    Page<IsvDTO> pageIsv(IsvPageQuery isvPageQuery);
 }

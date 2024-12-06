@@ -1,6 +1,8 @@
 package com.rany.ops.domain.repository;
 
+import com.cake.framework.common.response.Page;
 import com.cake.framework.ddd.repository.Repository;
+import com.rany.ops.common.params.IsvSearchParam;
 import com.rany.ops.domain.aggregate.Isv;
 import com.rany.ops.domain.pk.IsvId;
 
@@ -23,4 +25,6 @@ public interface IsvRepository extends Repository<Isv, IsvId> {
      * @return
      */
     Boolean updateIsv(Isv isv);
+
+    Page<Isv> page(IsvSearchParam isvPageQuery);
 }

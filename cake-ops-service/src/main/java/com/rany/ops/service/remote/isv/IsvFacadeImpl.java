@@ -1,22 +1,22 @@
 package com.rany.ops.service.remote.isv;
 
 import com.cake.framework.common.exception.BusinessException;
-import com.cake.framework.common.response.PojoResult;
-import com.rany.ops.api.command.isv.CreateIsvCommand;
-import com.rany.ops.api.command.isv.DeleteIsvCommand;
-import com.rany.ops.api.command.isv.DisableIsvCommand;
-import com.rany.ops.api.command.isv.EnableIsvCommand;
+import com.cake.framework.common.response.Page;
+import com.rany.ops.api.command.isv.*;
 import com.rany.ops.api.facade.isv.IsvFacade;
 import com.rany.ops.api.query.isv.IsvBasicQuery;
+import com.rany.ops.api.query.isv.IsvPageQuery;
 import com.rany.ops.common.dto.isv.IsvDTO;
 import com.rany.ops.common.enums.CommonStatusEnum;
 import com.rany.ops.common.enums.DeleteStatusEnum;
 import com.rany.ops.common.exception.BusinessErrorMessage;
+import com.rany.ops.common.params.IsvSearchParam;
 import com.rany.ops.common.util.SnowflakeIdWorker;
 import com.rany.ops.domain.aggregate.Isv;
 import com.rany.ops.domain.dp.EmailAddress;
 import com.rany.ops.domain.dp.IsvName;
 import com.rany.ops.domain.dp.Phone;
+import com.rany.ops.domain.page.PageUtils;
 import com.rany.ops.domain.pk.IsvId;
 import com.rany.ops.domain.service.IsvDomainService;
 import com.rany.ops.infra.convertor.IsvDataConvertor;
@@ -25,6 +25,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 import static com.rany.ops.common.Constants.DEFAULT_MAX_TENANTS;
@@ -39,16 +42,15 @@ import static com.rany.ops.common.Constants.DEFAULT_MAX_TENANTS;
  */
 @Slf4j
 @Service
-// @ShenyuService("/isv/**")
 @AllArgsConstructor
-public class IsvRemoteServiceProvider implements IsvFacade {
+public class IsvFacadeImpl implements IsvFacade {
 
     private final IsvDomainService isvDomainService;
     private final IsvDataConvertor isvDataConvertor;
     private final SnowflakeIdWorker snowflakeIdWorker;
 
     @Override
-    public PojoResult<Boolean> createIsv(CreateIsvCommand createIsvCommand) {
+    public Long createIsv(CreateIsvCommand createIsvCommand) {
         Isv isv = new Isv(new IsvId(snowflakeIdWorker.nextId()),
                 new IsvName(createIsvCommand.getName(), createIsvCommand.getShortName()),
                 new EmailAddress(createIsvCommand.getEmail()),
@@ -61,11 +63,27 @@ public class IsvRemoteServiceProvider implements IsvFacade {
         isv.setStatus(CommonStatusEnum.ENABLE.getValue());
         isv.setMaxTenants(DEFAULT_MAX_TENANTS);
         isvDomainService.save(isv);
-        return PojoResult.succeed();
+        return isv.getId().getId();
     }
 
     @Override
-    public PojoResult<Boolean> deleteIsv(DeleteIsvCommand deleteIsvCommand) {
+    public Boolean updateIsv(UpdateIsvCommand command) {
+        Isv isv = isvDomainService.findById(new IsvId(command.getId()));
+        if (Objects.isNull(isv)) {
+            throw new BusinessException(BusinessErrorMessage.ISV_NOT_FOUND);
+        }
+        isv.setName(new IsvName(command.getName(), command.getShortName()));
+        isv.setEmailAddress(new EmailAddress(command.getEmail()));
+        isv.setPhone(new Phone(command.getPhone()));
+        isv.setUrl(command.getUrl());
+        isv.setCountry(command.getCountry());
+        isv.setRegisterIp(command.getRegisterIp());
+        isvDomainService.update(isv);
+        return true;
+    }
+
+    @Override
+    public Boolean deleteIsv(DeleteIsvCommand deleteIsvCommand) {
         Isv isv = isvDomainService.findById(new IsvId(deleteIsvCommand.getId()));
         if (Objects.isNull(isv)) {
             throw new BusinessException(BusinessErrorMessage.ISV_NOT_FOUND);
@@ -78,11 +96,11 @@ public class IsvRemoteServiceProvider implements IsvFacade {
         }
         isv.delete();
         isvDomainService.update(isv);
-        return PojoResult.succeed(true);
+        return true;
     }
 
     @Override
-    public PojoResult<Boolean> disableIsv(DisableIsvCommand disableIsvCommand) {
+    public Boolean disableIsv(DisableIsvCommand disableIsvCommand) {
         Isv isv = isvDomainService.findById(new IsvId(disableIsvCommand.getId()));
         if (Objects.isNull(isv)) {
             throw new BusinessException(BusinessErrorMessage.ISV_NOT_FOUND);
@@ -92,11 +110,11 @@ public class IsvRemoteServiceProvider implements IsvFacade {
         }
         isv.disable();
         isvDomainService.update(isv);
-        return PojoResult.succeed();
+        return true;
     }
 
     @Override
-    public PojoResult<Boolean> enableIsv(EnableIsvCommand enableIsvCommand) {
+    public Boolean enableIsv(EnableIsvCommand enableIsvCommand) {
         Isv isv = isvDomainService.findById(new IsvId(enableIsvCommand.getId()));
         if (Objects.isNull(isv)) {
             throw new BusinessException(BusinessErrorMessage.ISV_NOT_FOUND);
@@ -106,16 +124,27 @@ public class IsvRemoteServiceProvider implements IsvFacade {
         }
         isv.enable();
         isvDomainService.update(isv);
-        return PojoResult.succeed();
+        return true;
     }
 
     @Override
-    public PojoResult<IsvDTO> findIsv(IsvBasicQuery isvBaseQuery) {
+    public IsvDTO findIsv(IsvBasicQuery isvBaseQuery) {
         Isv isv = isvDomainService.findById(new IsvId(isvBaseQuery.getIsvId()));
         if (Objects.isNull(isv)) {
             throw new BusinessException(BusinessErrorMessage.ISV_NOT_FOUND);
         }
-        IsvDTO isvDTO = isvDataConvertor.sourceToDTO(isv);
-        return PojoResult.succeed(isvDTO);
+        return isvDataConvertor.sourceToDTO(isv);
+    }
+
+    @Override
+    public Page<IsvDTO> pageIsv(IsvPageQuery isvPageQuery) {
+        IsvSearchParam pageSearchParam = new IsvSearchParam();
+        pageSearchParam.setPageNo(isvPageQuery.getPageNo());
+        pageSearchParam.setPageSize(isvPageQuery.getPageSize());
+        pageSearchParam.setName(isvPageQuery.getName());
+        Page<Isv> page = isvDomainService.page(pageSearchParam);
+        Collection<Isv> items = page.getItems();
+        List<IsvDTO> isvDTOList = isvDataConvertor.sourceToDTO(new ArrayList<>(items));
+        return PageUtils.build(page, isvDTOList);
     }
 }

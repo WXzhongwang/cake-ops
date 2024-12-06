@@ -1,6 +1,5 @@
 package com.rany.ops.api.facade.grant;
 
-import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.command.grant.DisGrantRoleMenusCommand;
 import com.rany.ops.api.command.grant.GrantRoleMenusCommand;
 
@@ -8,7 +7,7 @@ import com.rany.ops.api.command.grant.GrantRoleMenusCommand;
  * 角色菜单授权
  *
  * @author zhongshengwang
- * @description TODO
+ * @description 角色菜单授权
  * @date 2022/12/27 20:39
  * @email 18668485565163.com
  */
@@ -21,7 +20,7 @@ public interface GrantRoleMenuFacade {
      * @param grantRoleMenusCommand 授权请求
      * @return 是否成功
      */
-    PojoResult<Boolean> grantRoleMenus(GrantRoleMenusCommand grantRoleMenusCommand);
+    Boolean grantRoleMenus(GrantRoleMenusCommand grantRoleMenusCommand);
 
 
     /**
@@ -30,5 +29,5 @@ public interface GrantRoleMenuFacade {
      * @param disGrantRoleMenusCommand 解除授权请求
      * @return 是否成功
      */
-    PojoResult<Boolean> disGrantRoleMenus(DisGrantRoleMenusCommand disGrantRoleMenusCommand);
+    Boolean disGrantRoleMenus(DisGrantRoleMenusCommand disGrantRoleMenusCommand);
 }
