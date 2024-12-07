@@ -52,7 +52,7 @@ export interface UpdateTenantPayload extends CreateTenantPayload {
 }
 
 interface QueryTenantAction extends BaseAction {
-  type: "isv/pageTenant";
+  type: "isv/fetchTenantList";
   payload: QueryTenantPayload;
 }
 
@@ -85,7 +85,7 @@ const TenantModel = {
   namespace: "tenant",
   state: {},
   effects: {
-    *page({ payload, callback }: QueryTenantAction, { call, put }) {
+    *fetchTenantList({ payload, callback }: QueryTenantAction, { call, put }) {
       const response = yield call(api.fetchTenantList, payload);
       const { success, msg } = response;
       // 调用回调函数

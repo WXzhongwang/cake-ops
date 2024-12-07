@@ -14,120 +14,122 @@ import {
   message,
 } from "antd";
 import { connect, Dispatch } from "umi";
-import { IsvDTO } from "@/models/isv";
-import { create, update } from "@/services/isv";
-import CreateIsvForm from "./components/create-isv-form";
+import { TenantDTO } from "@/models/tenant";
+import { create, update } from "@/services/tenant";
 import { API } from "typings";
 import { UserRoleMenuDTO } from "@/models/user";
 import dayjs from "dayjs";
 import { ColumnsType } from "antd/lib/table";
+import CreateTenantForm from "./components/create-tenant-form";
 import Paragraph from "antd/lib/typography/Paragraph";
 
-interface IsvListProps {
+interface TenantListProps {
   dispatch: Dispatch;
 }
 
-const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
+const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
   const [pagination, setPagination] = useState({ pageNo: 1, pageSize: 10 });
-  const [isvList, setIsvList] = useState<IsvDTO[]>([]);
+  const [tenantList, setTenantList] = useState<TenantDTO[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [filters, setFilters] = useState({
     name: "",
   }); // 初始化筛选条件为空对象
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const [editingIsv, setEditingIsv] = useState<IsvDTO | undefined>(undefined);
+  const [editingTenant, setEditingTenant] = useState<TenantDTO | undefined>(
+    undefined
+  );
   const [form] = Form.useForm();
 
   useEffect(() => {
-    fetchIsvList();
+    fetchTenantList();
   }, [pagination, filters]);
 
-  const fetchIsvList = () => {
+  const fetchTenantList = () => {
     dispatch({
-      type: "isv/fetchIsvList",
+      type: "tenant/fetchTenantList",
       payload: { ...pagination, ...filters },
-      callback: (res: API.Page<IsvDTO>) => {
-        setIsvList(res.items);
+      callback: (res: API.Page<TenantDTO>) => {
+        setTenantList(res.items);
         setTotal(res.total);
       },
     });
   };
 
-  const handleEdit = (webhook: IsvDTO) => {
-    setEditingIsv(webhook);
+  const handleEdit = (tenant: TenantDTO) => {
+    setEditingTenant(tenant);
     setDrawerVisible(true);
   };
 
-  const handleDelete = (isvId: number) => {
+  const handleDelete = (tenantId: number) => {
     dispatch({
-      type: "isv/delete",
-      payload: { id: isvId },
+      type: "tenant/delete",
+      payload: { id: tenantId },
     });
-    fetchIsvList();
+    fetchTenantList();
   };
 
-  const handleDisabled = (isvId: number) => {
+  const handleDisabled = (tenantId: number) => {
     dispatch({
-      type: "isv/disable",
-      payload: { id: isvId },
+      type: "tenant/disable",
+      payload: { id: tenantId },
       callback: (success: boolean) => {
         if (success) {
           message.success("处理成功");
         }
       },
     });
-    fetchIsvList();
+    fetchTenantList();
   };
 
-  const handleEnable = (isvId: number) => {
+  const handleEnable = (tenantId: number) => {
     dispatch({
-      type: "isv/enable",
-      payload: { id: isvId },
+      type: "tenant/enable",
+      payload: { id: tenantId },
       callback: (success: boolean) => {
         if (success) {
           message.success("处理成功");
         }
       },
     });
-    fetchIsvList();
+    fetchTenantList();
   };
 
   const handlePaginationChange = (page: number, pageSize?: number) => {
     setPagination({ pageNo: page, pageSize: pageSize || 10 });
   };
 
-  const handleAddIsv = () => {
+  const handleAddTenant = () => {
     setDrawerVisible(true);
   };
 
   const handleCloseDrawer = () => {
     setDrawerVisible(false);
     form.resetFields();
-    setEditingIsv(undefined);
+    setEditingTenant(undefined);
   };
 
-  const handleSaveIsv = async (values: IsvDTO) => {
+  const handleSaveTenant = async (values: TenantDTO) => {
     try {
-      if (editingIsv) {
-        await update({ ...values, id: editingIsv.id });
+      if (editingTenant) {
+        await update({ ...values, id: editingTenant.id });
       } else {
         await create(values);
       }
-      fetchIsvList();
+      fetchTenantList();
       setDrawerVisible(false);
       form.resetFields();
     } catch (error) {
-      console.error("保存Isv失败:", error);
+      console.error("保存Tenant失败:", error);
     }
   };
 
-  const columns: ColumnsType<IsvDTO> = [
+  const columns: ColumnsType<TenantDTO> = [
     {
       title: "ID",
       dataIndex: "id",
       key: "id",
       fixed: "left",
-      render: (text: any, record: IsvDTO) => {
+      render: (text: any, record: TenantDTO) => {
         return (
           <Paragraph
             copyable={{ tooltips: ["点击复制", "复制成功"] }}
@@ -149,31 +151,9 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
       key: "shortName",
     },
     {
-      title: "租户数量",
-      dataIndex: "tenantCount",
-      key: "tenantCount",
-      render: (text: any, record: IsvDTO) => {
-        return (
-          <>
-            {record.tenantsCount} / {record.maxTenants}
-          </>
-        );
-      },
-    },
-    {
       title: "邮箱",
       dataIndex: "email",
       key: "email",
-    },
-    {
-      title: "国家",
-      dataIndex: "country",
-      key: "country",
-    },
-    {
-      title: "网址",
-      dataIndex: "url",
-      key: "url",
     },
     {
       title: "联系方式",
@@ -184,7 +164,7 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
       title: "地址",
       dataIndex: "address",
       key: "address",
-      render: (text: any, record: IsvDTO) => {
+      render: (text: any, record: TenantDTO) => {
         return (
           <>
             {record.address === undefined || record.address === null
@@ -198,7 +178,7 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
       title: "创建时间",
       dataIndex: "gmtCreate",
       key: "gmtCreate",
-      render: (text: any, record: IsvDTO) => {
+      render: (text: any, record: TenantDTO) => {
         return (
           <div>{dayjs(record?.gmtCreate).format("YYYY-MM-DD HH:mm:ss")}</div>
         );
@@ -208,7 +188,7 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
       title: "修改时间",
       dataIndex: "gmtModified",
       key: "gmtModified",
-      render: (text: any, record: IsvDTO) => {
+      render: (text: any, record: TenantDTO) => {
         return (
           <div>{dayjs(record?.gmtModified).format("YYYY-MM-DD HH:mm:ss")}</div>
         );
@@ -218,7 +198,7 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
       title: "类型",
       dataIndex: "status",
       key: "status",
-      render: (text: any, record: IsvDTO) => {
+      render: (text: any, record: TenantDTO) => {
         return (
           <Tag color={record.status === "0" ? "success" : "error"}>
             {record.status === "0" ? "已启用" : "已停用"}
@@ -229,7 +209,7 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
     {
       title: "操作",
       key: "action",
-      render: (text: any, record: IsvDTO) => (
+      render: (text: any, record: TenantDTO) => (
         <Space size="middle">
           {record.status === "0" ? (
             <a onClick={() => handleDisabled(record.id)}>禁用</a>
@@ -244,7 +224,7 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
   ];
 
   return (
-    <PageContainer title="Isv列表">
+    <PageContainer title="Tenant列表">
       <Card>
         <Space size="middle" direction="vertical" style={{ width: "100%" }}>
           <Form
@@ -275,13 +255,13 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
               </Button>
             </Form.Item>
           </Form>
-          <Button type="primary" onClick={handleAddIsv}>
-            新增ISV
+          <Button type="primary" onClick={handleAddTenant}>
+            新增租户
           </Button>
           <Table
             scroll={{ x: "max-content" }}
             columns={columns}
-            dataSource={isvList}
+            dataSource={tenantList}
             rowKey="id"
             pagination={{
               total,
@@ -294,16 +274,16 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
       </Card>
 
       <Drawer
-        title={editingIsv ? "编辑Isv" : "新增Isv"}
+        title={editingTenant ? "编辑Tenant" : "新增Tenant"}
         width={400}
         open={drawerVisible}
         onClose={handleCloseDrawer}
         destroyOnClose={true}
       >
-        <CreateIsvForm
-          initialValues={editingIsv}
-          onSave={handleSaveIsv}
-          onUpdate={handleSaveIsv}
+        <CreateTenantForm
+          initialValues={editingTenant}
+          onSave={handleSaveTenant}
+          onUpdate={handleSaveTenant}
           onCancel={handleCloseDrawer}
         />
       </Drawer>
@@ -325,4 +305,4 @@ export default connect(
     userData: user.userData,
     menu: user.menu,
   })
-)(IsvList);
+)(TenantList);

@@ -33,6 +33,7 @@ export default defineConfig({
   routes: [
     { path: "/", redirect: "/uic/isv" },
     { path: "/uic/isv", component: "isv/isv-list", name: "ISV列表" },
+    { path: "/uic/tenant", component: "tenant/tenant-list", name: "租户列表" },
   ],
   npmClient: "pnpm",
   dva: {},

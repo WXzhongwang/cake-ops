@@ -1,17 +1,17 @@
 import React from "react";
 import { Form, Input, Button, Select } from "antd";
-import { IsvDTO } from "@/models/isv";
+import { TenantDTO } from "@/models/tenant";
 
 const { Option } = Select;
 
-interface CreateIsvFormProps {
-  initialValues?: IsvDTO;
-  onSave: (values: IsvDTO) => void;
+interface CreateTenantFormProps {
+  initialValues?: TenantDTO;
+  onSave: (values: TenantDTO) => void;
   onCancel: () => void;
-  onUpdate: (values: IsvDTO) => void;
+  onUpdate: (values: TenantDTO) => void;
 }
 
-const CreateIsvForm: React.FC<CreateIsvFormProps> = ({
+const CreateTenantForm: React.FC<CreateTenantFormProps> = ({
   initialValues,
   onSave,
   onCancel,
@@ -108,4 +108,4 @@ const CreateIsvForm: React.FC<CreateIsvFormProps> = ({
   );
 };
 
-export default CreateIsvForm;
+export default CreateTenantForm;
