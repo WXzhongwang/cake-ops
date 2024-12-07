@@ -1,18 +1,20 @@
 package com.rany.ops.api.command.tenant;
 
-import com.rany.ops.common.base.DTO;
+import com.rany.ops.common.base.BaseCommand;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * TODO
+ * CreateTenantCommand
  *
  * @author zhongshengwang
- * @description TODO
+ * @description CreateTenantCommand
  * @date 2022/11/15 22:38
  * @email 18668485565163.com
  */
 @Data
-public class CreateTenantCommand extends DTO {
+@EqualsAndHashCode(callSuper = true)
+public class CreateTenantCommand extends BaseCommand {
     private Long isvId;
     private String name;
     private String shortName;

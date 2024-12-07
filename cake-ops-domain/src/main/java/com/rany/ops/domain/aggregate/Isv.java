@@ -8,7 +8,10 @@ import com.rany.ops.domain.dp.EmailAddress;
 import com.rany.ops.domain.dp.IsvName;
 import com.rany.ops.domain.dp.Phone;
 import com.rany.ops.domain.pk.IsvId;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.Date;
 
 /**
  * Account 聚合根
@@ -19,9 +22,6 @@ import lombok.*;
  * @email 18668485565163.com
  */
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class Isv extends BaseAggregateRoot implements IAggregate<IsvId> {
     private IsvId id;
@@ -65,9 +65,11 @@ public class Isv extends BaseAggregateRoot implements IAggregate<IsvId> {
      * ip地址
      */
     private String registerIp;
+    private String address;
 
+    public Isv() {
+    }
 
-    @Builder
     public Isv(IsvId isvId, IsvName isvName, EmailAddress emailAddress, Phone phone) {
         this.id = isvId;
         this.name = isvName;
@@ -77,23 +79,28 @@ public class Isv extends BaseAggregateRoot implements IAggregate<IsvId> {
 
     /**
      * 启用
-     * TODO 后续这些行为上可以补充事件的领域处理的注册
      */
-    public void enable() {
-        this.status = CommonStatusEnum.DISABLED.getValue();
+    public void enable(String user) {
+        this.modifier = user;
+        this.gmtModified = new Date();
+        this.status = CommonStatusEnum.ENABLE.getValue();
     }
 
     /**
      * 禁用
      */
-    public void disable() {
+    public void disable(String user) {
+        this.modifier = user;
+        this.gmtModified = new Date();
         this.status = CommonStatusEnum.DISABLED.getValue();
     }
 
     /**
      * 删除
      */
-    public void delete() {
+    public void delete(String user) {
+        this.modifier = user;
+        this.gmtModified = new Date();
         this.isDeleted = DeleteStatusEnum.YES.getValue();
     }
 

@@ -2,6 +2,7 @@ package com.rany.ops.common.dto.tenant;
 
 import com.rany.ops.common.base.DTO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -14,8 +15,9 @@ import java.util.Date;
  * @email 18668485565163.com
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class TenantDTO extends DTO {
-    private Long id;
+    private String id;
     private Long isvId;
     private String name;
     private String shortName;

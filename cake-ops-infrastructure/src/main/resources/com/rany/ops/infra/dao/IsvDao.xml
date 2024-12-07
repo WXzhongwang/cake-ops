@@ -47,8 +47,8 @@
         <include refid="Base_Column_List"/>
         from isv
         <where>
-            is_deleted = 'N'
-            <if test="name != null">
+            is_deleted = '0'
+            <if test="name != null and name != ''">
                 and name like concat('%',#{name},'%')
             </if>
             <if test="status != null">

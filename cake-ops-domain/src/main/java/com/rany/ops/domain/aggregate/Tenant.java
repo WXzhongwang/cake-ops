@@ -6,11 +6,11 @@ import com.cake.framework.common.base.BaseAggregateRoot;
 import com.cake.framework.common.base.IAggregate;
 import com.rany.ops.common.enums.CommonStatusEnum;
 import com.rany.ops.common.enums.DeleteStatusEnum;
-import com.rany.ops.domain.event.account.CreateTenantAdminAccountEvent;
 import com.rany.ops.domain.dp.EmailAddress;
 import com.rany.ops.domain.dp.Phone;
 import com.rany.ops.domain.dp.TenantName;
 import com.rany.ops.domain.dp.TenantSource;
+import com.rany.ops.domain.event.account.CreateTenantAdminAccountEvent;
 import com.rany.ops.domain.pk.IsvId;
 import com.rany.ops.domain.pk.TenantId;
 import lombok.*;
@@ -68,26 +68,30 @@ public class Tenant extends BaseAggregateRoot implements IAggregate<TenantId> {
      */
     private String status;
 
-    public Boolean save(Boolean initialFirstAccount) {
+    public Boolean save(Boolean initialFirstAccount, String creator) {
         this.gmtCreate = DateUtil.date();
         this.gmtModified = DateUtil.date();
         if (BooleanUtil.isTrue(initialFirstAccount)) {
             registerEvent(new CreateTenantAdminAccountEvent(this, DateUtil.date()));
         }
+        this.creator = creator;
         return Boolean.TRUE;
     }
 
-    public void disabled() {
+    public void disabled(String modifier) {
         this.gmtModified = DateUtil.date();
+        this.modifier = modifier;
         this.status = CommonStatusEnum.DISABLED.getValue();
     }
 
-    public void enable() {
+    public void enable(String modifier) {
+        this.modifier = modifier;
         this.gmtModified = DateUtil.date();
         this.status = CommonStatusEnum.ENABLE.getValue();
     }
 
-    public void delete() {
+    public void delete(String modifier) {
+        this.modifier = modifier;
         this.gmtModified = DateUtil.date();
         this.isDeleted = DeleteStatusEnum.YES.getValue();
     }

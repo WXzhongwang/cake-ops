@@ -8,12 +8,14 @@ import com.rany.ops.api.facade.isv.IsvFacade;
 import com.rany.ops.api.query.isv.IsvBasicQuery;
 import com.rany.ops.api.query.isv.IsvPageQuery;
 import com.rany.ops.common.dto.isv.IsvDTO;
+import com.rany.ops.web.config.Servlets;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * isv
@@ -40,7 +42,9 @@ public class IsvController {
     }
 
     @PostMapping("/create")
-    public PojoResult<String> create(@RequestBody CreateIsvCommand createAppCommand) {
+    public PojoResult<String> create(HttpServletRequest request, @RequestBody CreateIsvCommand createAppCommand) {
+        String remoteAddr = Servlets.getRemoteAddr(request);
+        createAppCommand.setRegisterIp(remoteAddr);
         Long isv = isvFacade.createIsv(createAppCommand);
         return PojoResult.succeed(isv.toString());
     }

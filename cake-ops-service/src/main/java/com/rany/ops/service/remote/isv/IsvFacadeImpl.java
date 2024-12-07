@@ -2,6 +2,7 @@ package com.rany.ops.service.remote.isv;
 
 import com.cake.framework.common.exception.BusinessException;
 import com.cake.framework.common.response.Page;
+import com.google.common.collect.Maps;
 import com.rany.ops.api.command.isv.*;
 import com.rany.ops.api.facade.isv.IsvFacade;
 import com.rany.ops.api.query.isv.IsvBasicQuery;
@@ -18,17 +19,16 @@ import com.rany.ops.domain.dp.IsvName;
 import com.rany.ops.domain.dp.Phone;
 import com.rany.ops.domain.page.PageUtils;
 import com.rany.ops.domain.pk.IsvId;
+import com.rany.ops.domain.repository.TenantRepository;
 import com.rany.ops.domain.service.IsvDomainService;
+import com.rany.ops.domain.service.TenantDomainService;
 import com.rany.ops.infra.convertor.IsvDataConvertor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.rany.ops.common.Constants.DEFAULT_MAX_TENANTS;
 
@@ -46,8 +46,10 @@ import static com.rany.ops.common.Constants.DEFAULT_MAX_TENANTS;
 public class IsvFacadeImpl implements IsvFacade {
 
     private final IsvDomainService isvDomainService;
+    private final TenantDomainService tenantDomainService;
     private final IsvDataConvertor isvDataConvertor;
     private final SnowflakeIdWorker snowflakeIdWorker;
+    private final TenantRepository tenantRepository;
 
     @Override
     public Long createIsv(CreateIsvCommand createIsvCommand) {
@@ -59,6 +61,8 @@ public class IsvFacadeImpl implements IsvFacade {
         isv.setCountry(createIsvCommand.getCountry());
         isv.setUrl(createIsvCommand.getUrl());
         isv.setRegisterIp(createIsvCommand.getRegisterIp());
+        isv.setAddress(createIsvCommand.getAddress());
+        isv.setCreator(createIsvCommand.getUser());
         isv.setIsDeleted(DeleteStatusEnum.NO.getValue());
         isv.setStatus(CommonStatusEnum.ENABLE.getValue());
         isv.setMaxTenants(DEFAULT_MAX_TENANTS);
@@ -78,6 +82,8 @@ public class IsvFacadeImpl implements IsvFacade {
         isv.setUrl(command.getUrl());
         isv.setCountry(command.getCountry());
         isv.setRegisterIp(command.getRegisterIp());
+        isv.setModifier(command.getUser());
+        isv.setGmtModified(new Date());
         isvDomainService.update(isv);
         return true;
     }
@@ -94,7 +100,7 @@ public class IsvFacadeImpl implements IsvFacade {
         if (StringUtils.equals(isv.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
             throw new BusinessException(BusinessErrorMessage.ISV_DISABLED);
         }
-        isv.delete();
+        isv.delete(deleteIsvCommand.getUser());
         isvDomainService.update(isv);
         return true;
     }
@@ -108,7 +114,7 @@ public class IsvFacadeImpl implements IsvFacade {
         if (StringUtils.equals(isv.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.ISV_DELETED);
         }
-        isv.disable();
+        isv.disable(disableIsvCommand.getUser());
         isvDomainService.update(isv);
         return true;
     }
@@ -122,7 +128,7 @@ public class IsvFacadeImpl implements IsvFacade {
         if (StringUtils.equals(isv.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.ISV_DELETED);
         }
-        isv.enable();
+        isv.enable(enableIsvCommand.getUser());
         isvDomainService.update(isv);
         return true;
     }
@@ -145,6 +151,12 @@ public class IsvFacadeImpl implements IsvFacade {
         Page<Isv> page = isvDomainService.page(pageSearchParam);
         Collection<Isv> items = page.getItems();
         List<IsvDTO> isvDTOList = isvDataConvertor.sourceToDTO(new ArrayList<>(items));
+        Map<String, IsvDTO> isvDTOMap = Maps.uniqueIndex(isvDTOList, IsvDTO::getId);
+        for (Isv item : items) {
+            IsvDTO isvDTO = isvDTOMap.get(String.valueOf(item.getId().getId()));
+            Integer tenantCount = tenantRepository.selectTenantCountByIsvId(item.getId());
+            isvDTO.setTenantsCount(tenantCount);
+        }
         return PageUtils.build(page, isvDTOList);
     }
 }

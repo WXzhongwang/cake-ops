@@ -2,6 +2,7 @@ package com.rany.ops.common.dto.isv;
 
 import com.rany.ops.common.base.DTO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -14,8 +15,12 @@ import java.util.Date;
  * @email 18668485565163.com
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class IsvDTO extends DTO {
-    private Long id;
+    /**
+     * 防止精度丢失
+     */
+    private String id;
     private String name;
     private String url;
     private String shortName;
@@ -28,4 +33,5 @@ public class IsvDTO extends DTO {
     private Date gmtCreate;
     private Date gmtModified;
     private Integer maxTenants;
+    private Integer tenantsCount;
 }

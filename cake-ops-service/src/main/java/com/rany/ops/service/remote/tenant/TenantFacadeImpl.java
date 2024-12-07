@@ -32,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -66,7 +67,7 @@ public class TenantFacadeImpl implements TenantFacade {
                 CommonStatusEnum.ENABLE.getValue()
         );
         tenant.setIsDeleted(DeleteStatusEnum.NO.getValue());
-        tenant.save(createTenantCommand.getInitialAccount());
+        tenant.save(createTenantCommand.getInitialAccount(), createTenantCommand.getUser());
         tenantDomainService.save(tenant);
         return tenant.getId().getId();
     }
@@ -85,6 +86,8 @@ public class TenantFacadeImpl implements TenantFacade {
         tenant.setEmailAddress(new EmailAddress(modifyTenantCommand.getEmail()));
         tenant.setPhone(new Phone(modifyTenantCommand.getPhone()));
         tenant.setAddress(modifyTenantCommand.getAddress());
+        tenant.setModifier(modifyTenantCommand.getUser());
+        tenant.setGmtCreate(new Date());
         tenantDomainService.update(tenant);
         return Boolean.TRUE;
     }
@@ -98,7 +101,7 @@ public class TenantFacadeImpl implements TenantFacade {
         if (StringUtils.equals(tenant.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.TENANT_DELETED);
         }
-        tenant.disabled();
+        tenant.disabled(disableTenantCommand.getUser());
         tenantDomainService.update(tenant);
         return Boolean.TRUE;
     }
@@ -112,7 +115,7 @@ public class TenantFacadeImpl implements TenantFacade {
         if (StringUtils.equals(tenant.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.TENANT_DELETED);
         }
-        tenant.enable();
+        tenant.enable(enableTenantCommand.getUser());
         tenantDomainService.update(tenant);
         return Boolean.TRUE;
     }
@@ -123,7 +126,7 @@ public class TenantFacadeImpl implements TenantFacade {
         if (Objects.isNull(tenant)) {
             throw new BusinessException(BusinessErrorMessage.TENANT_NOT_FOUND);
         }
-        tenant.delete();
+        tenant.delete(deleteTenantCommand.getUser());
         tenantDomainService.update(tenant);
         return Boolean.TRUE;
     }
@@ -160,7 +163,6 @@ public class TenantFacadeImpl implements TenantFacade {
     }
 
     @Override
-    @IsvValidCheck(expression = "#tenantPageQuery.isvId")
     public Page<TenantDTO> pageTenants(TenantPageQuery tenantPageQuery) {
         TenantPageSearchParam pageSearchParam = new TenantPageSearchParam();
         pageSearchParam.setPageNo(tenantPageQuery.getPageNo());

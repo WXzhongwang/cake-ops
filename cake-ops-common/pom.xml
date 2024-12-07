@@ -16,6 +16,12 @@
     </properties>
 
     <dependencies>
+        <!-- cake-toolkit-all -->
+        <dependency>
+            <groupId>com.rany.cake.toolkit</groupId>
+            <artifactId>cake-toolkit-all</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>

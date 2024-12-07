@@ -8,11 +8,9 @@ import com.rany.ops.common.enums.DeleteStatusEnum;
 import com.rany.ops.common.exception.BusinessErrorMessage;
 import com.rany.ops.common.params.TenantPageSearchParam;
 import com.rany.ops.common.params.TenantSearchParam;
-import com.rany.ops.common.util.SnowflakeIdWorker;
 import com.rany.ops.domain.aggregate.Isv;
 import com.rany.ops.domain.aggregate.Tenant;
 import com.rany.ops.domain.pk.TenantId;
-import com.rany.ops.domain.repository.AccountRepository;
 import com.rany.ops.domain.repository.IsvRepository;
 import com.rany.ops.domain.repository.TenantRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -34,17 +32,10 @@ import java.util.Objects;
 @Slf4j
 @Component
 public class TenantDomainService {
-
     @Resource
     private IsvRepository isvRepository;
-
-    @Resource
-    private AccountRepository accountRepository;
     @Resource
     private TenantRepository tenantRepository;
-
-    @Resource
-    private SnowflakeIdWorker snowflakeIdWorker;
 
     public Boolean save(Tenant tenant) {
         Isv isv = isvRepository.find(tenant.getIsvId());

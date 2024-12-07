@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.rany.ops.common.enums.DeleteStatusEnum;
 import com.rany.ops.common.params.IsvSearchParam;
 import com.rany.ops.domain.aggregate.Isv;
+import com.rany.ops.domain.page.PageUtils;
 import com.rany.ops.domain.page.annotation.PagingQuery;
 import com.rany.ops.domain.pk.IsvId;
 import com.rany.ops.domain.repository.IsvRepository;
@@ -71,13 +72,7 @@ public class IsvRepositoryImpl implements IsvRepository {
         List<IsvPO> list = isvDao.page(isvPageQuery);
         PageInfo<IsvPO> pageInfo = new PageInfo<>(list);
         List<Isv> isvList = isvDataConvertor.targetToSource(list);
-        Page<Isv> pageDTO = new Page<>();
-        pageDTO.setPageNo(pageInfo.getPageNum());
-        pageDTO.setPageSize(pageInfo.getPageSize());
-        pageDTO.setTotalPage(pageInfo.getPages());
-        pageDTO.setTotal(Long.valueOf(pageInfo.getTotal()).intValue());
-        pageDTO.setItems(isvList);
-        return pageDTO;
+        return PageUtils.build(pageInfo, isvList);
     }
 
 }

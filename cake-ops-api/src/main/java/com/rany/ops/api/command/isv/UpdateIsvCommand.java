@@ -1,6 +1,6 @@
 package com.rany.ops.api.command.isv;
 
-import com.rany.ops.common.base.DTO;
+import com.rany.ops.common.base.BaseCommand;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UpdateIsvCommand extends DTO {
+public class UpdateIsvCommand extends BaseCommand {
     private Long id;
     private String name;
     private String shortName;

@@ -2,6 +2,7 @@ package com.rany.ops.common.dto.account;
 
 import com.rany.ops.common.base.DTO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -14,12 +15,13 @@ import java.util.Date;
  * @email 18668485565163.com
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class AccountDTO extends DTO {
-    private Long id;
+    private String id;
     private String accountName;
     private String phone;
     private String email;
-    private Long tenantId;
+    private String tenantId;
     private Boolean isAdmin;
     private String accountType;
     private String status;
