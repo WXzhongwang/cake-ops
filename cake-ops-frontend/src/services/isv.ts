@@ -3,6 +3,7 @@ import {
     DeleteIsvPayload,
     DisableIsvPayload,
     EnableIsvPayload,
+    ListIsvPayload,
     QueryIsvPayload,
     UpdateIsvPayload,
 } from "@/models/isv";
@@ -10,6 +11,13 @@ import request from "@/services/request";
 
 export async function fetchIsvList(data: QueryIsvPayload) {
     return request("/api/ops/isv/page", {
+        method: "POST",
+        data,
+    });
+}
+
+export async function listIsv(data: ListIsvPayload) {
+    return request("/api/ops/isv/list", {
         method: "POST",
         data,
     });

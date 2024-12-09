@@ -42,7 +42,7 @@ const CreateTenantForm: React.FC<CreateTenantFormProps> = ({
     <Form form={form} layout="vertical" onFinish={handleSubmit}>
       <Form.Item
         name="name"
-        label="Isv名称"
+        label="租户名称"
         rules={[{ required: true, message: "请输入Isv名称" }]}
       >
         <Input placeholder="请输入Isv名称" />
@@ -50,7 +50,7 @@ const CreateTenantForm: React.FC<CreateTenantFormProps> = ({
 
       <Form.Item
         name="shortName"
-        label="Isv 简称"
+        label="租户简称"
         rules={[{ required: true, message: "请输入Isv 简称" }]}
       >
         <Input placeholder="请输入Isv简称" />
@@ -73,11 +73,15 @@ const CreateTenantForm: React.FC<CreateTenantFormProps> = ({
       </Form.Item>
 
       <Form.Item
-        name="country"
-        label="国家"
+        name="source"
+        label="来源"
         rules={[{ required: false, message: "请输入国家" }]}
       >
-        <Input placeholder="请输入国家" />
+          <Select placeholder="请输入来源">
+            <Option value="self">自建</Option>
+            <Option value="open">外拓</Option>
+            <Option value="dev">开发</Option>
+          </Select>
       </Form.Item>
 
       <Form.Item

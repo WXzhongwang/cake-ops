@@ -3,7 +3,7 @@ import { API, BaseAction } from "typings";
 import { message } from "antd";
 
 export interface IsvDTO {
-  id: number;
+  id: string;
   name: string;
   shortName: string;
   email: string;
@@ -25,6 +25,12 @@ export interface QueryIsvPayload {
   pageSize: number;
 }
 
+
+export interface ListIsvPayload {
+  name: string;
+}
+
+
 export interface CreateIsvPayload {
   name: string;
   shortName: string;
@@ -35,24 +41,29 @@ export interface CreateIsvPayload {
 }
 
 export interface DeleteIsvPayload {
-  id: number;
+  id: string;
 }
 
 export interface EnableIsvPayload {
-  id: number;
+  id: string;
 }
 
 export interface DisableIsvPayload {
-  id: number;
+  id: string;
 }
 
 export interface UpdateIsvPayload extends CreateIsvPayload {
-  id: number;
+  id: string;
 }
 
 interface QueryIsvAction extends BaseAction {
   type: "isv/pageIsv";
   payload: QueryIsvPayload;
+}
+
+interface ListIsvAction extends BaseAction {
+  type: "isv/listIsv";
+  payload: ListIsvPayload;
 }
 
 interface CreateIsvAction extends BaseAction {
@@ -87,6 +98,19 @@ const IsvModel = {
     *fetchIsvList({ payload, callback }: QueryIsvAction, { call, put }) {
       const response: API.ResponseBody<API.Page<IsvDTO>> = yield call(
         api.fetchIsvList,
+        payload
+      );
+      const { success, msg } = response;
+      // 调用回调函数
+      if (success && callback && typeof callback === "function") {
+        callback(response.content);
+      } else {
+        message.error(msg);
+      }
+    },
+    *listIsv({ payload, callback }: ListIsvAction, { call, put }) {
+      const response: API.ResponseBody<API.ResponseBody<IsvDTO[]>> = yield call(
+        api.listIsv,
         payload
       );
       const { success, msg } = response;
@@ -153,3 +177,4 @@ const IsvModel = {
 };
 
 export default IsvModel;
+

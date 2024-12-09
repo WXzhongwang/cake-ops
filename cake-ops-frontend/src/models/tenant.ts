@@ -5,6 +5,7 @@ import { message } from "antd";
 export interface TenantDTO {
   id: number;
   isvId: number;
+  isvName: string;
   name: string;
   shortName: string;
   email: string;

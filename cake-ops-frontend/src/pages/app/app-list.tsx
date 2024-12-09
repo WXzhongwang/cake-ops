@@ -14,120 +14,120 @@ import {
   message,
 } from "antd";
 import { connect, Dispatch } from "umi";
-import { IsvDTO } from "@/models/isv";
-import { create, update } from "@/services/isv";
-import CreateIsvForm from "./components/create-isv-form";
+import { AppDTO } from "@/models/app";
+import { create, update } from "@/services/app";
+import CreateAppForm from "./components/create-app-form";
 import { API } from "typings";
 import { UserRoleMenuDTO } from "@/models/user";
 import dayjs from "dayjs";
 import { ColumnsType } from "antd/lib/table";
 import Paragraph from "antd/lib/typography/Paragraph";
 
-interface IsvListProps {
+interface AppListProps {
   dispatch: Dispatch;
 }
 
-const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
+const AppList: React.FC<AppListProps> = ({ dispatch }) => {
   const [pagination, setPagination] = useState({ pageNo: 1, pageSize: 10 });
-  const [isvList, setIsvList] = useState<IsvDTO[]>([]);
+  const [appList, setAppList] = useState<AppDTO[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [filters, setFilters] = useState({
     name: "",
   }); // 初始化筛选条件为空对象
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const [editingIsv, setEditingIsv] = useState<IsvDTO | undefined>(undefined);
+  const [editingApp, setEditingApp] = useState<AppDTO | undefined>(undefined);
   const [form] = Form.useForm();
 
   useEffect(() => {
-    fetchIsvList();
+    fetchAppList();
   }, [pagination, filters]);
 
-  const fetchIsvList = () => {
+  const fetchAppList = () => {
     dispatch({
-      type: "isv/fetchIsvList",
+      type: "app/fetchAppList",
       payload: { ...pagination, ...filters },
-      callback: (res: API.Page<IsvDTO>) => {
-        setIsvList(res.items);
+      callback: (res: API.Page<AppDTO>) => {
+        setAppList(res.items);
         setTotal(res.total);
       },
     });
   };
 
-  const handleEdit = (webhook: IsvDTO) => {
-    setEditingIsv(webhook);
+  const handleEdit = (app: AppDTO) => {
+    setEditingApp(app);
     setDrawerVisible(true);
   };
 
-  const handleDelete = (isvId: string) => {
+  const handleDelete = (appId: string) => {
     dispatch({
-      type: "isv/delete",
-      payload: { id: isvId },
+      type: "app/delete",
+      payload: { id: appId },
     });
-    fetchIsvList();
+    fetchAppList();
   };
 
-  const handleDisabled = (isvId: string) => {
+  const handleDisabled = (appId: string) => {
     dispatch({
-      type: "isv/disable",
-      payload: { id: isvId },
+      type: "app/disable",
+      payload: { id: appId },
       callback: (success: boolean) => {
         if (success) {
           message.success("处理成功");
         }
       },
     });
-    fetchIsvList();
+    fetchAppList();
   };
 
-  const handleEnable = (isvId: string) => {
+  const handleEnable = (appId: string) => {
     dispatch({
-      type: "isv/enable",
-      payload: { id: isvId },
+      type: "app/enable",
+      payload: { id: appId },
       callback: (success: boolean) => {
         if (success) {
           message.success("处理成功");
         }
       },
     });
-    fetchIsvList();
+    fetchAppList();
   };
 
   const handlePaginationChange = (page: number, pageSize?: number) => {
     setPagination({ pageNo: page, pageSize: pageSize || 10 });
   };
 
-  const handleAddIsv = () => {
+  const handleAddApp = () => {
     setDrawerVisible(true);
   };
 
   const handleCloseDrawer = () => {
     setDrawerVisible(false);
     form.resetFields();
-    setEditingIsv(undefined);
+    setEditingApp(undefined);
   };
 
-  const handleSaveIsv = async (values: IsvDTO) => {
+  const handleSaveApp = async (values: AppDTO) => {
     try {
-      if (editingIsv) {
-        await update({ ...values, id: editingIsv.id });
+      if (editingApp) {
+        await update({ ...values, id: editingApp.id });
       } else {
         await create(values);
       }
-      fetchIsvList();
+      fetchAppList();
       setDrawerVisible(false);
       form.resetFields();
     } catch (error) {
-      console.error("保存Isv失败:", error);
+      console.error("保存App失败:", error);
     }
   };
 
-  const columns: ColumnsType<IsvDTO> = [
+  const columns: ColumnsType<AppDTO> = [
     {
       title: "ID",
       dataIndex: "id",
       key: "id",
       fixed: "left",
-      render: (text: any, record: IsvDTO) => {
+      render: (text: any, record: AppDTO) => {
         return (
           <Paragraph
             copyable={{ tooltips: ["点击复制", "复制成功"] }}
@@ -140,57 +140,21 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
     },
     {
       title: "名称",
-      dataIndex: "name",
+      dataIndex: "appName",
       key: "name",
     },
     {
-      title: "简称",
-      dataIndex: "shortName",
-      key: "shortName",
-    },
-    {
-      title: "租户数量",
-      dataIndex: "tenantCount",
-      key: "tenantCount",
-      render: (text: any, record: IsvDTO) => {
+      title: "应用编码",
+      dataIndex: "appCode",
+      key: "appCode",
+      render: (text: any, record: AppDTO) => {
         return (
-          <>
-            {record.tenantsCount} / {record.maxTenants}
-          </>
-        );
-      },
-    },
-    {
-      title: "邮箱",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "国家",
-      dataIndex: "country",
-      key: "country",
-    },
-    {
-      title: "网址",
-      dataIndex: "url",
-      key: "url",
-    },
-    {
-      title: "联系方式",
-      dataIndex: "phone",
-      key: "phone",
-    },
-    {
-      title: "地址",
-      dataIndex: "address",
-      key: "address",
-      render: (text: any, record: IsvDTO) => {
-        return (
-          <>
-            {record.address === undefined || record.address === null
-              ? "未知"
-              : record.address}
-          </>
+          <Paragraph
+            copyable={{ tooltips: ["点击复制", "复制成功"] }}
+            style={{ display: "inline" }}
+          >
+            {record.appCode}
+          </Paragraph>
         );
       },
     },
@@ -198,7 +162,7 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
       title: "创建时间",
       dataIndex: "gmtCreate",
       key: "gmtCreate",
-      render: (text: any, record: IsvDTO) => {
+      render: (text: any, record: AppDTO) => {
         return (
           <div>{dayjs(record?.gmtCreate).format("YYYY-MM-DD HH:mm:ss")}</div>
         );
@@ -208,17 +172,17 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
       title: "修改时间",
       dataIndex: "gmtModified",
       key: "gmtModified",
-      render: (text: any, record: IsvDTO) => {
+      render: (text: any, record: AppDTO) => {
         return (
           <div>{dayjs(record?.gmtModified).format("YYYY-MM-DD HH:mm:ss")}</div>
         );
       },
     },
     {
-      title: "类型",
+      title: "状态",
       dataIndex: "status",
       key: "status",
-      render: (text: any, record: IsvDTO) => {
+      render: (text: any, record: AppDTO) => {
         return (
           <Tag color={record.status === "0" ? "success" : "error"}>
             {record.status === "0" ? "已启用" : "已停用"}
@@ -229,7 +193,7 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
     {
       title: "操作",
       key: "action",
-      render: (text: any, record: IsvDTO) => (
+      render: (text: any, record: AppDTO) => (
         <Space size="middle">
           {record.status === "0" ? (
             <a onClick={() => handleDisabled(record.id)}>禁用</a>
@@ -244,7 +208,7 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
   ];
 
   return (
-    <PageContainer title="ISV管理">
+    <PageContainer title="应用列表">
       <Card>
         <Space size="middle" direction="vertical" style={{ width: "100%" }}>
           <Form
@@ -275,13 +239,13 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
               </Button>
             </Form.Item>
           </Form>
-          <Button type="primary" onClick={handleAddIsv}>
-            新增ISV
+          <Button type="primary" onClick={handleAddApp}>
+            新增App
           </Button>
           <Table
             scroll={{ x: "max-content" }}
             columns={columns}
-            dataSource={isvList}
+            dataSource={appList}
             rowKey="id"
             pagination={{
               total,
@@ -294,16 +258,16 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
       </Card>
 
       <Drawer
-        title={editingIsv ? "编辑Isv" : "新增Isv"}
+        title={editingApp ? "编辑应用" : "新增应用"}
         width={400}
         open={drawerVisible}
         onClose={handleCloseDrawer}
         destroyOnClose={true}
       >
-        <CreateIsvForm
-          initialValues={editingIsv}
-          onSave={handleSaveIsv}
-          onUpdate={handleSaveIsv}
+        <CreateAppForm
+          initialValues={editingApp}
+          onSave={handleSaveApp}
+          onUpdate={handleSaveApp}
           onCancel={handleCloseDrawer}
         />
       </Drawer>
@@ -325,4 +289,4 @@ export default connect(
     userData: user.userData,
     menu: user.menu,
   })
-)(IsvList);
+)(AppList);

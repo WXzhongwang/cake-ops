@@ -1,44 +1,56 @@
+import { SmileFilled, TabletFilled } from "@ant-design/icons";
+
 export default {
     // 布局路由配置
     route: {
         path: "/",
-        redirect: "/isv",
-        // routes: [
-        //     {
-        //         path: "/isv",
-        //         icon: <SmileFilled/>,
-        //         component: "isv/isv-list",
-        //         name: "ISV管理",
-        //     },
-        //     {
-        //         path: "/tenant",
-        //         icon: <SmileFilled/>,
-        //         component: "tenant/tenant-list",
-        //         name: "租户管理",
-        //         routes: [
-        //             {
-        //                 path: "/tenant/account-list",
-        //                 name: "租户账号",
-        //                 icon: <TabletFilled/>,
-        //                 component: "tenant/account-list",
-        //             }
-        //         ]
-        //     },
-        //     {
-        //         path: "/application",
-        //         icon: <SmileFilled/>,
-        //         component: "application/app-list",
-        //         name: "应用管理",
-        //         routes: [
-        //             {
-        //                 path: "/application/menu-tree",
-        //                 name: "应用菜单",
-        //                 icon: <TabletFilled/>,
-        //                 component: "application/menu-tree",
-        //             }
-        //         ]
-        //     }
-        // ],
+        redirect: "/uic",
+        routes: [
+            {
+                path: "/uic",
+                icon: <SmileFilled/>,
+                name: "账号中心",
+                children:[
+                    {
+                        path: "/uic/isv",
+                        icon: <SmileFilled/>,
+                        component: "isv/isv-list",
+                        name: "ISV管理",
+                    },
+                    {
+                        path: "/uic/tenant",
+                        icon: <SmileFilled/>,
+                        component: "tenant/tenant-list",
+                        name: "租户管理",
+                    },
+                    {
+                        path: "/uic/account",
+                        name: "账号管理",
+                        icon: <TabletFilled/>,
+                        component: "tenant/account-list",
+                    },
+                ]
+            },
+            {
+                path: "/acl",
+                icon: <SmileFilled/>,
+                name: "权限中心",
+                children:[
+                    {
+                        path: "/acl/app",
+                        icon: <SmileFilled/>,
+                        component: "app/app-list",
+                        name: "应用管理",
+                    },
+                    {
+                        path: "/acl/menu-tree",
+                        name: "应用菜单",
+                        icon: <TabletFilled/>,
+                        component: "app/menu-tree",
+                    }
+                ]
+            },
+        ],
     },
     location: {
         pathname: "/",
