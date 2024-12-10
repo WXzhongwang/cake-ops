@@ -193,7 +193,7 @@ public class MenuFacadeImpl implements MenuFacade {
             menu.setName(modifyMenuCommand.getName());
         }
         if (StringUtils.isNotEmpty(modifyMenuCommand.getPath())) {
-            menu.setName(modifyMenuCommand.getPath());
+            menu.setPath(modifyMenuCommand.getPath());
         }
         if (StringUtils.isNotEmpty(modifyMenuCommand.getIcon())) {
             menu.setIcon(modifyMenuCommand.getIcon());
