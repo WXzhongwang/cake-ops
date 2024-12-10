@@ -1,5 +1,6 @@
 package com.rany.ops.web.controller.acl;
 
+import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.Page;
 import com.cake.framework.common.response.PageResult;
 import com.cake.framework.common.response.PojoResult;
@@ -7,6 +8,7 @@ import com.rany.ops.api.command.application.*;
 import com.rany.ops.api.facade.application.ApplicationFacade;
 import com.rany.ops.api.query.application.ApplicationBasicQuery;
 import com.rany.ops.api.query.application.ApplicationPageQuery;
+import com.rany.ops.api.query.application.ApplicationQuery;
 import com.rany.ops.common.dto.application.ApplicationDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * application
@@ -32,6 +35,13 @@ public class ApplicationController {
         Page<ApplicationDTO> page = applicationFacade.pageApplications(appPageQuery);
         return PageResult.succeed(page);
     }
+
+    @PostMapping("/list")
+    public ListResult<ApplicationDTO> list(@RequestBody ApplicationQuery applicationQuery) {
+        List<ApplicationDTO> result = applicationFacade.findApplications(applicationQuery);
+        return ListResult.succeed(result);
+    }
+
 
     @PostMapping("/get")
     public PojoResult<ApplicationDTO> get(ApplicationBasicQuery query) {

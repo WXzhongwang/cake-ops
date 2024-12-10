@@ -29,14 +29,14 @@ public class MenuController {
     private MenuFacade menuFacade;
 
     @PostMapping("/get-menu-tree")
-    public ListResult<MenuTreeDTO> getMenuTree(MenuTreeQuery menuTreeQuery) {
+    public ListResult<MenuTreeDTO> getMenuTree(@RequestBody MenuTreeQuery menuTreeQuery) {
         List<MenuTreeDTO> menuTree = menuFacade.getMenuTree(menuTreeQuery);
         return ListResult.succeed(menuTree);
     }
 
 
     @PostMapping("/get")
-    public PojoResult<MenuDTO> get(MenuBasicQuery query) {
+    public PojoResult<MenuDTO> get(@RequestBody MenuBasicQuery query) {
         MenuDTO menu = menuFacade.getMenu(query);
         return PojoResult.succeed(menu);
     }

@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
-import { Form, Input, Button, Space, Select } from 'antd';
-import { AppDTO } from '@/models/app';
+import React, { useEffect } from "react";
+import { Form, Input, Button, Space, Select } from "antd";
+import { AppDTO } from "@/models/app";
 
 const { Option } = Select;
-
 
 interface CreateAppFormProps {
   initialValues?: AppDTO;
@@ -35,7 +34,7 @@ const CreateAppForm: React.FC<CreateAppFormProps> = ({
         onSave(values);
       }
     } catch (error) {
-      console.error('表单验证失败:', error);
+      console.error("表单验证失败:", error);
     }
   };
 
@@ -44,14 +43,14 @@ const CreateAppForm: React.FC<CreateAppFormProps> = ({
       <Form.Item
         name="appName"
         label="名称"
-        rules={[{ required: true, message: '请输入应用名称' }]}
+        rules={[{ required: true, message: "请输入应用名称" }]}
       >
         <Input placeholder="请输入应用名称" />
       </Form.Item>
       <Form.Item
         name="appCode"
         label="应用编码"
-        rules={[{ required: true, message: '请输入应用编码' }]}
+        rules={[{ required: true, message: "请输入应用编码" }]}
       >
         <Input placeholder="请输入应用编码" />
       </Form.Item>
@@ -59,10 +58,10 @@ const CreateAppForm: React.FC<CreateAppFormProps> = ({
       <Form.Item
         name="authType"
         label="应用认证方式"
-        rules={[{ required: true, message: '请输入应用认证方式' }]}
+        rules={[{ required: true, message: "请输入应用认证方式" }]}
       >
         <Select placeholder="认证类型">
-          <Option value="BASIC">基础认证</Option>
+          <Option value="RBAC0">基础认证</Option>
         </Select>
       </Form.Item>
 

@@ -240,7 +240,7 @@ const AppList: React.FC<AppListProps> = ({ dispatch }) => {
             </Form.Item>
           </Form>
           <Button type="primary" onClick={handleAddApp}>
-            新增App
+            新增应用
           </Button>
           <Table
             scroll={{ x: "max-content" }}

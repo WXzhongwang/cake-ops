@@ -40,7 +40,7 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
   const [total, setTotal] = useState<number>(0);
   const [filters, setFilters] = useState({
     name: "",
-    isvId: ""
+    isvId: "",
   }); // 初始化筛选条件为空对象
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [editingTenant, setEditingTenant] = useState<TenantDTO | undefined>(
@@ -48,7 +48,7 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
   );
   const [form] = Form.useForm();
   // 假设我们有一个获取ISV数据的方法
-const [isvOptions, setIsvOptions] = useState<ISVOption[]>([]);
+  const [isvOptions, setIsvOptions] = useState<ISVOption[]>([]);
 
   useEffect(() => {
     // 获取ISV数据
@@ -64,8 +64,11 @@ const [isvOptions, setIsvOptions] = useState<ISVOption[]>([]);
       type: "isv/listIsv",
       payload: { name: name },
       callback: (res: API.ResponseBody<IsvDTO[]>) => {
-        const isvList: IsvDTO[] = res.content
-        const data = isvList.map((isv: IsvDTO) => ({ value: isv.id, label: isv.name }));
+        const isvList: IsvDTO[] = res.content;
+        const data = isvList.map((isv: IsvDTO) => ({
+          value: isv.id,
+          label: isv.name,
+        }));
         setIsvOptions(data);
       },
     });
@@ -265,23 +268,19 @@ const [isvOptions, setIsvOptions] = useState<ISVOption[]>([]);
               setFilters(values);
             }}
           >
-             <Form.Item name="isv" label="ISV">
+            <Form.Item name="isv" label="ISV">
               <Select
                 showSearch
                 style={{ width: 200 }}
                 placeholder="请选择或输入ISV"
                 optionFilterProp="children"
-                // filterOption={(input, option) =>
-                //   (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                // }
                 options={isvOptions}
               />
             </Form.Item>
-            
+
             <Form.Item name="name" label="租户名称">
               <Input placeholder="请输入租户名称" />
             </Form.Item>
-
 
             <Form.Item>
               <Button
@@ -295,7 +294,7 @@ const [isvOptions, setIsvOptions] = useState<ISVOption[]>([]);
                 onClick={() => {
                   setFilters({
                     name: "",
-                    isvId: ""
+                    isvId: "",
                   });
                 }}
               >
