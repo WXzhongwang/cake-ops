@@ -1,7 +1,16 @@
 // src/pages/app/menu-tree.tsx
 import React, { useEffect, useState } from "react";
 import { PageContainer } from "@ant-design/pro-components";
-import { Button, Form, Input, Layout, Radio, Select, Tree } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Layout,
+  message,
+  Radio,
+  Select,
+  Tree,
+} from "antd";
 import { connect, Dispatch } from "umi";
 import { API } from "typings";
 import { MenuTreeDTO, UserRoleMenuDTO } from "@/models/user";
@@ -102,7 +111,10 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
     console.log("Selected key:", selectedKey);
     const menuItem = findMenuItem(appMenu, selectedKey);
     setSelectedMenuItem(menuItem);
-    form.setFieldsValue(menuItem);
+    form.setFieldsValue({
+      ...menuItem,
+      hidden: menuItem?.hidden ? "true" : "false",
+    });
   };
 
   // 获取所有图标并创建选项数组
@@ -143,6 +155,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
       callback: (res: any) => {
         // 处理响应
         console.log("Update response:", res);
+        message.success("更新成功");
       },
     });
   };
@@ -172,37 +185,44 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
         </Layout.Sider>
         <Layout.Content style={{ padding: 16 }}>
           {selectedMenuItem && (
-            <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
+            <Form
+              form={form}
+              //   initialValues={{
+              //     ...selectedMenuItem,
+              //     hidden: selectedMenuItem.hidden ? "true" : "false",
+              //   }}
+              layout="vertical"
+              onFinish={handleFormSubmit}
+            >
               <Form.Item label="菜单ID" name="menuId">
-                <Input value={selectedMenuItem.menuId} disabled />
+                <Input disabled />
               </Form.Item>
               <Form.Item label="菜单名称" name="name">
-                <Input value={selectedMenuItem.name} />
+                <Input />
               </Form.Item>
               <Form.Item label="图标" name="icon">
                 <Select
                   placeholder="选择图标"
                   options={icons}
                   style={{ width: "100%" }}
-                  value={selectedMenuItem.icon}
                   onChange={(value: any) => {
-                    console.log(value);
                     form.setFieldsValue({ icon: value });
                   }}
+                  showSearch
                   filterOption={filterIconOptions}
                 />
               </Form.Item>
               <Form.Item label="路径" name="path">
-                <Input value={selectedMenuItem.path} />
+                <Input />
               </Form.Item>
               <Form.Item label="是否隐藏" name="hidden">
-                <Radio.Group value={selectedMenuItem.hidden}>
+                <Radio.Group>
                   <Radio value="false"> 否 </Radio>
                   <Radio value="true"> 是 </Radio>
                 </Radio.Group>
               </Form.Item>
               <Form.Item label="排序" name="sort">
-                <Input value={selectedMenuItem.sort} />
+                <Input />
               </Form.Item>
               <Form.Item>
                 <Button type="primary" htmlType="submit">
