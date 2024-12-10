@@ -34,6 +34,13 @@ export default defineConfig({
     { path: "/", redirect: "/uic/isv" },
     { path: "/uic/isv", component: "isv/isv-list", name: "ISV列表" },
     { path: "/uic/tenant", component: "tenant/tenant-list", name: "租户列表" },
+    {
+      path: "/uic/account",
+      component: "tenant/account-list",
+      name: "账号列表",
+    },
+    { path: "/acl/app", component: "app/app-list", name: "应用列表" },
+    { path: "/acl/menu-tree", component: "app/menu-tree", name: "应用菜单" },
   ],
   npmClient: "pnpm",
   dva: {},

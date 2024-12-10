@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  * @author zhongshengwang
  */
 @RestController
-@RequestMapping("/api/ops/application")
+@RequestMapping("/api/ops/app")
 public class ApplicationController {
 
     @Resource
