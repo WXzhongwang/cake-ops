@@ -2,6 +2,7 @@ package com.rany.ops.api.command.application;
 
 import com.rany.ops.common.base.BaseCommand;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * TODO
@@ -12,11 +13,12 @@ import lombok.Data;
  * @email 18668485565163.com
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class EnableApplicationCommand extends BaseCommand {
     /**
      * 账号Id
      */
-    private Long appId;
+    private Long id;
 
     /**
      * 租户Id

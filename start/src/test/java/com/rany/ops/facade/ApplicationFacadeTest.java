@@ -51,7 +51,7 @@ public class ApplicationFacadeTest extends BaseTests {
     @Test
     public void disableAccount() {
         DisableApplicationCommand disableApplicationCommand = new DisableApplicationCommand();
-        disableApplicationCommand.setAppId(APP_ID);
+        disableApplicationCommand.setId(APP_ID);
         Boolean success = applicationFacade.disableApplication(disableApplicationCommand);
         Assert.assertTrue(success);
     }
@@ -59,7 +59,7 @@ public class ApplicationFacadeTest extends BaseTests {
     @Test
     public void enableAccount() {
         EnableApplicationCommand enableApplicationCommand = new EnableApplicationCommand();
-        enableApplicationCommand.setAppId(APP_ID);
+        enableApplicationCommand.setId(APP_ID);
         Boolean success = applicationFacade.enableApplication(enableApplicationCommand);
         Assert.assertTrue(success);
     }
@@ -67,7 +67,7 @@ public class ApplicationFacadeTest extends BaseTests {
     @Test
     public void deleteAccount() {
         DeleteApplicationCommand deleteApplicationCommand = new DeleteApplicationCommand();
-        deleteApplicationCommand.setAppId(APP_ID);
+        deleteApplicationCommand.setId(APP_ID);
         Boolean success = applicationFacade.deleteApplication(deleteApplicationCommand);
         Assert.assertTrue(success);
     }
@@ -75,7 +75,7 @@ public class ApplicationFacadeTest extends BaseTests {
     @Test
     public void modifyAccount() {
         ModifyApplicationCommand modifyApplicationCommand = new ModifyApplicationCommand();
-        modifyApplicationCommand.setAppId(APP_ID);
+        modifyApplicationCommand.setId(APP_ID);
         modifyApplicationCommand.setAppName("测试ACL");
         Boolean success = applicationFacade.modifyApplication(modifyApplicationCommand);
         Assert.assertTrue(success);

@@ -98,7 +98,7 @@ public class ApplicationFacadeImpl implements ApplicationFacade {
 
     @Override
     public Boolean disableApplication(DisableApplicationCommand disableApplicationCommand) {
-        Application application = applicationDomainService.findById(new ApplicationId(disableApplicationCommand.getAppId()));
+        Application application = applicationDomainService.findById(new ApplicationId(disableApplicationCommand.getId()));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }
@@ -112,7 +112,7 @@ public class ApplicationFacadeImpl implements ApplicationFacade {
 
     @Override
     public Boolean enableApplication(EnableApplicationCommand enableApplicationCommand) {
-        Application application = applicationDomainService.findById(new ApplicationId(enableApplicationCommand.getAppId()));
+        Application application = applicationDomainService.findById(new ApplicationId(enableApplicationCommand.getId()));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }
@@ -127,7 +127,7 @@ public class ApplicationFacadeImpl implements ApplicationFacade {
     @Override
     public Boolean deleteApplication(DeleteApplicationCommand deleteApplicationCommand) {
         Application application
-                = applicationDomainService.findById(new ApplicationId(deleteApplicationCommand.getAppId()));
+                = applicationDomainService.findById(new ApplicationId(deleteApplicationCommand.getId()));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }
@@ -138,7 +138,7 @@ public class ApplicationFacadeImpl implements ApplicationFacade {
 
     @Override
     public Boolean modifyApplication(ModifyApplicationCommand modifyApplicationCommand) {
-        Application application = applicationDomainService.findById(new ApplicationId(modifyApplicationCommand.getAppId()));
+        Application application = applicationDomainService.findById(new ApplicationId(modifyApplicationCommand.getId()));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }
