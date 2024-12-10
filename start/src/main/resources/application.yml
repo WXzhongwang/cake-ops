@@ -13,7 +13,7 @@ cms:
   oss:
     endpoint: https://rany-ops.oss-cn-hangzhou.aliyuncs.com
   page:
-    version: 1.0.19
+    version: 1.0.21
     path: cake-ops-frontend/${cms.page.version}/index.html
   site:
     name: cake-ops-frontend

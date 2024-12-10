@@ -41,6 +41,7 @@ export default defineConfig({
     },
     { path: "/acl/app", component: "app/app-list", name: "应用列表" },
     { path: "/acl/menu-tree", component: "app/menu-tree", name: "应用菜单" },
+    { path: "/acl/role-list", component: "app/role-list", name: "角色列表" },
   ],
   npmClient: "pnpm",
   dva: {},
