@@ -30,7 +30,7 @@ dubbo:
   metadata-report:
     address: zookeeper://127.0.0.1:2181
   scan:
-    basePackages: com.rany.ops
+    basePackages: com.rany.ops.api
 
 spring:
   application:

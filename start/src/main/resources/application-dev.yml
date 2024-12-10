@@ -6,7 +6,12 @@ logging:
     path: /Users/yuanjinxiu/cake-ops/logs
 
 dubbo:
+  config-center:
+    address: zookeeper://127.0.0.1:2181
   registry:
+    address: zookeeper://127.0.0.1:2181
+    client: curator
+  metadata-report:
     address: zookeeper://127.0.0.1:2181
 
 easy:
