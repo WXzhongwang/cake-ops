@@ -19,4 +19,5 @@ public class ApplicationDTO extends DTO {
     private String authType;
     private String appName;
     private String appCode;
+    private String status;
 }
