@@ -6,7 +6,6 @@ import com.cake.framework.common.response.PageResult;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.command.account.*;
 import com.rany.ops.api.facade.account.AccountFacade;
-import com.rany.ops.api.facade.grant.RbacQueryFacade;
 import com.rany.ops.api.query.account.AccountBasicQuery;
 import com.rany.ops.api.query.account.AccountPageQuery;
 import com.rany.ops.api.query.account.AccountQuery;
@@ -29,8 +28,6 @@ import java.util.List;
 public class TenantAccountController {
     @Resource
     private AccountFacade accountFacade;
-    @Resource
-    private RbacQueryFacade rbacQueryFacade;
 
     @PostMapping("/page")
     public PageResult<AccountDTO> page(@RequestBody AccountPageQuery appPageQuery) {
@@ -92,10 +89,4 @@ public class TenantAccountController {
         List<AccountDTO> accounts = accountFacade.findAccounts(command);
         return ListResult.succeed(accounts);
     }
-
-//    @PostMapping("/get-user-menu")
-//    public PojoResult<UserRoleMenuDTO> getUserRbacModel(@RequestBody UserRoleMenuPermissionQuery query) {
-//        UserRoleMenuDTO userRbacModel = rbacQueryFacade.getUserRbacModel(query);
-//        return PojoResult.succeed(userRbacModel);
-//    }
 }
