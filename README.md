@@ -2,20 +2,10 @@
 
 # 介绍
 
-**cake-ops** 是一个基于 SpringBoot + UIC + ACL + RBAC + ABAC 的服务端应用, 应用，账号，角色，菜单，授权 统一管控。
+**cake-ops** 是一个基于 SpringBoot + UIC + ACL 的服务端应用, 应用，账号，角色，菜单，授权 统一管控。
 
 1. springboot 2.2.6.RELEASE
-2. RBAC+ABAC
-3. UIC (为简化部署，将这两部分融合开发)
-
-**特性:**
-
-- [x] ** springboot **  : 接入快速，支持tomcat+webflux快速接入
-- [x] ** 自定义错误处理 ** : 支持自定义错误处理
-- [x] ** 多租户 ** : 多租户
-- [x] ** RBAC 模型 ** :  支持应用级别+租户级别 RBAC模型
-- [ ] ** ACL 模型 ** :   计划支持应用级别+租户级别 ACL 模型
-- [ ] ** ABAC 模型 ** :  计划支持应用级别+租户级别 ABAC 模型
+2. RBAC
 
 # 模型
 
@@ -35,6 +25,8 @@
 参考：
 ![RBAC模型](https://github.com/WXzhongwang/cake-acl-center/blob/main/RBAC.png)
 
+![租户账号模型](https://github.com/WXzhongwang/cake-ops/blob/main/WX20231015-225622@2x.png)
+
 # 快速使用
 
 ## GAV
@@ -49,19 +41,319 @@
 
 ```
 
+## ISV接口
+
+```java
+package com.rany.ops.api.facade.isv;
+
+import com.cake.framework.common.response.Page;
+import com.rany.ops.api.command.isv.*;
+import com.rany.ops.api.query.isv.IsvBasicQuery;
+import com.rany.ops.api.query.isv.IsvPageQuery;
+import com.rany.ops.common.dto.isv.IsvDTO;
+
+/**
+ * IsvFacade
+ *
+ * @author zhongshengwang
+ * @description IsvFacade
+ * @date 2022/11/15 22:21
+ * @email 18668485565163.com
+ */
+public interface IsvFacade {
+
+
+    /**
+     * 创建ISV
+     *
+     * @param createIsvCommand 指令
+     * @return isv id
+     */
+    Long createIsv(CreateIsvCommand createIsvCommand);
+
+    /**
+     * 更新ISV
+     *
+     * @param command 指令
+     * @return 是否成功
+     */
+    Boolean updateIsv(UpdateIsvCommand command);
+
+
+    /**
+     * ISV 删除
+     *
+     * @param deleteIsvCommand 指令
+     * @return 是否成功
+     */
+    Boolean deleteIsv(DeleteIsvCommand deleteIsvCommand);
+
+
+    /**
+     * 禁用ISV
+     *
+     * @param disableIsvCommand 指令
+     * @return 是否成功
+     */
+    Boolean disableIsv(DisableIsvCommand disableIsvCommand);
+
+
+    /**
+     * 启用ISV
+     *
+     * @param enableIsvCommand 指令
+     * @return 是否成功
+     */
+    Boolean enableIsv(EnableIsvCommand enableIsvCommand);
+
+
+    /**
+     * 查询ISV基本信息
+     *
+     * @param isvBaseQuery isv查询
+     * @return isv
+     */
+    IsvDTO findIsv(IsvBasicQuery isvBaseQuery);
+
+
+    /**
+     * 分页查询ISV信息
+     *
+     * @param isvPageQuery 查询参数
+     * @return 分页结果
+     */
+    Page<IsvDTO> pageIsv(IsvPageQuery isvPageQuery);
+}
+
+```
+
+## 租户管理
+
+```java
+package com.rany.ops.api.facade.tenant;
+
+import com.cake.framework.common.response.Page;
+import com.rany.ops.api.command.tenant.*;
+import com.rany.ops.api.query.tenant.TenantBasicQuery;
+import com.rany.ops.api.query.tenant.TenantPageQuery;
+import com.rany.ops.api.query.tenant.TenantQuery;
+import com.rany.ops.common.dto.tenant.TenantDTO;
+
+import java.util.List;
+
+/**
+ * 租户管理
+ *
+ * @author zhongshengwang
+ * @description 租户管理
+ * @date 2022/11/15 22:21
+ * @email 18668485565163.com
+ */
+public interface TenantFacade {
+
+
+    /**
+     * 创建租户
+     *
+     * @param createTenantCommand
+     * @return
+     */
+    Long createTenant(CreateTenantCommand createTenantCommand);
+
+    /**
+     * 更新租户
+     *
+     * @param modifyTenantCommand
+     * @return
+     */
+    Boolean modifyTenant(ModifyTenantCommand modifyTenantCommand);
+
+    /**
+     * 租户禁用
+     *
+     * @param disableTenantCommand
+     * @return
+     */
+    Boolean disableTenant(DisableTenantCommand disableTenantCommand);
+
+    /**
+     * 启用租户
+     *
+     * @param enableTenantCommand
+     * @return
+     */
+    Boolean enableTenant(EnableTenantCommand enableTenantCommand);
+
+    /**
+     * 启用租户
+     *
+     * @param deleteTenantCommand
+     * @return
+     */
+    Boolean deleteTenant(DeleteTenantCommand deleteTenantCommand);
+
+
+    /**
+     * 查询单个租户信息
+     *
+     * @param tenantBasicQuery
+     * @return
+     */
+    TenantDTO getTenant(TenantBasicQuery tenantBasicQuery);
+
+
+    /**
+     * 查询指定isv全部租户信息
+     *
+     * @param tenantQuery
+     * @return
+     */
+    List<TenantDTO> findTenants(TenantQuery tenantQuery);
+
+    /**
+     * 分页查询租户信息
+     *
+     * @param tenantPageQuery
+     * @return
+     */
+    Page<TenantDTO> pageTenants(TenantPageQuery tenantPageQuery);
+}
+
+```
+
+## 租户账号
+
+```java
+package com.rany.ops.api.facade.account;
+
+import com.cake.framework.common.response.Page;
+import com.rany.ops.api.command.account.*;
+import com.rany.ops.api.query.account.AccountBasicQuery;
+import com.rany.ops.api.query.account.AccountDingIdQuery;
+import com.rany.ops.api.query.account.AccountPageQuery;
+import com.rany.ops.api.query.account.AccountQuery;
+import com.rany.ops.common.dto.account.AccountDTO;
+
+import java.util.List;
+
+/**
+ * 账号服务
+ *
+ * @author zhongshengwang
+ * @description 账号服务
+ * @date 2022/12/27 20:39
+ * @email 18668485565163.com
+ */
+public interface AccountFacade {
+
+
+    /**
+     * 创建租户账号
+     *
+     * @param command command
+     * @return accountId
+     */
+    Long createAccount(CreateAccountCommand command);
+
+    /**
+     * 获取账号信息
+     *
+     * @param accountBasicQuery query
+     * @return account
+     */
+    AccountDTO getAccount(AccountBasicQuery accountBasicQuery);
+
+
+    /**
+     * 获取账号信息
+     *
+     * @param accountBasicQuery query
+     * @return account
+     */
+    AccountDTO getAccountByDingId(AccountDingIdQuery accountBasicQuery);
+
+    /**
+     * 账号禁用
+     *
+     * @param disableAccountCommand 指令
+     * @return success
+     */
+    Boolean disableAccount(DisableAccountCommand disableAccountCommand);
+
+    /**
+     * 启用账号
+     *
+     * @param enableAccountCommand 指令
+     * @return success
+     */
+    Boolean enableAccount(EnableAccountCommand enableAccountCommand);
+
+    /**
+     * 删除账户
+     *
+     * @param deleteAccountCommand 指令
+     * @return success
+     */
+    Boolean deleteAccount(DeleteAccountCommand deleteAccountCommand);
+
+    /**
+     * 更新账号基本信息
+     *
+     * @param modifyAccountCommand 指令
+     * @return success
+     */
+    Boolean modifyAccount(ModifyAccountCommand modifyAccountCommand);
+
+    /**
+     * 创建登录策略
+     *
+     * @param createSafeStrategyCommand 指令
+     * @return success
+     */
+    Boolean createSafeStrategy(CreateSafeStrategyCommand createSafeStrategyCommand);
+
+    /**
+     * 更新登录策略
+     *
+     * @param updateSafeStrategyCommand 指令
+     * @return success
+     */
+    Boolean updateSafeStrategy(UpdateSafeStrategyCommand updateSafeStrategyCommand);
+
+
+    /**
+     * 分页查询账号
+     *
+     * @param accountQuery 查询
+     * @return 账号
+     */
+    List<AccountDTO> findAccounts(AccountQuery accountQuery);
+
+    /**
+     * 查询账号
+     *
+     * @param accountPageQuery 查询
+     * @return 分页
+     */
+    Page<AccountDTO> pageAccounts(AccountPageQuery accountPageQuery);
+
+}
+
+```
+
 ## 应用管理接口
 
 ```java
-package com.rany.acl.api.facade;
+package com.rany.ops.api.facade.application;
 
-import com.cake.framework.common.response.ListResult;
-import com.cake.framework.common.response.PageResult;
-import com.cake.framework.common.response.PojoResult;
-import com.rany.acl.api.command.application.*;
-import com.rany.acl.api.query.application.ApplicationBasicQuery;
-import com.rany.acl.api.query.application.ApplicationPageQuery;
-import com.rany.acl.api.query.application.ApplicationQuery;
+import com.cake.framework.common.response.Page;
+import com.rany.ops.api.command.application.*;
+import com.rany.ops.api.query.application.ApplicationBasicQuery;
+import com.rany.ops.api.query.application.ApplicationPageQuery;
+import com.rany.ops.api.query.application.ApplicationQuery;
 import com.rany.ops.common.dto.application.ApplicationDTO;
+
+import java.util.List;
 
 /**
  * 应用管理
@@ -77,77 +369,78 @@ public interface ApplicationFacade {
     /**
      * 创建应用
      *
-     * @param createApplicationCommand
-     * @return
+     * @param command 指令
+     * @return 应用id
      */
-    PojoResult<Long> createApplication(CreateApplicationCommand createApplicationCommand);
+    Long createApplication(CreateApplicationCommand command);
 
     /**
      * 获取应用信息
      *
-     * @param applicationBasicQuery
-     * @return
+     * @param applicationBasicQuery 查询
+     * @return 应用信息
      */
-    PojoResult<ApplicationDTO> getApplication(ApplicationBasicQuery applicationBasicQuery);
+    ApplicationDTO getApplication(ApplicationBasicQuery applicationBasicQuery);
 
     /**
      * 获取应用信息
      *
-     * @param applicationBasicQuery
-     * @return
+     * @param applicationBasicQuery 查询
+     * @return 应用信息
      */
-    PojoResult<ApplicationDTO> getApplicationByAppCode(ApplicationBasicQuery applicationBasicQuery);
+    ApplicationDTO getApplicationByAppCode(ApplicationBasicQuery applicationBasicQuery);
 
     /**
      * 应用禁用
      *
-     * @param disableApplicationCommand
-     * @return
+     * @param disableApplicationCommand 指令
+     * @return boolean
      */
-    PojoResult<Boolean> disableApplication(DisableApplicationCommand disableApplicationCommand);
+    Boolean disableApplication(DisableApplicationCommand disableApplicationCommand);
 
     /**
      * 启用应用
      *
-     * @param enableApplicationCommand
-     * @return
+     * @param enableApplicationCommand 指令
+     * @return boolean
      */
-    PojoResult<Boolean> enableApplication(EnableApplicationCommand enableApplicationCommand);
+    Boolean enableApplication(EnableApplicationCommand enableApplicationCommand);
 
     /**
      * 删除应用
      *
-     * @param deleteApplicationCommand
-     * @return
+     * @param deleteApplicationCommand 指令
+     * @return boolean
      */
-    PojoResult<Boolean> deleteApplication(DeleteApplicationCommand deleteApplicationCommand);
+    Boolean deleteApplication(DeleteApplicationCommand deleteApplicationCommand);
 
     /**
      * 更新应用基本信息
      *
-     * @param modifyApplicationCommand
-     * @return
+     * @param modifyApplicationCommand 指令
+     * @return boolean
      */
-    PojoResult<Boolean> modifyApplication(ModifyApplicationCommand modifyApplicationCommand);
+    Boolean modifyApplication(ModifyApplicationCommand modifyApplicationCommand);
 
 
     /**
      * 分页查询应用
      *
-     * @param applicationQuery
-     * @return
+     * @param applicationQuery 查询
+     * @return 列表
      */
-    ListResult<ApplicationDTO> findApplications(ApplicationQuery applicationQuery);
+    List<ApplicationDTO> findApplications(ApplicationQuery applicationQuery);
 
     /**
      * 查询应用分页
      *
-     * @param applicationPageQuery
-     * @return
+     * @param applicationPageQuery 查询
+     * @return 分页
      */
-    PageResult<ApplicationDTO> pageApplications(ApplicationPageQuery applicationPageQuery);
+    Page<ApplicationDTO> pageApplications(ApplicationPageQuery applicationPageQuery);
 
 }
+
 
 ```
 
@@ -238,83 +531,85 @@ public interface MenuFacade {
 ## 角色管理接口
 
 ```java
-package com.rany.acl.api.facade;
+package com.rany.ops.api.facade.menu;
 
-import com.cake.framework.common.response.ListResult;
-import com.cake.framework.common.response.PojoResult;
-import com.rany.acl.api.command.role.*;
-import com.rany.acl.api.query.role.RoleBasicQuery;
-import com.rany.acl.api.query.role.RoleTreeQuery;
-import com.rany.ops.common.dto.role.RoleDTO;
-import com.rany.ops.common.dto.role.RoleTreeDTO;
+import com.rany.ops.api.command.menu.*;
+import com.rany.ops.api.query.menu.MenuBasicQuery;
+import com.rany.ops.api.query.menu.MenuTreeQuery;
+import com.rany.ops.common.dto.menu.MenuDTO;
+import com.rany.ops.common.dto.menu.MenuTreeDTO;
 
+import java.util.List;
 
 /**
- * 角色管理
+ * 菜单管理
  *
  * @author zhongshengwang
- * @description 角色管理
+ * @description 菜单管理
  * @date 2022/12/27 20:39
  * @email 18668485565163.com
  */
-public interface RoleFacade {
+public interface MenuFacade {
+
 
     /**
-     * 创建角色
+     * 创建菜单
      *
-     * @param createRoleCommand
-     * @return
+     * @param createMenuCommand 创建菜单
+     * @return 菜单ID
      */
-    PojoResult<Long> createRole(CreateRoleCommand createRoleCommand);
+    Long createMenu(CreateMenuCommand createMenuCommand);
 
     /**
-     * 获取角色信息
+     * 获取菜单信息
      *
-     * @param RoleBasicQuery
+     * @param menuBasicQuery 基础信息获取
      * @return
      */
-    PojoResult<RoleDTO> getRole(RoleBasicQuery RoleBasicQuery);
+    MenuDTO getMenu(MenuBasicQuery menuBasicQuery);
 
     /**
-     * 获取角色树信息
+     * 获取菜单树信息
      *
-     * @param RoleTreeQuery
-     * @return
+     * @param menuTreeQuery 获取菜单树
+     * @return 获取菜单树
      */
-    ListResult<RoleTreeDTO> getRoleTree(RoleTreeQuery RoleTreeQuery);
+    List<MenuTreeDTO> getMenuTree(MenuTreeQuery menuTreeQuery);
 
     /**
-     * 角色禁用
+     * 菜单禁用
      *
-     * @param disableRoleCommand
-     * @return
+     * @param disableMenuCommand 菜单禁用
+     * @return 是否成功
      */
-    PojoResult<Boolean> disableRole(DisableRoleCommand disableRoleCommand);
+    Boolean disableMenu(DisableMenuCommand disableMenuCommand);
 
     /**
-     * 启用角色
+     * 启用菜单
      *
-     * @param enableRoleCommand
-     * @return
+     * @param enableMenuCommand 菜单启用
+     * @return 是否成功
      */
-    PojoResult<Boolean> enableRole(EnableRoleCommand enableRoleCommand);
+    Boolean enableMenu(EnableMenuCommand enableMenuCommand);
 
     /**
-     * 删除角色
+     * 删除菜单
      *
-     * @param deleteRoleCommand
-     * @return
+     * @param deleteMenuCommand 菜单删除
+     * @return 是否成功
      */
-    PojoResult<Boolean> deleteRole(DeleteRoleCommand deleteRoleCommand);
+    Boolean deleteMenu(DeleteMenuCommand deleteMenuCommand);
 
     /**
-     * 更新角色基本信息
+     * 更新菜单基本信息
      *
-     * @param modifyRoleCommand
-     * @return
+     * @param modifyMenuCommand 菜单更新
+     * @return 是否成功
      */
-    PojoResult<Boolean> modifyRole(ModifyRoleCommand modifyRoleCommand);
+    Boolean modifyMenu(ModifyMenuCommand modifyMenuCommand);
 }
+
+
 
 ```
 
@@ -510,5 +805,35 @@ public interface GrantRolePermissionFacade {
     PojoResult<Boolean> disGrantRolePermissions(DisGrantRolePermissionsCommand disGrantRolePermissionsCommand);
 }
 
+
+```
+
+## 角色权限模型接口查询
+
+```java
+package com.rany.ops.api.facade.grant;
+
+import com.rany.ops.api.query.grant.UserRoleMenuPermissionQuery;
+import com.rany.ops.common.dto.application.UserRoleMenuDTO;
+
+/**
+ * 查询用户角色权限模型接口
+ *
+ * @author zhongshengwang
+ * @description 应用管理
+ * @date 2022/12/27 20:39
+ * @email 18668485565163.com
+ */
+public interface RbacQueryFacade {
+
+
+    /**
+     * 获取单一用户应用下权限集合
+     *
+     * @param query 查询条件
+     * @return 单一用户应用下权限集合
+     */
+    UserRoleMenuDTO getUserRbacModel(UserRoleMenuPermissionQuery query);
+}
 
 ```
