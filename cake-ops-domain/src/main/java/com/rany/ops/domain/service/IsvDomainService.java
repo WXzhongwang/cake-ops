@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * TODO
@@ -43,5 +44,8 @@ public class IsvDomainService {
         return isvRepository.page(isvPageQuery);
     }
 
+    public List<Isv> list(IsvSearchParam isvPageQuery) {
+        return isvRepository.list(isvPageQuery);
+    }
 
 }

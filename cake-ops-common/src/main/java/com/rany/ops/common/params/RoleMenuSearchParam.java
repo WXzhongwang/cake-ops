@@ -23,6 +23,6 @@ public class RoleMenuSearchParam extends BaseQuery {
     private Long tenantId;
 
     private Long roleId;
-    
+
     private List<Long> roleIds;
 }

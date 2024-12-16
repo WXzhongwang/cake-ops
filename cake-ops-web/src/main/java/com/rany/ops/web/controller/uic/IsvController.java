@@ -1,11 +1,13 @@
 package com.rany.ops.web.controller.uic;
 
+import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.Page;
 import com.cake.framework.common.response.PageResult;
 import com.cake.framework.common.response.PojoResult;
 import com.rany.ops.api.command.isv.*;
 import com.rany.ops.api.facade.isv.IsvFacade;
 import com.rany.ops.api.query.isv.IsvBasicQuery;
+import com.rany.ops.api.query.isv.IsvListQuery;
 import com.rany.ops.api.query.isv.IsvPageQuery;
 import com.rany.ops.common.dto.isv.IsvDTO;
 import com.rany.ops.web.config.Servlets;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * isv
@@ -33,6 +36,12 @@ public class IsvController {
     public PageResult<IsvDTO> page(@RequestBody IsvPageQuery appPageQuery) {
         Page<IsvDTO> page = isvFacade.pageIsv(appPageQuery);
         return PageResult.succeed(page);
+    }
+
+    @PostMapping("/list")
+    public ListResult<IsvDTO> list(IsvListQuery query) {
+        List<IsvDTO> isvDTOList = isvFacade.listIsv(query);
+        return ListResult.succeed(isvDTOList);
     }
 
     @PostMapping("/get")

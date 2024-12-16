@@ -75,4 +75,10 @@ public class IsvRepositoryImpl implements IsvRepository {
         return PageUtils.build(pageInfo, isvList);
     }
 
+    @Override
+    public List<Isv> list(IsvSearchParam isvPageQuery) {
+        List<IsvPO> list = isvDao.page(isvPageQuery);
+        return isvDataConvertor.targetToSource(list);
+    }
+
 }

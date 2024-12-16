@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.rany.ops.api.command.isv.*;
 import com.rany.ops.api.facade.isv.IsvFacade;
 import com.rany.ops.api.query.isv.IsvBasicQuery;
+import com.rany.ops.api.query.isv.IsvListQuery;
 import com.rany.ops.api.query.isv.IsvPageQuery;
 import com.rany.ops.common.dto.isv.IsvDTO;
 import com.rany.ops.common.enums.CommonStatusEnum;
@@ -19,6 +20,7 @@ import com.rany.ops.domain.dp.IsvName;
 import com.rany.ops.domain.dp.Phone;
 import com.rany.ops.domain.page.PageUtils;
 import com.rany.ops.domain.pk.IsvId;
+import com.rany.ops.domain.repository.IsvRepository;
 import com.rany.ops.domain.repository.TenantRepository;
 import com.rany.ops.domain.service.IsvDomainService;
 import com.rany.ops.domain.service.TenantDomainService;
@@ -50,6 +52,7 @@ public class IsvFacadeImpl implements IsvFacade {
     private final IsvDataConvertor isvDataConvertor;
     private final SnowflakeIdWorker snowflakeIdWorker;
     private final TenantRepository tenantRepository;
+    private final IsvRepository isvRepository;
 
     @Override
     public Long createIsv(CreateIsvCommand createIsvCommand) {
@@ -140,6 +143,14 @@ public class IsvFacadeImpl implements IsvFacade {
             throw new BusinessException(BusinessErrorMessage.ISV_NOT_FOUND);
         }
         return isvDataConvertor.sourceToDTO(isv);
+    }
+
+    @Override
+    public List<IsvDTO> listIsv(IsvListQuery isvPageQuery) {
+        IsvSearchParam pageSearchParam = new IsvSearchParam();
+        pageSearchParam.setName(isvPageQuery.getName());
+        List<Isv> list = isvDomainService.list(pageSearchParam);
+        return isvDataConvertor.sourceToDTO(list);
     }
 
     @Override

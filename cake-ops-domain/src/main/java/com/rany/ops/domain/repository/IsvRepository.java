@@ -6,6 +6,8 @@ import com.rany.ops.common.params.IsvSearchParam;
 import com.rany.ops.domain.aggregate.Isv;
 import com.rany.ops.domain.pk.IsvId;
 
+import java.util.List;
+
 /**
  * TODO
  *
@@ -27,4 +29,6 @@ public interface IsvRepository extends Repository<Isv, IsvId> {
     Boolean updateIsv(Isv isv);
 
     Page<Isv> page(IsvSearchParam isvPageQuery);
+
+    List<Isv> list(IsvSearchParam isvPageQuery);
 }

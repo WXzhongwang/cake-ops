@@ -3,8 +3,11 @@ package com.rany.ops.api.facade.isv;
 import com.cake.framework.common.response.Page;
 import com.rany.ops.api.command.isv.*;
 import com.rany.ops.api.query.isv.IsvBasicQuery;
+import com.rany.ops.api.query.isv.IsvListQuery;
 import com.rany.ops.api.query.isv.IsvPageQuery;
 import com.rany.ops.common.dto.isv.IsvDTO;
+
+import java.util.List;
 
 /**
  * IsvFacade
@@ -69,6 +72,14 @@ public interface IsvFacade {
      */
     IsvDTO findIsv(IsvBasicQuery isvBaseQuery);
 
+
+    /**
+     * 分页查询ISV信息
+     *
+     * @param isvPageQuery 查询参数
+     * @return 分页结果
+     */
+    List<IsvDTO> listIsv(IsvListQuery isvPageQuery);
 
     /**
      * 分页查询ISV信息
