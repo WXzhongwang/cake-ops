@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MenuDataItem, ProLayout, ProSettings } from "@ant-design/pro-layout";
-import { Dropdown, Spin } from "antd"; // 引入 Spin 用于加载指示器
+import { Dropdown } from "antd"; // 引入 Spin 用于加载指示器
 import { logout } from "@/services/user";
 import { connect, Dispatch, history, Link, Outlet } from "umi";
+import * as allIcons from "@ant-design/icons";
 import { LogoutOutlined } from "@ant-design/icons";
 import defaultProps from "./_default";
 import { API } from "typings";
 import { MenuTreeDTO, UserRoleMenuDTO } from "@/models/user";
-import * as allIcons from "@ant-design/icons";
 
 interface LayoutProps {
   dispatch: Dispatch;
@@ -42,6 +42,7 @@ const Layout: React.FC<LayoutProps> = ({ dispatch, isLogin, userData }) => {
           const convertedMenuData = convertMenuTreeToProLayoutMenu(
             content.menuTree
           );
+          console.log("converted:", convertedMenuData); // 确保这里打印出正确的菜单数据
           resolve(convertedMenuData);
         },
       });
@@ -53,12 +54,12 @@ const Layout: React.FC<LayoutProps> = ({ dispatch, isLogin, userData }) => {
   ): MenuDataItem[] => {
     return menuTree.map((item) => {
       return {
-        key: item.path,
-        label: item.name,
+        name: item.name,
         icon: getIcon(item.icon),
+        path: item.path, // 确保有 path 字段
         children: item.children
           ? convertMenuTreeToProLayoutMenu(item.children)
-          : [],
+          : undefined,
       };
     });
   };
@@ -70,10 +71,10 @@ const Layout: React.FC<LayoutProps> = ({ dispatch, isLogin, userData }) => {
     if (icon.startsWith("http")) {
       return <img src={icon} alt={icon} />;
     }
-    let fixIconName =
-      icon.slice(0, 1).toLocaleUpperCase() + icon.slice(1) + icon;
+    let fixIconName = icon.slice(0, 1).toLocaleUpperCase() + icon.slice(1);
     // @ts-ignore
-    return React.createElement(allIcons[fixIconName] || allIcons[icon]);
+    const IconComponent = allIcons[fixIconName];
+    return IconComponent ? <IconComponent /> : undefined;
   };
 
   useEffect(() => {
@@ -145,11 +146,19 @@ const Layout: React.FC<LayoutProps> = ({ dispatch, isLogin, userData }) => {
                 target={menuItemProps.target}
                 onClick={() => setPathname(menuItemProps.path || "/apps")}
               >
-                {defaultDom}
+                <div className="ant-pro-base-menu-horizontal-item-title">
+                  {menuItemProps.icon} &nbsp;&nbsp;
+                  {menuItemProps.name}
+                </div>
               </Link>
             );
           }
-          return defaultDom;
+          return (
+            <div className="ant-pro-base-menu-horizontal-item-title">
+              {menuItemProps.icon} &nbsp;&nbsp;
+              {menuItemProps.name}
+            </div>
+          );
         }}
       >
         <Outlet />

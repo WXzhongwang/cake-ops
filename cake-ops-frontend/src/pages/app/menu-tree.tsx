@@ -16,6 +16,7 @@ import { API } from "typings";
 import { MenuTreeDTO, UserRoleMenuDTO } from "@/models/user";
 import { AppDTO } from "@/models/app";
 import * as AllIcons from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 
 interface MenuTreeProps {
   dispatch: Dispatch;
@@ -56,8 +57,8 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
   // 将 MenuTreeDTO 转换为 Tree 组件所需的数据格式
   const convertToTreeData = (menuTree: MenuTreeDTO[]): any[] => {
     return menuTree.map((menuItem) => {
-      const IconComponent =
-        AllIcons[menuItem.icon] || AllIcons.QuestionCircleOutlined;
+      // @ts-ignore
+      const IconComponent = AllIcons[menuItem.icon];
       return {
         title: menuItem.name,
         key: menuItem.menuId,
@@ -71,6 +72,14 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
 
   const handleAppChange = (appCode: string) => {
     setSelectedAppCode(appCode);
+    setSelectedMenuItem(null);
+    if (appCode === undefined || appCode === "") {
+      return;
+    }
+    fetchMenuTree(appCode);
+  };
+
+  const fetchMenuTree = (appCode: string | undefined) => {
     if (appCode === undefined || appCode === "") {
       return;
     }
@@ -136,10 +145,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
     if (!option) {
       return false;
     }
-    return (
-      option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
-      option.label.toString().toLowerCase().indexOf(input.toLowerCase()) >= 0
-    );
+    return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   };
 
   // 处理表单提交
@@ -158,6 +164,36 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
         message.success("更新成功");
       },
     });
+  };
+
+  const deleteNode = (menuId: string) => {
+    if (!menuId) return;
+    dispatch({
+      type: "menu/deleteMenu",
+      payload: {
+        id: menuId,
+      },
+      callback: (res: any) => {
+        // 处理响应
+        message.success("删除成功");
+      },
+    });
+    fetchMenuTree(selectedAppCode);
+  };
+
+  // 定义新增按钮的渲染函数
+  const renderTitle = (nodeData: any) => {
+    return (
+      <>
+        <span>{nodeData.title}</span>
+        <PlusOutlined
+          onClick={(e) => {
+            e.stopPropagation();
+            console.log("Add new node to:", nodeData.key);
+          }}
+        />
+      </>
+    );
   };
 
   return (
@@ -181,19 +217,13 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
             treeData={treeData}
             onSelect={onTreeSelect}
             style={{ marginTop: 16 }}
+            titleRender={renderTitle}
+            blockNode
           />
         </Layout.Sider>
         <Layout.Content style={{ padding: 16 }}>
           {selectedMenuItem && (
-            <Form
-              form={form}
-              //   initialValues={{
-              //     ...selectedMenuItem,
-              //     hidden: selectedMenuItem.hidden ? "true" : "false",
-              //   }}
-              layout="vertical"
-              onFinish={handleFormSubmit}
-            >
+            <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
               <Form.Item label="菜单ID" name="menuId">
                 <Input disabled />
               </Form.Item>
@@ -227,6 +257,14 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
               <Form.Item>
                 <Button type="primary" htmlType="submit">
                   提交
+                </Button>
+                <Button
+                  type="primary"
+                  danger
+                  onClick={() => deleteNode(selectedMenuItem.menuId)}
+                  style={{ marginLeft: 8 }}
+                >
+                  删除
                 </Button>
               </Form.Item>
             </Form>
