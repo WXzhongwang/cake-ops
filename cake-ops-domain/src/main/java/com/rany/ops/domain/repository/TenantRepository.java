@@ -2,7 +2,6 @@ package com.rany.ops.domain.repository;
 
 import com.cake.framework.common.response.Page;
 import com.cake.framework.ddd.repository.Repository;
-import com.rany.ops.common.dto.tenant.TenantDTO;
 import com.rany.ops.common.params.TenantPageSearchParam;
 import com.rany.ops.common.params.TenantSearchParam;
 import com.rany.ops.domain.aggregate.Tenant;
@@ -47,6 +46,8 @@ public interface TenantRepository extends Repository<Tenant, TenantId> {
      */
     Boolean updateTenant(Tenant tenant);
 
+    List<Tenant> findByIds(List<Long> tenantIds);
+
 
     /**
      * 查询列表
@@ -54,7 +55,7 @@ public interface TenantRepository extends Repository<Tenant, TenantId> {
      * @param tenant
      * @return
      */
-    List<TenantDTO> findTenants(TenantSearchParam tenant);
+    List<Tenant> findTenants(TenantSearchParam tenant);
 
 
     /**
@@ -63,5 +64,5 @@ public interface TenantRepository extends Repository<Tenant, TenantId> {
      * @param tenant
      * @return
      */
-    Page<TenantDTO> pageTenants(TenantPageSearchParam tenant);
+    Page<Tenant> pageTenants(TenantPageSearchParam tenant);
 }

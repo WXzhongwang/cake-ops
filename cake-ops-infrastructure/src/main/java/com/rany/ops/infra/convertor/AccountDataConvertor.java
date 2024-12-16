@@ -69,6 +69,9 @@ public interface AccountDataConvertor extends BaseConvertor<Account, AccountPO> 
     @Mapping(source = "headImage.img", target = "headImage")
     AccountDTO sourceToDTO(Account account);
 
+    @InheritConfiguration(name = "sourceToDTO")
+    List<AccountDTO> sourceToDTO(List<Account> account);
+
 
     /**
      * PO转DTO

@@ -3,13 +3,13 @@ package com.rany.ops.infra.repo.impl;
 import cn.hutool.core.date.DateUtil;
 import com.cake.framework.common.response.Page;
 import com.github.pagehelper.PageInfo;
-import com.rany.ops.common.dto.account.AccountDTO;
 import com.rany.ops.common.enums.DeleteStatusEnum;
 import com.rany.ops.common.enums.LoginSafeStrategyEnum;
 import com.rany.ops.common.params.AccountPageSearchParam;
 import com.rany.ops.common.params.AccountSearchParam;
 import com.rany.ops.domain.aggregate.Account;
 import com.rany.ops.domain.entity.SafeStrategy;
+import com.rany.ops.domain.page.PageUtils;
 import com.rany.ops.domain.page.annotation.PagingQuery;
 import com.rany.ops.domain.pk.AccountId;
 import com.rany.ops.domain.repository.AccountRepository;
@@ -135,23 +135,17 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public List<AccountDTO> findAccounts(AccountSearchParam accountSearchParam) {
+    public List<Account> findAccounts(AccountSearchParam accountSearchParam) {
         List<AccountPO> accountPOS = accountDao.selectList(accountSearchParam);
-        return accountDataConvertor.targetToDTO(accountPOS);
+        return accountDataConvertor.targetToSource(accountPOS);
     }
 
     @Override
     @PagingQuery
-    public Page<AccountDTO> pageAccounts(AccountPageSearchParam accountPageSearchParam) {
+    public Page<Account> pageAccounts(AccountPageSearchParam accountPageSearchParam) {
         List<AccountPO> content = accountDao.selectPage(accountPageSearchParam);
         PageInfo<AccountPO> pageInfo = new PageInfo<>(content);
-        Page<AccountDTO> pageDTO = new Page<>();
-        pageDTO.setPageNo(pageInfo.getPageNum());
-        pageDTO.setPageSize(pageInfo.getPageSize());
-        pageDTO.setTotalPage(pageInfo.getPages());
-        pageDTO.setTotal(Long.valueOf(pageInfo.getTotal()).intValue());
-        List<AccountDTO> values = accountDataConvertor.targetToDTO(pageInfo.getList());
-        pageDTO.setItems(values);
-        return pageDTO;
+        List<Account> values = accountDataConvertor.targetToSource(pageInfo.getList());
+        return PageUtils.build(pageInfo, values);
     }
 }

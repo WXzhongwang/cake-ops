@@ -28,6 +28,8 @@ public interface IsvRepository extends Repository<Isv, IsvId> {
      */
     Boolean updateIsv(Isv isv);
 
+    List<Isv> findByIds(List<Long> isvIds);
+
     Page<Isv> page(IsvSearchParam isvPageQuery);
 
     List<Isv> list(IsvSearchParam isvPageQuery);

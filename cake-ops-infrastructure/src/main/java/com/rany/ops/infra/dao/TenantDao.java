@@ -4,7 +4,7 @@ import com.rany.ops.common.params.TenantPageSearchParam;
 import com.rany.ops.common.params.TenantSearchParam;
 import com.rany.ops.domain.aggregate.Tenant;
 import com.rany.ops.infra.po.TenantPO;
-import org.springframework.data.repository.query.Param;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -34,6 +34,8 @@ public interface TenantDao extends BaseMapper<TenantPO> {
      * @return
      */
     List<TenantPO> selectList(TenantSearchParam tenant);
+
+    List<TenantPO> findByIds(@Param("ids") List<Long> ids);
 
     /**
      * 分页查询

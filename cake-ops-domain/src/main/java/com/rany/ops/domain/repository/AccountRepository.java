@@ -2,7 +2,6 @@ package com.rany.ops.domain.repository;
 
 import com.cake.framework.common.response.Page;
 import com.cake.framework.ddd.repository.Repository;
-import com.rany.ops.common.dto.account.AccountDTO;
 import com.rany.ops.common.params.AccountPageSearchParam;
 import com.rany.ops.common.params.AccountSearchParam;
 import com.rany.ops.domain.aggregate.Account;
@@ -69,7 +68,7 @@ public interface AccountRepository extends Repository<Account, AccountId> {
      * @param accountSearchParam
      * @return
      */
-    List<AccountDTO> findAccounts(AccountSearchParam accountSearchParam);
+    List<Account> findAccounts(AccountSearchParam accountSearchParam);
 
 
     /**
@@ -78,6 +77,6 @@ public interface AccountRepository extends Repository<Account, AccountId> {
      * @param accountPageSearchParam
      * @return
      */
-    Page<AccountDTO> pageAccounts(AccountPageSearchParam accountPageSearchParam);
+    Page<Account> pageAccounts(AccountPageSearchParam accountPageSearchParam);
 
 }

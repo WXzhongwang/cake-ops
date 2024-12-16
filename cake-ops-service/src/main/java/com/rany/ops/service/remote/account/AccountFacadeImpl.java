@@ -17,6 +17,7 @@ import com.rany.ops.common.params.AccountPageSearchParam;
 import com.rany.ops.common.params.AccountSearchParam;
 import com.rany.ops.domain.aggregate.Account;
 import com.rany.ops.domain.entity.SafeStrategy;
+import com.rany.ops.domain.page.PageUtils;
 import com.rany.ops.domain.pk.AccountId;
 import com.rany.ops.domain.service.AccountDomainService;
 import com.rany.ops.infra.convertor.AccountDataConvertor;
@@ -28,6 +29,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -211,7 +213,8 @@ public class AccountFacadeImpl implements AccountFacade {
         if (CollectionUtils.isNotEmpty(accountQuery.getAccountIds())) {
             searchParam.setAccountIds(accountQuery.getAccountIds());
         }
-        return accountDomainService.selectAccounts(searchParam);
+        List<Account> accounts = accountDomainService.selectAccounts(searchParam);
+        return accountDataConvertor.sourceToDTO(accounts);
     }
 
     @Override
@@ -244,6 +247,8 @@ public class AccountFacadeImpl implements AccountFacade {
         if (BooleanUtil.isTrue(accountPageQuery.getExcludeDisabled())) {
             searchParam.setStatus(CommonStatusEnum.ENABLE.getValue());
         }
-        return accountDomainService.pageAccounts(searchParam);
+        Page<Account> accountPage = accountDomainService.pageAccounts(searchParam);
+        List<AccountDTO> accountDTOS = accountDataConvertor.sourceToDTO(new ArrayList<>(accountPage.getItems()));
+        return PageUtils.build(accountPage, accountDTOS);
     }
 }

@@ -67,6 +67,12 @@ public class IsvRepositoryImpl implements IsvRepository {
         return Boolean.TRUE;
     }
 
+    @Override
+    public List<Isv> findByIds(List<Long> isvIds) {
+        List<IsvPO> list = isvDao.findByIds(isvIds);
+        return isvDataConvertor.targetToSource(list);
+    }
+
     @PagingQuery
     public Page<Isv> page(IsvSearchParam isvPageQuery) {
         List<IsvPO> list = isvDao.page(isvPageQuery);

@@ -2,7 +2,6 @@ package com.rany.ops.domain.service;
 
 import com.cake.framework.common.exception.BusinessException;
 import com.cake.framework.common.response.Page;
-import com.rany.ops.common.dto.tenant.TenantDTO;
 import com.rany.ops.common.enums.CommonStatusEnum;
 import com.rany.ops.common.enums.DeleteStatusEnum;
 import com.rany.ops.common.exception.BusinessErrorMessage;
@@ -18,8 +17,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * TODO
@@ -63,11 +65,23 @@ public class TenantDomainService {
         return tenantRepository.updateTenant(tenant);
     }
 
-    public List<TenantDTO> selectTenants(TenantSearchParam searchParam) {
+    public List<Tenant> selectTenants(TenantSearchParam searchParam) {
+
         return tenantRepository.findTenants(searchParam);
     }
 
-    public Page<TenantDTO> pageTenants(TenantPageSearchParam pageSearchParam) {
-        return tenantRepository.pageTenants(pageSearchParam);
+    public Page<Tenant> pageTenants(TenantPageSearchParam pageSearchParam) {
+        Page<Tenant> tenantDTOPage = tenantRepository.pageTenants(pageSearchParam);
+        Collection<Tenant> items = tenantDTOPage.getItems();
+        List<Isv> isvPOList = isvRepository.findByIds(items.stream().map(p -> p.getIsvId().getId()).collect(Collectors.toList()));
+        Map<Long, Isv> isvMap = isvPOList.stream().collect(Collectors.toMap(x -> x.getId().getId(), isvPO -> isvPO));
+        for (Tenant value : items) {
+            Isv isv = isvMap.get(value.getIsvId().getId());
+            if (Objects.isNull(isv)) {
+                continue;
+            }
+            value.setIsv(isv);
+        }
+        return tenantDTOPage;
     }
 }

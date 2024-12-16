@@ -20,6 +20,7 @@ import com.rany.ops.domain.dp.EmailAddress;
 import com.rany.ops.domain.dp.Phone;
 import com.rany.ops.domain.dp.TenantName;
 import com.rany.ops.domain.dp.TenantSource;
+import com.rany.ops.domain.page.PageUtils;
 import com.rany.ops.domain.pk.IsvId;
 import com.rany.ops.domain.pk.TenantId;
 import com.rany.ops.domain.service.IsvDomainService;
@@ -32,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -64,7 +66,7 @@ public class TenantFacadeImpl implements TenantFacade {
                 new TenantSource(createTenantCommand.getSource()),
                 new Phone(createTenantCommand.getPhone()),
                 createTenantCommand.getAddress(),
-                CommonStatusEnum.ENABLE.getValue()
+                CommonStatusEnum.ENABLE.getValue(), null
         );
         tenant.setIsDeleted(DeleteStatusEnum.NO.getValue());
         tenant.save(createTenantCommand.getInitialAccount(), createTenantCommand.getUser());
@@ -159,7 +161,8 @@ public class TenantFacadeImpl implements TenantFacade {
         if (BooleanUtil.isTrue(tenantQuery.getExcludeDisabled())) {
             searchParam.setStatus(CommonStatusEnum.ENABLE.getValue());
         }
-        return tenantDomainService.selectTenants(searchParam);
+        List<Tenant> tenants = tenantDomainService.selectTenants(searchParam);
+        return tenantDataConvertor.sourceToDTO(tenants);
     }
 
     @Override
@@ -179,6 +182,8 @@ public class TenantFacadeImpl implements TenantFacade {
         if (BooleanUtil.isTrue(tenantPageQuery.getExcludeDisabled())) {
             pageSearchParam.setStatus(CommonStatusEnum.ENABLE.getValue());
         }
-        return tenantDomainService.pageTenants(pageSearchParam);
+        Page<Tenant> tenantPage = tenantDomainService.pageTenants(pageSearchParam);
+        List<TenantDTO> tenantDTOS = tenantDataConvertor.sourceToDTO(new ArrayList<>(tenantPage.getItems()));
+        return PageUtils.build(tenantPage, tenantDTOS);
     }
 }

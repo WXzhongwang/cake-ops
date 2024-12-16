@@ -3,7 +3,6 @@ package com.rany.ops.infra.repo.impl;
 import cn.hutool.core.date.DateUtil;
 import com.cake.framework.common.response.Page;
 import com.github.pagehelper.PageInfo;
-import com.rany.ops.common.dto.tenant.TenantDTO;
 import com.rany.ops.common.enums.DeleteStatusEnum;
 import com.rany.ops.common.params.TenantPageSearchParam;
 import com.rany.ops.common.params.TenantSearchParam;
@@ -83,17 +82,23 @@ public class TenantRepositoryImpl implements TenantRepository {
     }
 
     @Override
-    public List<TenantDTO> findTenants(TenantSearchParam tenant) {
+    public List<Tenant> findByIds(List<Long> tenantIds) {
+        List<TenantPO> list = tenantDao.findByIds(tenantIds);
+        return tenantDataConvertor.targetToSource(list);
+    }
+
+    @Override
+    public List<Tenant> findTenants(TenantSearchParam tenant) {
         List<TenantPO> tenantPOS = tenantDao.selectList(tenant);
-        return tenantDataConvertor.targetToDTO(tenantPOS);
+        return tenantDataConvertor.targetToSource(tenantPOS);
     }
 
     @Override
     @PagingQuery
-    public Page<TenantDTO> pageTenants(TenantPageSearchParam tenantPageSearchParam) {
+    public Page<Tenant> pageTenants(TenantPageSearchParam tenantPageSearchParam) {
         List<TenantPO> content = tenantDao.selectPage(tenantPageSearchParam);
         PageInfo<TenantPO> pageInfo = new PageInfo<>(content);
-        List<TenantDTO> values = tenantDataConvertor.targetToDTO(pageInfo.getList());
+        List<Tenant> values = tenantDataConvertor.targetToSource(pageInfo.getList());
         return PageUtils.build(pageInfo, values);
     }
 }

@@ -1,6 +1,7 @@
 import * as api from "@/services/tenant";
 import { BaseAction } from "typings";
 import { message } from "antd";
+import { IsvDTO } from "./isv";
 
 export interface TenantDTO {
   id: string;
@@ -16,6 +17,7 @@ export interface TenantDTO {
   status: string;
   gmtCreate: Date;
   gmtModified: Date;
+  isv: IsvDTO;
 }
 
 export interface QueryTenantPayload {

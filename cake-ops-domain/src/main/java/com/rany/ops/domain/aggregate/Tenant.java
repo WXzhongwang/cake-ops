@@ -68,6 +68,8 @@ public class Tenant extends BaseAggregateRoot implements IAggregate<TenantId> {
      */
     private String status;
 
+    private Isv isv;
+
     public Boolean save(Boolean initialFirstAccount, String creator) {
         this.gmtCreate = DateUtil.date();
         this.gmtModified = DateUtil.date();

@@ -89,7 +89,7 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
     setDrawerVisible(true);
   };
 
-  const handleDelete = (tenantId: number) => {
+  const handleDelete = (tenantId: string) => {
     dispatch({
       type: "tenant/delete",
       payload: { id: tenantId },
@@ -97,7 +97,7 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
     fetchTenantList();
   };
 
-  const handleDisabled = (tenantId: number) => {
+  const handleDisabled = (tenantId: string) => {
     dispatch({
       type: "tenant/disable",
       payload: { id: tenantId },
@@ -110,7 +110,7 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
     fetchTenantList();
   };
 
-  const handleEnable = (tenantId: number) => {
+  const handleEnable = (tenantId: string) => {
     dispatch({
       type: "tenant/enable",
       payload: { id: tenantId },
@@ -181,7 +181,7 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
     },
     {
       title: "ISV",
-      dataIndex: "isvName",
+      dataIndex: "isv.name",
       key: "isvName",
     },
     {

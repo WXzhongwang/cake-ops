@@ -57,4 +57,19 @@
         </where>
         order by gmt_create desc, id desc
     </select>
+
+    <select id="findByIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from isv
+        <where>
+            is_deleted = '0'
+            <if test="ids != null and ids.size() > 0">
+                and id in
+                <foreach collection="ids" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
 </mapper>

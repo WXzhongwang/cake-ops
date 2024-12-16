@@ -17,7 +17,7 @@ import java.util.List;
  * @date 2022/11/26 00:27
  * @email 18668485565163.com
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {IsvDataConvertor.class})
 public interface TenantDataConvertor extends BaseConvertor<Tenant, TenantPO> {
 
 
@@ -74,18 +74,9 @@ public interface TenantDataConvertor extends BaseConvertor<Tenant, TenantPO> {
     /**
      * 转DTO
      *
-     * @param tenant
-     * @return
-     */
-    TenantDTO targetToDTO(TenantPO tenant);
-
-
-    /**
-     * 转DTO
-     *
-     * @param tenantPOS
+     * @param tenants
      * @return
      */
     @InheritConfiguration(name = "targetToDTO")
-    List<TenantDTO> targetToDTO(List<TenantPO> tenantPOS);
+    List<TenantDTO> sourceToDTO(List<Tenant> tenants);
 }

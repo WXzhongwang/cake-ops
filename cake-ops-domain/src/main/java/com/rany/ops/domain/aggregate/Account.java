@@ -102,6 +102,8 @@ public class Account extends BaseAggregateRoot implements IAggregate<AccountId> 
      */
     private HeadImage headImage;
 
+    private Tenant tenant;
+
 
     public Account(AccountId id, TenantId tenantId, AccountName accountName, List<SafeStrategy> safeStrategies) {
         this.id = id;

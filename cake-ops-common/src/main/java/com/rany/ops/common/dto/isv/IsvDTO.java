@@ -7,10 +7,10 @@ import lombok.EqualsAndHashCode;
 import java.util.Date;
 
 /**
- * TODO
+ * IsvDTO
  *
  * @author zhongshengwang
- * @description TODO
+ * @description IsvDTO
  * @date 2022/12/31 17:02
  * @email 18668485565163.com
  */
