@@ -24,7 +24,7 @@ import java.util.List;
  * @author zhongshengwang
  */
 @RestController
-@RequestMapping("/api/ops/tenant-account")
+@RequestMapping("/api/ops/account")
 public class TenantAccountController {
     @Resource
     private AccountFacade accountFacade;

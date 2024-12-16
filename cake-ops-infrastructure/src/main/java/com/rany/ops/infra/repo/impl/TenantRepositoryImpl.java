@@ -8,6 +8,7 @@ import com.rany.ops.common.enums.DeleteStatusEnum;
 import com.rany.ops.common.params.TenantPageSearchParam;
 import com.rany.ops.common.params.TenantSearchParam;
 import com.rany.ops.domain.aggregate.Tenant;
+import com.rany.ops.domain.page.PageUtils;
 import com.rany.ops.domain.page.annotation.PagingQuery;
 import com.rany.ops.domain.pk.IsvId;
 import com.rany.ops.domain.pk.TenantId;
@@ -92,13 +93,7 @@ public class TenantRepositoryImpl implements TenantRepository {
     public Page<TenantDTO> pageTenants(TenantPageSearchParam tenantPageSearchParam) {
         List<TenantPO> content = tenantDao.selectPage(tenantPageSearchParam);
         PageInfo<TenantPO> pageInfo = new PageInfo<>(content);
-        Page<TenantDTO> pageDTO = new Page<>();
-        pageDTO.setPageNo(pageInfo.getPageNum());
-        pageDTO.setPageSize(pageInfo.getPageSize());
-        pageDTO.setTotalPage(pageInfo.getPages());
-        pageDTO.setTotal(Long.valueOf(pageInfo.getTotal()).intValue());
         List<TenantDTO> values = tenantDataConvertor.targetToDTO(pageInfo.getList());
-        pageDTO.setItems(values);
-        return pageDTO;
+        return PageUtils.build(pageInfo, values);
     }
 }

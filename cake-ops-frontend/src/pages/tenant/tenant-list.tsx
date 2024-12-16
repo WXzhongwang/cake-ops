@@ -63,9 +63,8 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
     dispatch({
       type: "isv/listIsv",
       payload: { name: name },
-      callback: (res: API.ResponseBody<IsvDTO[]>) => {
-        const isvList: IsvDTO[] = res.content;
-        const data = isvList.map((isv: IsvDTO) => ({
+      callback: (res: IsvDTO[]) => {
+        const data = res.map((isv: IsvDTO) => ({
           value: isv.id,
           label: isv.name,
         }));
@@ -268,7 +267,7 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
               setFilters(values);
             }}
           >
-            <Form.Item name="isv" label="ISV">
+            <Form.Item name="isvId" label="ISV">
               <Select
                 showSearch
                 style={{ width: 200 }}
