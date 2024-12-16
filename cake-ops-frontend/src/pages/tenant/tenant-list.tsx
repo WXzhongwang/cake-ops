@@ -181,8 +181,11 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
     },
     {
       title: "ISV",
-      dataIndex: "isv.name",
+      dataIndex: "isvName",
       key: "isvName",
+      render: (text: any, record: TenantDTO) => {
+        return <>{record.isv?.name}</>;
+      },
     },
     {
       title: "邮箱",

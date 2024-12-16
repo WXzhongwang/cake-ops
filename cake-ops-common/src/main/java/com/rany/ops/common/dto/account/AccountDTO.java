@@ -1,6 +1,7 @@
 package com.rany.ops.common.dto.account;
 
 import com.rany.ops.common.base.DTO;
+import com.rany.ops.common.dto.tenant.TenantDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -37,4 +38,5 @@ public class AccountDTO extends DTO {
     private String wechat;
     private Date birthday;
     private String tags;
+    private TenantDTO tenant;
 }

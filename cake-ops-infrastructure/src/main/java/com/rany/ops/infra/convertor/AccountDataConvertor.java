@@ -17,7 +17,7 @@ import java.util.List;
  * @date 2022/11/26 00:27
  * @email 18668485565163.com
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {TenantDataConvertor.class})
 public interface AccountDataConvertor extends BaseConvertor<Account, AccountPO> {
 
 

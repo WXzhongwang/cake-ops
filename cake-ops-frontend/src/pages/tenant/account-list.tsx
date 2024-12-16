@@ -188,6 +188,9 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
       title: "租户",
       dataIndex: "tenantName",
       key: "tenantName",
+      render: (text: any, record: AccountDTO) => {
+        return <>{record.tenant?.name}</>;
+      },
     },
     {
       title: "是否管理员",
