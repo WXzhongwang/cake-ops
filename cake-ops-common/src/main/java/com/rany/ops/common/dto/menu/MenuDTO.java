@@ -7,12 +7,12 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class MenuDTO extends DTO {
-    private Long menuId;
-    private Long tenantId;
+    private String menuId;
+    private String tenantId;
     private String appCode;
     private String name;
     private String path;
-    private Long parentId;
+    private String parentId;
     private Integer level;
     private String icon;
     private Boolean hidden;

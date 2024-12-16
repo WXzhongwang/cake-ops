@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class PermissionDTO extends DTO {
 
-    private Long permissionId;
+    private String permissionId;
     /**
      * 应用code
      */
@@ -20,7 +20,7 @@ public class PermissionDTO extends DTO {
     /**
      * 租户ID
      */
-    private Long tenantId;
+    private String tenantId;
 
     /**
      * 资源类型，默认action
@@ -42,7 +42,7 @@ public class PermissionDTO extends DTO {
     /**
      * 权限点关联菜单
      */
-    private Long refMenuId;
+    private String refMenuId;
 
     /**
      * 状态

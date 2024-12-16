@@ -10,10 +10,10 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class MenuTreeDTO extends DTO {
-    private Long menuId;
+    private String menuId;
     private String name;
     private String path;
-    private Long parentId;
+    private String parentId;
     private Integer level;
     private String icon;
     private Boolean hidden;
