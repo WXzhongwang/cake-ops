@@ -1,5 +1,6 @@
 package com.rany.ops.web.controller.uic;
 
+import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.Page;
 import com.cake.framework.common.response.PageResult;
 import com.cake.framework.common.response.PojoResult;
@@ -7,6 +8,7 @@ import com.rany.ops.api.command.tenant.*;
 import com.rany.ops.api.facade.tenant.TenantFacade;
 import com.rany.ops.api.query.tenant.TenantBasicQuery;
 import com.rany.ops.api.query.tenant.TenantPageQuery;
+import com.rany.ops.api.query.tenant.TenantQuery;
 import com.rany.ops.common.dto.tenant.TenantDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * isv
@@ -31,6 +34,12 @@ public class TenantController {
     public PageResult<TenantDTO> page(@RequestBody TenantPageQuery appPageQuery) {
         Page<TenantDTO> page = tenantFacade.pageTenants(appPageQuery);
         return PageResult.succeed(page);
+    }
+
+    @PostMapping("/list")
+    public ListResult<TenantDTO> list(@RequestBody TenantQuery appPageQuery) {
+        List<TenantDTO> tenants = tenantFacade.findTenants(appPageQuery);
+        return ListResult.succeed(tenants);
     }
 
     @PostMapping("/get")

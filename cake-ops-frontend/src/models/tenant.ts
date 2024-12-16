@@ -3,8 +3,8 @@ import { BaseAction } from "typings";
 import { message } from "antd";
 
 export interface TenantDTO {
-  id: number;
-  isvId: number;
+  id: string;
+  isvId: string;
   isvName: string;
   name: string;
   shortName: string;
@@ -20,13 +20,17 @@ export interface TenantDTO {
 
 export interface QueryTenantPayload {
   name: string;
-  isvId: number;
+  isvId: string;
   pageNo: number;
   pageSize: number;
 }
 
+export interface ListTenantPayload {
+  name: string;
+}
+
 export interface CreateTenantPayload {
-  isvId: number;
+  isvId: string;
   name: string;
   shortName: string;
   email: string;
@@ -37,24 +41,29 @@ export interface CreateTenantPayload {
 }
 
 export interface DeleteTenantPayload {
-  id: number;
+  id: string;
 }
 
 export interface EnableTenantPayload {
-  id: number;
+  id: string;
 }
 
 export interface DisableTenantPayload {
-  id: number;
+  id: string;
 }
 
 export interface UpdateTenantPayload extends CreateTenantPayload {
-  id: number;
+  id: string;
 }
 
 interface QueryTenantAction extends BaseAction {
   type: "isv/fetchTenantList";
   payload: QueryTenantPayload;
+}
+
+interface ListTenantAction extends BaseAction {
+  type: "isv/listTenant";
+  payload: ListTenantPayload;
 }
 
 interface CreateTenantAction extends BaseAction {
@@ -88,6 +97,16 @@ const TenantModel = {
   effects: {
     *fetchTenantList({ payload, callback }: QueryTenantAction, { call, put }) {
       const response = yield call(api.fetchTenantList, payload);
+      const { success, msg } = response;
+      // 调用回调函数
+      if (success && callback && typeof callback === "function") {
+        callback(response.content);
+      } else {
+        message.error(msg);
+      }
+    },
+    *listTenant({ payload, callback }: ListTenantAction, { call, put }) {
+      const response = yield call(api.listTenantList, payload);
       const { success, msg } = response;
       // 调用回调函数
       if (success && callback && typeof callback === "function") {

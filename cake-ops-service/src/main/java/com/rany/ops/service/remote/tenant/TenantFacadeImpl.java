@@ -144,7 +144,7 @@ public class TenantFacadeImpl implements TenantFacade {
     }
 
     @Override
-    @IsvValidCheck(expression = "#tenantQuery.isvId")
+//    @IsvValidCheck(expression = "#tenantQuery.isvId")
     public List<TenantDTO> findTenants(TenantQuery tenantQuery) {
         TenantSearchParam searchParam = new TenantSearchParam();
         if (Objects.nonNull(tenantQuery.getIsvId())) {

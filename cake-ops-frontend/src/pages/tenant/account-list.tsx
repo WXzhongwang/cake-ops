@@ -40,7 +40,7 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
   const [total, setTotal] = useState<number>(0);
   const [filters, setFilters] = useState({
     accountName: "",
-    tenantId: ""
+    tenantId: "",
   }); // 初始化筛选条件为空对象
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [editingAccount, setEditingAccount] = useState<AccountDTO | undefined>(
@@ -63,9 +63,11 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
     dispatch({
       type: "tenant/listTenant",
       payload: { name: name },
-      callback: (res: API.ResponseBody<TenantDTO[]>) => {
-        const tenantList: TenantDTO[] = res.content;
-        const data = tenantList.map((tenant: TenantDTO) => ({ value: tenant.id, label: tenant.name }));
+      callback: (res: TenantDTO[]) => {
+        const data = res.map((tenant: TenantDTO) => ({
+          value: tenant.id,
+          label: tenant.name,
+        }));
         setTenantOptions(data);
       },
     });
@@ -200,7 +202,7 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
       },
     },
     {
-      title: "账户类型",
+      title: "账号类型",
       dataIndex: "accountType",
       key: "accountType",
     },
@@ -210,8 +212,8 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
       key: "status",
       render: (text: any, record: AccountDTO) => {
         return (
-          <Tag color={record.status === "active" ? "success" : "error"}>
-            {record.status === "active" ? "已启用" : "已停用"}
+          <Tag color={record.status === "0" ? "success" : "error"}>
+            {record.status === "0" ? "已启用" : "已停用"}
           </Tag>
         );
       },
@@ -227,7 +229,10 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
       key: "lastLoginTime",
       render: (text: any, record: AccountDTO) => {
         return (
-          <div>{dayjs(record?.lastLoginTime).format("YYYY-MM-DD HH:mm:ss")}</div>
+          <div>
+            {/* 非时间格式展示未知 */}
+            {!dayjs(record?.lastLoginTime).isValid() && "未知"}
+          </div>
         );
       },
     },
@@ -256,7 +261,7 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
       key: "action",
       render: (text: any, record: AccountDTO) => (
         <Space size="middle">
-          {record.status === "active" ? (
+          {record.status === "0" ? (
             <a onClick={() => handleDisabled(record.id)}>禁用</a>
           ) : (
             <a onClick={() => handleEnable(record.id)}>启用</a>
@@ -287,9 +292,9 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
                 options={tenantOptions}
               />
             </Form.Item>
-            
-            <Form.Item name="accountName" label="账户名称">
-              <Input placeholder="请输入账户名称" />
+
+            <Form.Item name="accountName" label="账号名称">
+              <Input placeholder="请输入账号名称" />
             </Form.Item>
 
             <Form.Item>
@@ -313,7 +318,7 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
             </Form.Item>
           </Form>
           <Button type="primary" onClick={handleAddAccount}>
-            新增账户
+            新增账号
           </Button>
           <Table
             scroll={{ x: "max-content" }}

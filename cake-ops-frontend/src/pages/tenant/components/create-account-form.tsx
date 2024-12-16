@@ -42,10 +42,10 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
     <Form form={form} layout="vertical" onFinish={handleSubmit}>
       <Form.Item
         name="accountName"
-        label="账户名称"
-        rules={[{ required: true, message: "请输入账户名称" }]}
+        label="账号名称"
+        rules={[{ required: true, message: "请输入账号名称" }]}
       >
-        <Input placeholder="请输入账户名称" />
+        <Input placeholder="请输入账号名称" />
       </Form.Item>
 
       <Form.Item
@@ -89,14 +89,14 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
 
       <Form.Item
         name="accountType"
-        label="账户类型"
-        rules={[{ required: true, message: "请输入账户类型" }]}
+        label="账号类型"
+        rules={[{ required: true, message: "请输入账号类型" }]}
       >
-        <Select placeholder="账户类型">
-            <Option value="ADMIN">ADMIN</Option>
-            <Option value="USER">USER</Option>
-            <Option value="GUEST">GUEST</Option>
-          </Select>
+        <Select placeholder="账号类型">
+          <Option value="ADMIN">ADMIN</Option>
+          <Option value="USER">USER</Option>
+          <Option value="GUEST">GUEST</Option>
+        </Select>
       </Form.Item>
 
       <Form.Item>

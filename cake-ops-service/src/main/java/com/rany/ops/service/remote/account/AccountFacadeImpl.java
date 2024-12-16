@@ -181,7 +181,7 @@ public class AccountFacadeImpl implements AccountFacade {
     }
 
     @Override
-    @TenantValidCheck(expression = "#accountQuery.tenantId")
+    // @TenantValidCheck(expression = "#accountQuery.tenantId")
     public List<AccountDTO> findAccounts(AccountQuery accountQuery) {
         AccountSearchParam searchParam = new AccountSearchParam();
         if (Objects.nonNull(accountQuery.getTenantId())) {
@@ -215,7 +215,7 @@ public class AccountFacadeImpl implements AccountFacade {
     }
 
     @Override
-    @TenantValidCheck(expression = "#accountPageQuery.tenantId")
+    // @TenantValidCheck(expression = "#accountPageQuery.tenantId")
     public Page<AccountDTO> pageAccounts(AccountPageQuery accountPageQuery) {
         AccountPageSearchParam searchParam = new AccountPageSearchParam();
         searchParam.setPageNo(accountPageQuery.getPageNo());
