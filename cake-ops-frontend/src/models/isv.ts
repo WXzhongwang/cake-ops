@@ -25,11 +25,9 @@ export interface QueryIsvPayload {
   pageSize: number;
 }
 
-
 export interface ListIsvPayload {
   name: string;
 }
-
 
 export interface CreateIsvPayload {
   name: string;
@@ -177,4 +175,3 @@ const IsvModel = {
 };
 
 export default IsvModel;
-

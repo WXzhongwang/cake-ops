@@ -30,6 +30,7 @@ public class IsvDTO extends DTO {
     private String registerIp;
     private String phone;
     private String email;
+    private String address;
     private Date gmtCreate;
     private Date gmtModified;
     private Integer maxTenants;

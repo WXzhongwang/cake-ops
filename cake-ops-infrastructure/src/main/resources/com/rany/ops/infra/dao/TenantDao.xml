@@ -94,7 +94,7 @@
                 and status = #{status}
             </if>
         </where>
-        order by gmt_modified, gmt_create desc
+        order by gmt_modified desc, id desc
     </select>
 
     <select id="findByIds" resultMap="BaseResultMap">

@@ -23,7 +23,7 @@ public enum BusinessErrorMessage implements ResponseCode {
     TENANT_DISABLED("3502", "租户已禁用"),
 
     TENANT_INVALID("3503", "租户不可用"),
-    TENANT_CHECK_NOT_PASS("3504", "isv校验不通过"),
+    TENANT_CHECK_NOT_PASS("3504", "租户校验不通过"),
     TENANT_SHORT_NAME_EXISTED("3505", "租户简称已存在，换个试试"),
     TENANT_OVER_MAX_SIZE("3506", "租户个数已超过限制"),
 

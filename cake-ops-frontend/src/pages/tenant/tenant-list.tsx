@@ -104,10 +104,10 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
       callback: (success: boolean) => {
         if (success) {
           message.success("处理成功");
+          fetchTenantList();
         }
       },
     });
-    fetchTenantList();
   };
 
   const handleEnable = (tenantId: string) => {
@@ -117,10 +117,10 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
       callback: (success: boolean) => {
         if (success) {
           message.success("处理成功");
+          fetchTenantList();
         }
       },
     });
-    fetchTenantList();
   };
 
   const handlePaginationChange = (page: number, pageSize?: number) => {
@@ -137,19 +137,36 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
     setEditingTenant(undefined);
   };
 
-  const handleSaveTenant = async (values: TenantDTO) => {
-    try {
-      if (editingTenant) {
-        await update({ ...values, id: editingTenant.id });
-      } else {
-        await create(values);
-      }
-      fetchTenantList();
-      setDrawerVisible(false);
-      form.resetFields();
-    } catch (error) {
-      console.error("保存Tenant失败:", error);
+  const handleUpdateTenant = async (values: TenantDTO) => {
+    if (editingTenant) {
+      dispatch({
+        type: "tenant/update",
+        payload: { ...values, tenantId: editingTenant.id },
+        callback: (success: boolean) => {
+          if (success) {
+            message.success("更新成功");
+            fetchTenantList();
+            setDrawerVisible(false);
+            form.resetFields();
+          }
+        },
+      });
     }
+  };
+
+  const handleSaveTenant = async (values: TenantDTO) => {
+    dispatch({
+      type: "tenant/create",
+      payload: { ...values },
+      callback: (success: boolean) => {
+        if (success) {
+          message.success("创建成功");
+          fetchTenantList();
+          setDrawerVisible(false);
+          form.resetFields();
+        }
+      },
+    });
   };
 
   const columns: ColumnsType<TenantDTO> = [
@@ -332,7 +349,7 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
         <CreateTenantForm
           initialValues={editingTenant}
           onSave={handleSaveTenant}
-          onUpdate={handleSaveTenant}
+          onUpdate={handleUpdateTenant}
           onCancel={handleCloseDrawer}
         />
       </Drawer>

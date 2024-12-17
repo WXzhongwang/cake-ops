@@ -113,17 +113,31 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
   };
 
   const handleSaveIsv = async (values: IsvDTO) => {
-    try {
-      if (editingIsv) {
-        await update({ ...values, id: editingIsv.id });
-      } else {
-        await create(values);
-      }
-      fetchIsvList();
-      setDrawerVisible(false);
-      form.resetFields();
-    } catch (error) {
-      console.error("保存Isv失败:", error);
+    dispatch({
+      type: "isv/create",
+      payload: { ...values },
+      callback: (success: boolean) => {
+        if (success) {
+          message.success("创建成功");
+        }
+      },
+    });
+  };
+
+  const handleUpdateIsv = async (values: IsvDTO) => {
+    if (editingIsv) {
+      dispatch({
+        type: "isv/update",
+        payload: { ...values, id: editingIsv.id },
+        callback: (success: boolean) => {
+          if (success) {
+            message.success("更新成功");
+            fetchIsvList();
+            setDrawerVisible(false);
+            form.resetFields();
+          }
+        },
+      });
     }
   };
 
@@ -332,7 +346,7 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
         <CreateIsvForm
           initialValues={editingIsv}
           onSave={handleSaveIsv}
-          onUpdate={handleSaveIsv}
+          onUpdate={handleUpdateIsv}
           onCancel={handleCloseDrawer}
         />
       </Drawer>

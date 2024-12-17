@@ -13,7 +13,10 @@ import com.rany.ops.domain.dp.TenantSource;
 import com.rany.ops.domain.event.account.CreateTenantAdminAccountEvent;
 import com.rany.ops.domain.pk.IsvId;
 import com.rany.ops.domain.pk.TenantId;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * Account 聚合根
@@ -24,7 +27,6 @@ import lombok.*;
  * @email 18668485565163.com
  */
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
