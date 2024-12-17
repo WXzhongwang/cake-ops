@@ -12,6 +12,7 @@ import {
   Badge,
   Tag,
   message,
+  Popconfirm,
 } from "antd";
 import { connect, Dispatch } from "umi";
 import { IsvDTO } from "@/models/isv";
@@ -62,8 +63,13 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
     dispatch({
       type: "isv/delete",
       payload: { id: isvId },
+      callback: (success: boolean) => {
+        if (success) {
+          message.success("删除成功");
+          fetchIsvList();
+        }
+      },
     });
-    fetchIsvList();
   };
 
   const handleDisabled = (isvId: string) => {
@@ -73,10 +79,10 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
       callback: (success: boolean) => {
         if (success) {
           message.success("处理成功");
+          fetchIsvList();
         }
       },
     });
-    fetchIsvList();
   };
 
   const handleEnable = (isvId: string) => {
@@ -86,10 +92,10 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
       callback: (success: boolean) => {
         if (success) {
           message.success("处理成功");
+          fetchIsvList();
         }
       },
     });
-    fetchIsvList();
   };
 
   const handlePaginationChange = (page: number, pageSize?: number) => {
@@ -230,15 +236,38 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
       title: "操作",
       key: "action",
       render: (text: any, record: IsvDTO) => (
-        <Space size="middle">
+        <>
           {record.status === "0" ? (
-            <a onClick={() => handleDisabled(record.id)}>禁用</a>
+            <Popconfirm
+              title="确定要禁用该ISV吗？"
+              onConfirm={() => handleDisabled(record.id)}
+              okText="确定"
+              cancelText="取消"
+            >
+              <a type="link">禁用</a>
+            </Popconfirm>
           ) : (
-            <a onClick={() => handleEnable(record.id)}>启用</a>
+            <Popconfirm
+              title="确定要启用该ISV吗？"
+              onConfirm={() => handleEnable(record.id)}
+              okText="确定"
+              cancelText="取消"
+            >
+              <a type="link">启用</a>
+            </Popconfirm>
           )}
-          <a onClick={() => handleEdit(record)}>编辑</a>
-          <a onClick={() => handleDelete(record.id)}>删除</a>
-        </Space>
+          <Button type="link" onClick={() => handleEdit(record)}>
+            编辑
+          </Button>
+          <Popconfirm
+            title="确定要删除该ISV吗？"
+            onConfirm={() => handleDelete(record.id)}
+            okText="确定"
+            cancelText="取消"
+          >
+            <a type="link">删除</a>
+          </Popconfirm>
+        </>
       ),
     },
   ];

@@ -42,79 +42,80 @@
         </javaClientGenerator>
 
         <!-- 需要生成的数据库表 -->
-        <table schema="rany_acl" tableName="application"
+        <table schema="cake_acl" tableName="application"
                domainObjectName="ApplicationPO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
                enableUpdateByExample="false">
         </table>
-        <table schema="rany_acl" tableName="acl_permission"
+        <table schema="cake_acl" tableName="acl_permission"
                domainObjectName="PermissionPO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
                enableUpdateByExample="false">
         </table>
-        <table schema="rany_acl" tableName="acl_role"
+        <table schema="cake_acl" tableName="acl_role"
                domainObjectName="RolePO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
                enableUpdateByExample="false">
         </table>
-        <table schema="rany_acl" tableName="role_permission"
+        <table schema="cake_acl" tableName="role_permission"
                domainObjectName="RolePermissionPO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
                enableUpdateByExample="false">
         </table>
-        <table schema="rany_acl" tableName="user_role"
+        <table schema="cake_acl" tableName="user_role"
                domainObjectName="UserRolePO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
                enableUpdateByExample="false">
         </table>
-        <table schema="rany_acl" tableName="menu"
+        <table schema="cake_acl" tableName="menu"
                domainObjectName="MenuPO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
                enableUpdateByExample="false">
         </table>
-        <table schema="rany_acl" tableName="role_menu"
+        <table schema="cake_acl" tableName="role_menu"
                domainObjectName="RoleMenuPO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
                enableUpdateByExample="false">
         </table>
-
-        <table schema="rany_acl" tableName="isv"
-               domainObjectName="IsvPO"
-               enableCountByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               enableUpdateByExample="false">
-        </table>
-        <table schema="rany_acl" tableName="account"
+        
+        <table schema="cake_acl" tableName="account"
                domainObjectName="AccountPO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
                enableUpdateByExample="false">
         </table>
-        <table schema="rany_acl" tableName="tenant"
+        <table schema="cake_acl" tableName="tenant"
                domainObjectName="TenantPO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
                enableUpdateByExample="false">
         </table>
-        <table schema="rany_acl" tableName="safe_strategy"
+        <table schema="cake_acl" tableName="safe_strategy"
                domainObjectName="SafeStrategyPO"
+               enableCountByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false">
+        </table>
+
+        <table schema="cake_acl" tableName="isv"
+               domainObjectName="IsvPO"
                enableCountByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"

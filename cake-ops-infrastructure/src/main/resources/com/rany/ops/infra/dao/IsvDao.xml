@@ -17,16 +17,17 @@
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
         <result column="max_tenants" jdbcType="INTEGER" property="maxTenants"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
     </resultMap>
     <sql id="Base_Column_List">
         id
         , name, url, short_name, country, status, is_deleted, register_ip, phone, email, creator,
-        modifier, gmt_create, gmt_modified, max_tenants
+        modifier, gmt_create, gmt_modified, max_tenants, address
     </sql>
 
     <insert id="save" parameterType="com.rany.ops.domain.aggregate.Isv">
         insert into isv (id, name, url, short_name, country, status, is_deleted, register_ip, phone, email, max_tenants,
-                         gmt_create, gmt_modified)
+                         gmt_create, gmt_modified, address)
         values (#{id.id,jdbcType=BIGINT},
                 #{name.name,jdbcType=VARCHAR},
                 #{url,jdbcType=VARCHAR},
@@ -39,7 +40,8 @@
                 #{emailAddress.email,jdbcType=VARCHAR},
                 #{maxTenants},
                 now(),
-                now())
+                now(),
+                #{address})
     </insert>
 
     <select id="page" resultMap="BaseResultMap" parameterType="com.rany.ops.common.params.IsvSearchParam">
