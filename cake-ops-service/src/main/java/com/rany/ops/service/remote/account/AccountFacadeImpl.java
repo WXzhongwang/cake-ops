@@ -21,7 +21,6 @@ import com.rany.ops.domain.page.PageUtils;
 import com.rany.ops.domain.pk.AccountId;
 import com.rany.ops.domain.service.AccountDomainService;
 import com.rany.ops.infra.convertor.AccountDataConvertor;
-import com.rany.ops.service.aop.annotation.TenantValidCheck;
 import com.rany.ops.service.factory.account.AccountFactory;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,16 +52,14 @@ public class AccountFacadeImpl implements AccountFacade {
     private final AccountFactory accountFactory;
 
     @Override
-    @TenantValidCheck(expression = "#createAccountCommand.tenantId")
     public Long createAccount(CreateAccountCommand createAccountCommand) {
         Account account = accountFactory.build(createAccountCommand);
-        account.save();
+        account.save(createAccountCommand.getUser());
         accountDomainService.save(account);
         return account.getId().getId();
     }
 
     @Override
-    @TenantValidCheck(expression = "#accountBasicQuery.tenantId")
     public AccountDTO getAccount(AccountBasicQuery accountBasicQuery) {
         Account account = accountDomainService.findById(new AccountId(accountBasicQuery.getAccountId()));
         if (Objects.isNull(account)) {
@@ -72,7 +69,6 @@ public class AccountFacadeImpl implements AccountFacade {
     }
 
     @Override
-    @TenantValidCheck(expression = "#accountBasicQuery.tenantId")
     public AccountDTO getAccountByDingId(AccountDingIdQuery accountBasicQuery) {
         Account account = accountDomainService.findAccountByDingUnionId(accountBasicQuery.getTenantId(), accountBasicQuery.getDingUnionId());
         if (Objects.isNull(account)) {
@@ -82,52 +78,47 @@ public class AccountFacadeImpl implements AccountFacade {
     }
 
     @Override
-    @TenantValidCheck(expression = "#disableAccountCommand.tenantId")
     public Boolean disableAccount(DisableAccountCommand disableAccountCommand) {
         Account account = accountDomainService.findById(new AccountId(disableAccountCommand.getAccountId()));
         if (Objects.isNull(account)) {
             throw new BusinessException(BusinessErrorMessage.ACCOUNT_NOT_FOUND);
         }
-        account.disable();
+        account.disable(disableAccountCommand.getUser());
         accountDomainService.update(account);
         return Boolean.TRUE;
     }
 
     @Override
-    @TenantValidCheck(expression = "#enableAccountCommand.tenantId")
     public Boolean enableAccount(EnableAccountCommand enableAccountCommand) {
         Account account = accountDomainService.findById(new AccountId(enableAccountCommand.getAccountId()));
         if (Objects.isNull(account)) {
             throw new BusinessException(BusinessErrorMessage.ACCOUNT_NOT_FOUND);
         }
-        account.enable();
+        account.enable(enableAccountCommand.getUser());
         accountDomainService.update(account);
         return Boolean.TRUE;
     }
 
     @Override
-    @TenantValidCheck(expression = "#deleteAccountCommand.tenantId")
     public Boolean deleteAccount(DeleteAccountCommand deleteAccountCommand) {
         Account account = accountDomainService.findById(new AccountId(deleteAccountCommand.getAccountId()));
         if (Objects.isNull(account)) {
             throw new BusinessException(BusinessErrorMessage.ACCOUNT_NOT_FOUND);
         }
-        account.delete();
+        account.delete(deleteAccountCommand.getUser());
         accountDomainService.update(account);
         return Boolean.TRUE;
     }
 
     @Override
-    @TenantValidCheck(expression = "#modifyAccountCommand.tenantId")
     public Boolean modifyAccount(ModifyAccountCommand modifyAccountCommand) {
         Account account = accountFactory.build(modifyAccountCommand);
-        account.modify();
+        account.modify(modifyAccountCommand.getUser());
         accountDomainService.update(account);
         return Boolean.TRUE;
     }
 
     @Override
-    @TenantValidCheck(expression = "#createSafeStrategyCommand.tenantId")
     public Boolean createSafeStrategy(CreateSafeStrategyCommand createSafeStrategyCommand) {
         Account account = accountDomainService.findById(new AccountId(createSafeStrategyCommand.getAccountId()));
         if (Objects.isNull(account)) {
@@ -149,13 +140,13 @@ public class AccountFacadeImpl implements AccountFacade {
         if (Objects.nonNull(createSafeStrategyCommand.getExpiredAt())) {
             safeStrategy.setExpiredAt(createSafeStrategyCommand.getExpiredAt());
         }
+        safeStrategy.init(createSafeStrategyCommand.getUser());
         account.setSafeStrategies(Collections.singletonList(safeStrategy));
         accountDomainService.saveSafeStrategy(account);
         return Boolean.TRUE;
     }
 
     @Override
-    @TenantValidCheck(expression = "#updateSafeStrategyCommand.tenantId")
     public Boolean updateSafeStrategy(UpdateSafeStrategyCommand updateSafeStrategyCommand) {
         Account account = accountDomainService.findById(new AccountId(updateSafeStrategyCommand.getAccountId()));
         if (Objects.isNull(account)) {
@@ -174,6 +165,7 @@ public class AccountFacadeImpl implements AccountFacade {
                 safeStrategy.setAuthValue(updateSafeStrategyCommand.getAuthValue());
                 safeStrategy.setBlockAt(updateSafeStrategyCommand.getBlockAt());
                 safeStrategy.setExpiredAt(updateSafeStrategyCommand.getExpiredAt());
+                safeStrategy.modify(updateSafeStrategyCommand.getUser());
                 continue;
             }
             throw new BusinessException(BusinessErrorMessage.ACCOUNT_STRATEGY_NOT_FOUND);
@@ -183,7 +175,6 @@ public class AccountFacadeImpl implements AccountFacade {
     }
 
     @Override
-    // @TenantValidCheck(expression = "#accountQuery.tenantId")
     public List<AccountDTO> findAccounts(AccountQuery accountQuery) {
         AccountSearchParam searchParam = new AccountSearchParam();
         if (Objects.nonNull(accountQuery.getTenantId())) {
@@ -218,7 +209,6 @@ public class AccountFacadeImpl implements AccountFacade {
     }
 
     @Override
-    // @TenantValidCheck(expression = "#accountPageQuery.tenantId")
     public Page<AccountDTO> pageAccounts(AccountPageQuery accountPageQuery) {
         AccountPageSearchParam searchParam = new AccountPageSearchParam();
         searchParam.setPageNo(accountPageQuery.getPageNo());

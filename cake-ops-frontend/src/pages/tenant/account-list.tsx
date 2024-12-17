@@ -91,19 +91,25 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
 
   const handleDelete = (accountId: string) => {
     dispatch({
-      type: "account/delete",
-      payload: { id: accountId },
+      type: "account/deleteAccount",
+      payload: { accountId: accountId },
+      callback: (success: boolean) => {
+        if (success) {
+          message.success("删除成功");
+          fetchAccountList();
+        }
+      },
     });
-    fetchAccountList();
   };
 
   const handleDisabled = (accountId: string) => {
     dispatch({
-      type: "account/disable",
-      payload: { id: accountId },
+      type: "account/disableAccount",
+      payload: { accountId: accountId },
       callback: (success: boolean) => {
         if (success) {
-          message.success("处理成功");
+          message.success("禁用成功");
+          fetchAccountList();
         }
       },
     });
@@ -112,11 +118,12 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
 
   const handleEnable = (accountId: string) => {
     dispatch({
-      type: "account/enable",
-      payload: { id: accountId },
+      type: "account/enableAccount",
+      payload: { accountId: accountId },
       callback: (success: boolean) => {
         if (success) {
-          message.success("处理成功");
+          message.success("启用成功");
+          fetchAccountList();
         }
       },
     });
@@ -138,17 +145,34 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
   };
 
   const handleSaveAccount = async (values: AccountDTO) => {
-    try {
-      if (editingAccount) {
-        await updateAccount({ ...values, id: editingAccount.id });
-      } else {
-        await createAccount(values);
-      }
-      fetchAccountList();
-      setDrawerVisible(false);
-      form.resetFields();
-    } catch (error) {
-      console.error("保存Account失败:", error);
+    dispatch({
+      type: "account/createAccount",
+      payload: { values },
+      callback: (success: boolean) => {
+        if (success) {
+          message.success("创建成功");
+          fetchAccountList();
+          setDrawerVisible(false);
+          form.resetFields();
+        }
+      },
+    });
+  };
+
+  const handleUpdateAccount = async (values: AccountDTO) => {
+    if (editingAccount) {
+      dispatch({
+        type: "account/updateAccount",
+        payload: { ...values, accountId: editingAccount.id },
+        callback: (success: boolean) => {
+          if (success) {
+            message.success("更新成功");
+            fetchAccountList();
+            setDrawerVisible(false);
+            form.resetFields();
+          }
+        },
+      });
     }
   };
 
@@ -352,7 +376,7 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
         <CreateAccountForm
           initialValues={editingAccount}
           onSave={handleSaveAccount}
-          onUpdate={handleSaveAccount}
+          onUpdate={handleUpdateAccount}
           onCancel={handleCloseDrawer}
           tenantOptions={tenantOptions}
         />

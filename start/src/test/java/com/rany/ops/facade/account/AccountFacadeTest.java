@@ -54,7 +54,6 @@ public class AccountFacadeTest extends BaseTests {
     public void getAccount() {
         AccountBasicQuery accountBasicQuery = new AccountBasicQuery();
         accountBasicQuery.setAccountId(ACCOUNT_ID);
-        accountBasicQuery.setTenantId(TENANT_ID);
         AccountDTO account = accountFacade.getAccount(accountBasicQuery);
         Assert.assertNotNull(account);
     }
@@ -63,7 +62,6 @@ public class AccountFacadeTest extends BaseTests {
     public void disableAccount() {
         DisableAccountCommand disableAccountCommand = new DisableAccountCommand();
         disableAccountCommand.setAccountId(ACCOUNT_ID);
-        disableAccountCommand.setTenantId(TENANT_ID);
         Boolean account = accountFacade.disableAccount(disableAccountCommand);
         Assert.assertTrue(account);
     }
@@ -72,7 +70,6 @@ public class AccountFacadeTest extends BaseTests {
     public void enableAccount() {
         EnableAccountCommand enableAccountCommand = new EnableAccountCommand();
         enableAccountCommand.setAccountId(ACCOUNT_ID);
-        enableAccountCommand.setTenantId(TENANT_ID);
         Boolean account = accountFacade.enableAccount(enableAccountCommand);
         Assert.assertTrue(account);
     }
@@ -81,7 +78,6 @@ public class AccountFacadeTest extends BaseTests {
     public void deleteAccount() {
         DeleteAccountCommand deleteAccountCommand = new DeleteAccountCommand();
         deleteAccountCommand.setAccountId(ACCOUNT_ID);
-        deleteAccountCommand.setTenantId(TENANT_ID);
         Boolean success = accountFacade.deleteAccount(deleteAccountCommand);
         Assert.assertTrue(success);
     }
@@ -89,7 +85,6 @@ public class AccountFacadeTest extends BaseTests {
     @Test
     public void modifyAccount() {
         ModifyAccountCommand modifyAccountCommand = new ModifyAccountCommand();
-        modifyAccountCommand.setTenantId(TENANT_ID);
         modifyAccountCommand.setAccountId(ACCOUNT_ID);
         modifyAccountCommand.setQq("108719251");
         modifyAccountCommand.setWechat("WxZhongWang");

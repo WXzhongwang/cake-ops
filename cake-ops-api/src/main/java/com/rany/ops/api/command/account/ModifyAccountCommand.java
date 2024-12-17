@@ -1,7 +1,8 @@
 package com.rany.ops.api.command.account;
 
-import com.rany.ops.common.base.DTO;
+import com.rany.ops.common.base.BaseCommand;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -9,16 +10,13 @@ import java.util.Date;
  * 更新账号基本信息
  *
  * @author zhongshengwang
- * @description TODO
+ * @description ModifyAccountCommand
  * @date 2022/12/30 22:02
  * @email 18668485565163.com
  */
 @Data
-public class ModifyAccountCommand extends DTO {
-    /**
-     * tenantId
-     */
-    private Long tenantId;
+@EqualsAndHashCode(callSuper = true)
+public class ModifyAccountCommand extends BaseCommand {
 
     /**
      * accountId

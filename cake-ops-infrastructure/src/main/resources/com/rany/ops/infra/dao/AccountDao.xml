@@ -274,7 +274,7 @@
                 </foreach>
             </if>
         </where>
-        order by gmt_modified, gmt_create desc
+        order by gmt_modified desc, id desc
     </select>
 
     <select id="selectPage" resultType="com.rany.ops.infra.po.AccountPO"
@@ -308,7 +308,7 @@
                 and account_type = #{accountType}
             </if>
         </where>
-        order by gmt_modified, gmt_create desc
+        order by gmt_modified desc, id desc
     </select>
 
 

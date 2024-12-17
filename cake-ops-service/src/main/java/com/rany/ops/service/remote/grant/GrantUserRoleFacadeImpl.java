@@ -83,7 +83,7 @@ public class GrantUserRoleFacadeImpl implements GrantUserRoleFacade {
         if (StringUtils.equals(role.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.ROLE_DELETED);
         }
-        userRole.delete();
+        userRole.delete(disGrantUserRoleCommand.getUser());
         userRoleDomainService.update(userRole);
         return Boolean.TRUE;
     }

@@ -18,9 +18,9 @@ public class UserRole extends BaseEntity<Long> {
     private Long userId;
     private Long roleId;
 
-    public Boolean delete() {
+    public Boolean delete(String user) {
         this.gmtModified = DateUtil.date();
-        // this.modifier = user;
+        this.modifier = user;
         this.isDeleted = DeleteStatusEnum.YES.getValue();
         return Boolean.TRUE;
     }

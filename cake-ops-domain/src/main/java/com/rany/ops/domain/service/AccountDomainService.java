@@ -61,12 +61,12 @@ public class AccountDomainService {
         return accountRepository.findAccountByLoginName(loginName);
     }
 
-    public Boolean saveSafeStrategy(Account account) {
-        return accountRepository.saveSafeStrategy(account);
+    public void saveSafeStrategy(Account account) {
+        accountRepository.saveSafeStrategy(account);
     }
 
-    public Boolean updateSafeStrategy(Account account) {
-        return accountRepository.updateSafeStrategy(account);
+    public void updateSafeStrategy(Account account) {
+        accountRepository.updateSafeStrategy(account);
     }
 
 

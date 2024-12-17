@@ -114,43 +114,42 @@ public class Account extends BaseAggregateRoot implements IAggregate<AccountId> 
 
     /**
      * 账号信息保存
-     *
-     * @return
      */
-    public Boolean save() {
+    public void save(String user) {
         this.gmtCreate = DateUtil.date();
         this.gmtModified = DateUtil.date();
         this.isDeleted = DeleteStatusEnum.NO.getValue();
         this.status = CommonStatusEnum.ENABLE.getValue();
+        this.creator = user;
+        this.modifier = user;
         this.registerEvent(new AccountCreatedEvent(this, this.gmtCreate));
-        return Boolean.TRUE;
     }
 
-    public Boolean disable() {
+    public void disable(String modifier) {
         this.gmtModified = DateUtil.date();
+        this.modifier = modifier;
         this.status = CommonStatusEnum.DISABLED.getValue();
         this.registerEvent(new AccountDisabledEvent(this, this.gmtModified));
-        return Boolean.TRUE;
     }
 
-    public Boolean enable() {
+    public void enable(String modifier) {
         this.gmtModified = DateUtil.date();
+        this.modifier = modifier;
         this.status = CommonStatusEnum.ENABLE.getValue();
         this.registerEvent(new AccountEnabledEvent(this, this.gmtModified));
-        return Boolean.TRUE;
     }
 
-    public Boolean delete() {
+    public void delete(String modifier) {
         this.gmtModified = DateUtil.date();
+        this.modifier = modifier;
         this.isDeleted = DeleteStatusEnum.YES.getValue();
         this.registerEvent(new AccountDeletedEvent(this, this.gmtModified));
-        return Boolean.TRUE;
     }
 
-    public Boolean modify() {
+    public void modify(String modifier) {
         this.gmtModified = DateUtil.date();
+        this.modifier = modifier;
         this.registerEvent(new AccountModifiedEvent(this, this.gmtModified));
-        return Boolean.TRUE;
     }
 
     @Override

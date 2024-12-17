@@ -112,9 +112,9 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
         rules={[{ required: true, message: "请输入账号类型" }]}
       >
         <Select placeholder="账号类型">
-          <Option value="ADMIN">ADMIN</Option>
-          <Option value="USER">USER</Option>
-          <Option value="GUEST">GUEST</Option>
+          <Option value="BASIC">基础账号</Option>
+          <Option value="DEVELOPER">开发者账号</Option>
+          <Option value="VIP">VIP</Option>
         </Select>
       </Form.Item>
 

@@ -3,10 +3,10 @@ package com.rany.ops.common.enums;
 import lombok.Getter;
 
 /**
- * TODO
+ * CommonStatusEnum
  *
  * @author zhongshengwang
- * @description TODO
+ * @description CommonStatusEnum
  * @date 2022/12/28 20:15
  * @email 18668485565163.com
  */
@@ -16,8 +16,8 @@ public enum CommonStatusEnum {
     ENABLE("启用", "0"),
     DISABLED("禁用", "1");
 
-    private String code;
-    private String value;
+    private final String code;
+    private final String value;
 
     CommonStatusEnum(String code, String value) {
         this.code = code;

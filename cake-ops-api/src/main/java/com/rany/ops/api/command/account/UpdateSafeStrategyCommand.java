@@ -1,21 +1,23 @@
 package com.rany.ops.api.command.account;
 
-import com.rany.ops.common.base.DTO;
+import com.rany.ops.common.base.BaseCommand;
 import com.rany.ops.common.enums.LoginSafeStrategyEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
 /**
- * TODO
+ * UpdateSafeStrategyCommand
  *
  * @author zhongshengwang
- * @description TODO
+ * @description UpdateSafeStrategyCommand
  * @date 2022/12/30 22:14
  * @email 18668485565163.com
  */
 @Data
-public class UpdateSafeStrategyCommand extends DTO {
+@EqualsAndHashCode(callSuper = true)
+public class UpdateSafeStrategyCommand extends BaseCommand {
     /**
      * 账号Id
      */

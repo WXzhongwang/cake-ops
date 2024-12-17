@@ -1,18 +1,20 @@
 package com.rany.ops.api.command.account;
 
-import com.rany.ops.common.base.DTO;
+import com.rany.ops.common.base.BaseCommand;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * TODO
+ * 添加账号
  *
  * @author zhongshengwang
- * @description TODO
+ * @description 添加账号
  * @date 2022/12/27 20:40
  * @email 18668485565163.com
  */
 @Data
-public class CreateAccountCommand extends DTO {
+@EqualsAndHashCode(callSuper = true)
+public class CreateAccountCommand extends BaseCommand {
 
     /**
      * 租户Id

@@ -32,7 +32,7 @@ public class AccountDomainServiceTest extends BaseTests {
                 new TenantId(768452909531803648L),
                 new AccountName("zhongshengwang.zsw"),
                 null);
-        account.save();
+        account.save("");
         Boolean saveRes = accountDomainService.save(account);
         Assert.assertTrue(saveRes);
     }
