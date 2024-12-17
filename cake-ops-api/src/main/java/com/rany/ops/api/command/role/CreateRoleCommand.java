@@ -5,10 +5,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * TODO
+ * CreateRoleCommand
  *
  * @author zhongshengwang
- * @description TODO
+ * @description CreateRoleCommand
  * @date 2022/12/27 20:40
  * @email 18668485565163.com
  */

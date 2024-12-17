@@ -372,7 +372,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
   };
 
   return (
-    <PageContainer title="应用菜单">
+    <PageContainer title="菜单管理">
       <Layout style={{ height: "80vh" }}>
         <Layout.Sider width="25%" style={{ background: "#fff", padding: 16 }}>
           <Form form={form} layout="vertical">

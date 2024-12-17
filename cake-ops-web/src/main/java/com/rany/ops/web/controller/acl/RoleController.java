@@ -39,19 +39,19 @@ public class RoleController {
     private GrantRolePermissionFacade grantRolePermissionFacade;
 
     @PostMapping("/get-role-tree")
-    public ListResult<RoleTreeDTO> getRoleTree(RoleTreeQuery roleTreeQuery) {
+    public ListResult<RoleTreeDTO> getRoleTree(@RequestBody RoleTreeQuery roleTreeQuery) {
         List<RoleTreeDTO> roleTree = roleFacade.getRoleTree(roleTreeQuery);
         return ListResult.succeed(roleTree);
     }
 
     @PostMapping("/list-role")
-    public ListResult<RoleDTO> listRules(RoleTreeQuery roleTreeQuery) {
+    public ListResult<RoleDTO> listRules(@RequestBody RoleTreeQuery roleTreeQuery) {
         List<RoleDTO> roleTree = roleFacade.listRoles(roleTreeQuery);
         return ListResult.succeed(roleTree);
     }
 
     @PostMapping("/get")
-    public PojoResult<RoleDTO> get(RoleBasicQuery query) {
+    public PojoResult<RoleDTO> get(@RequestBody RoleBasicQuery query) {
         RoleDTO role = roleFacade.getRole(query);
         return PojoResult.succeed(role);
     }

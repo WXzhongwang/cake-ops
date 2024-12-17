@@ -208,7 +208,7 @@ const AppList: React.FC<AppListProps> = ({ dispatch }) => {
   ];
 
   return (
-    <PageContainer title="应用列表">
+    <PageContainer title="应用管理">
       <Card>
         <Space size="middle" direction="vertical" style={{ width: "100%" }}>
           <Form
