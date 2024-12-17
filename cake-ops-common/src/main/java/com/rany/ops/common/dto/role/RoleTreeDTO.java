@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class RoleTreeDTO extends DTO {
-    private Long roleId;
+    private String roleId;
     private String roleName;
     private String roleDesc;
     private Long parentId;

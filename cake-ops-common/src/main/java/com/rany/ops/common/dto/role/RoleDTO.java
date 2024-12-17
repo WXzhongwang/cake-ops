@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class RoleDTO extends DTO {
-    private Long roleId;
+    private String roleId;
     private String roleName;
     private String roleDesc;
     private String roleKey;

@@ -349,7 +349,7 @@ const RolePage: React.FC<RoleTreeProps> = React.memo(({ dispatch }) => {
                 <Button
                   type="primary"
                   danger
-                  onClick={() => deleteNode(selectedRoleItem.roleKey)}
+                  onClick={() => deleteNode(selectedRoleItem.roleId)}
                   style={{ marginLeft: 8 }}
                 >
                   删除
