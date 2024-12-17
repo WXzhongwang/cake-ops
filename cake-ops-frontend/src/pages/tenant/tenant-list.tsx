@@ -29,7 +29,7 @@ interface TenantListProps {
   dispatch: Dispatch;
 }
 
-interface ISVOption {
+export interface ISVOption {
   label: string;
   value: string;
 }
@@ -290,6 +290,7 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
             <Form.Item name="isvId" label="ISV">
               <Select
                 showSearch
+                allowClear={true} // 添加这一行代码以允许清除选项
                 style={{ width: 200 }}
                 placeholder="请选择或输入ISV"
                 optionFilterProp="children"
@@ -298,7 +299,7 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
             </Form.Item>
 
             <Form.Item name="name" label="租户名称">
-              <Input placeholder="请输入租户名称" />
+              <Input placeholder="请输入租户名称" allowClear />
             </Form.Item>
 
             <Form.Item>
@@ -351,6 +352,7 @@ const TenantList: React.FC<TenantListProps> = ({ dispatch }) => {
           onSave={handleSaveTenant}
           onUpdate={handleUpdateTenant}
           onCancel={handleCloseDrawer}
+          isvOptions={isvOptions}
         />
       </Drawer>
     </PageContainer>

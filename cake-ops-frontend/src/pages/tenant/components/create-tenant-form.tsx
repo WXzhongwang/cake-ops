@@ -1,6 +1,13 @@
 import React from "react";
 import { Form, Input, Button, Select } from "antd";
 import { TenantDTO } from "@/models/tenant";
+import { ISVOption } from "../tenant-list";
+import {
+  validateEmail,
+  validateNameLength,
+  validatePhoneNumber,
+  validateShortName,
+} from "@/utils";
 
 const { Option } = Select;
 
@@ -9,6 +16,7 @@ interface CreateTenantFormProps {
   onSave: (values: TenantDTO) => void;
   onCancel: () => void;
   onUpdate: (values: TenantDTO) => void;
+  isvOptions: ISVOption[]; // 新增属性
 }
 
 const CreateTenantForm: React.FC<CreateTenantFormProps> = ({
@@ -16,6 +24,7 @@ const CreateTenantForm: React.FC<CreateTenantFormProps> = ({
   onSave,
   onCancel,
   onUpdate,
+  isvOptions,
 }) => {
   const [form] = Form.useForm();
 
@@ -43,33 +52,57 @@ const CreateTenantForm: React.FC<CreateTenantFormProps> = ({
       <Form.Item
         name="name"
         label="租户名称"
-        rules={[{ required: true, message: "请输入Isv名称" }]}
+        rules={[
+          { required: true, message: "请输入租户名称" },
+          { validator: validateNameLength },
+        ]}
       >
-        <Input placeholder="请输入Isv名称" />
+        <Input placeholder="请输入租户名称" allowClear />
       </Form.Item>
 
       <Form.Item
         name="shortName"
         label="租户简称"
-        rules={[{ required: true, message: "请输入Isv 简称" }]}
+        rules={[
+          { required: true, message: "请输入租户简称" },
+          { validator: validateShortName },
+        ]}
       >
-        <Input placeholder="请输入Isv简称" />
+        <Input placeholder="请输入租户简称" allowClear />
       </Form.Item>
-
+      <Form.Item
+        name="isvId"
+        label="ISV"
+        rules={[{ required: true, message: "请选择ISV" }]}
+      >
+        <Select placeholder="请选择ISV" allowClear>
+          {isvOptions.map((option) => (
+            <Option key={option.value} value={option.value}>
+              {option.label}
+            </Option>
+          ))}
+        </Select>
+      </Form.Item>
       <Form.Item
         name="phone"
         label="手机号"
-        rules={[{ required: false, message: "请输入手机号" }]}
+        rules={[
+          { required: true, message: "请输入手机号" },
+          { validator: validatePhoneNumber },
+        ]}
       >
-        <Input placeholder="请输入手机号" />
+        <Input type="phone" placeholder="请输入手机号" allowClear />
       </Form.Item>
 
       <Form.Item
         name="email"
         label="邮箱地址"
-        rules={[{ required: false, message: "请输入邮箱地址" }]}
+        rules={[
+          { required: true, message: "请输入邮箱地址" },
+          { validator: validateEmail },
+        ]}
       >
-        <Input placeholder="请输入邮箱地址" />
+        <Input type="email" placeholder="请输入邮箱地址" allowClear />
       </Form.Item>
 
       <Form.Item
@@ -77,11 +110,11 @@ const CreateTenantForm: React.FC<CreateTenantFormProps> = ({
         label="来源"
         rules={[{ required: false, message: "请输入国家" }]}
       >
-          <Select placeholder="请输入来源">
-            <Option value="self">自建</Option>
-            <Option value="open">外拓</Option>
-            <Option value="dev">开发</Option>
-          </Select>
+        <Select placeholder="请输入来源" allowClear>
+          <Option value="self">自建</Option>
+          <Option value="open">外拓</Option>
+          <Option value="dev">开发</Option>
+        </Select>
       </Form.Item>
 
       <Form.Item
@@ -89,7 +122,7 @@ const CreateTenantForm: React.FC<CreateTenantFormProps> = ({
         label="网站"
         rules={[{ required: false, message: "请输入网站地址" }]}
       >
-        <Input placeholder="请输入网站地址" />
+        <Input placeholder="请输入网站地址" allowClear />
       </Form.Item>
 
       <Form.Item
@@ -97,7 +130,7 @@ const CreateTenantForm: React.FC<CreateTenantFormProps> = ({
         label="地址"
         rules={[{ required: false, message: "请输入地址" }]}
       >
-        <Input placeholder="请输入地址" />
+        <Input placeholder="请输入地址" allowClear />
       </Form.Item>
 
       <Form.Item>

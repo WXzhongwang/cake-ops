@@ -29,7 +29,7 @@ interface AccountListProps {
   dispatch: Dispatch;
 }
 
-interface TenantOption {
+export interface TenantOption {
   label: string;
   value: string;
 }
@@ -293,11 +293,15 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
                 placeholder="请选择或输入租户"
                 optionFilterProp="children"
                 options={tenantOptions}
+                allowClear={true} // 添加这一行代码以允许清除选项
               />
             </Form.Item>
 
             <Form.Item name="accountName" label="账号名称">
-              <Input placeholder="请输入账号名称" />
+              <Input
+                placeholder="请输入账号名称"
+                allowClear={true} // 添加这一行代码以允许清除选项
+              />
             </Form.Item>
 
             <Form.Item>
@@ -350,6 +354,7 @@ const AccountList: React.FC<AccountListProps> = ({ dispatch }) => {
           onSave={handleSaveAccount}
           onUpdate={handleSaveAccount}
           onCancel={handleCloseDrawer}
+          tenantOptions={tenantOptions}
         />
       </Drawer>
     </PageContainer>

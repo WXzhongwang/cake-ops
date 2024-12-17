@@ -1,6 +1,12 @@
 import React from "react";
 import { Form, Input, Button, Select } from "antd";
 import { AccountDTO } from "@/models/account";
+import {
+  validateAccountName,
+  validateEmail,
+  validatePhoneNumber,
+} from "@/utils";
+import { TenantOption } from "../account-list";
 
 const { Option } = Select;
 
@@ -9,6 +15,7 @@ interface CreateAccountFormProps {
   onSave: (values: AccountDTO) => void;
   onCancel: () => void;
   onUpdate: (values: AccountDTO) => void;
+  tenantOptions: TenantOption[];
 }
 
 const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
@@ -16,6 +23,7 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
   onSave,
   onCancel,
   onUpdate,
+  tenantOptions,
 }) => {
   const [form] = Form.useForm();
 
@@ -43,7 +51,10 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
       <Form.Item
         name="accountName"
         label="账号名称"
-        rules={[{ required: true, message: "请输入账号名称" }]}
+        rules={[
+          { required: true, message: "请输入账号名称" },
+          { validator: validateAccountName },
+        ]}
       >
         <Input placeholder="请输入账号名称" />
       </Form.Item>
@@ -51,7 +62,10 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
       <Form.Item
         name="phone"
         label="手机号"
-        rules={[{ required: true, message: "请输入手机号" }]}
+        rules={[
+          { required: true, message: "请输入手机号" },
+          { validator: validatePhoneNumber },
+        ]}
       >
         <Input placeholder="请输入手机号" />
       </Form.Item>
@@ -59,7 +73,10 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
       <Form.Item
         name="email"
         label="邮箱地址"
-        rules={[{ required: true, message: "请输入邮箱地址" }]}
+        rules={[
+          { required: true, message: "请输入邮箱地址" },
+          { validator: validateEmail },
+        ]}
       >
         <Input placeholder="请输入邮箱地址" />
       </Form.Item>
@@ -69,10 +86,12 @@ const CreateAccountForm: React.FC<CreateAccountFormProps> = ({
         label="所属租户"
         rules={[{ required: true, message: "请选择所属租户" }]}
       >
-        <Select placeholder="请选择所属租户">
-          {/* 这里假设你有一个租户选项列表 */}
-          {/* <Option value="1">租户1</Option>
-          <Option value="2">租户2</Option> */}
+        <Select placeholder="请选择所属租户" allowClear>
+          {tenantOptions.map((option) => (
+            <Option key={option.value} value={option.value}>
+              {option.label}
+            </Option>
+          ))}
         </Select>
       </Form.Item>
 

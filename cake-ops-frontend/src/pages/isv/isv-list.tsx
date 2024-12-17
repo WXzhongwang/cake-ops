@@ -297,7 +297,7 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
             }}
           >
             <Form.Item name="name" label="名称">
-              <Input placeholder="请输入名称" />
+              <Input placeholder="请输入名称" allowClear />
             </Form.Item>
             <Form.Item>
               <Button

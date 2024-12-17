@@ -1,3 +1,60 @@
+export const validateNameLength = (_: any, value: string) => {
+  if (!value || value.length <= 8) {
+    return Promise.reject(new Error("租户名称必须长度大于8"));
+  }
+  return Promise.resolve();
+};
+
+export const validateShortName = (_: any, value: string) => {
+  if (!value) {
+    return Promise.resolve();
+  }
+  const variableNameRegex = /^[a-zA-Z][a-zA-Z0-9_]*$/;
+  if (!variableNameRegex.test(value)) {
+    return Promise.reject(new Error("租户简称必须满足变量命名规则"));
+  }
+  if (value.length <= 6) {
+    return Promise.reject(new Error("租户简称必须长度大于6"));
+  }
+  return Promise.resolve();
+};
+
+export const validateAccountName = (_: any, value: string) => {
+  if (!value) {
+    return Promise.resolve();
+  }
+  const variableNameRegex = /^[a-zA-Z][a-zA-Z0-9_]*$/;
+  if (!variableNameRegex.test(value)) {
+    return Promise.reject(new Error("账号名称必须满足变量命名规则"));
+  }
+  if (value.length <= 10) {
+    return Promise.reject(new Error("账号名称必须长度大于10"));
+  }
+  return Promise.resolve();
+};
+
+export const validatePhoneNumber = (_: any, value: string) => {
+  const phoneRegex = /^1[3-9]\d{9}$/; // 假设是中国大陆的手机号格式
+  if (!value) {
+    return Promise.reject(new Error("请输入手机号"));
+  }
+  if (!phoneRegex.test(value)) {
+    return Promise.reject(new Error("手机号格式不正确"));
+  }
+  return Promise.resolve();
+};
+
+export const validateEmail = (_: any, value: string) => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!value) {
+    return Promise.reject(new Error("请输入邮箱地址"));
+  }
+  if (!emailRegex.test(value)) {
+    return Promise.reject(new Error("邮箱格式不正确"));
+  }
+  return Promise.resolve();
+};
+
 /**
  * 用 value 获取枚举值
  */
