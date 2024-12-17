@@ -65,7 +65,7 @@ public enum BusinessErrorMessage implements ResponseCode {
     PERMISSION_REF_MENU_NOT_FOUND("6505", "权限关联菜单未找到"),
     PERMISSION_REF_MENU_NOT_MATCHED("6505", "权限关联菜单仅支持关联本应用菜单"),
     PERMISSION_REF_MENU_REQUIRED("6505", "权限需关联菜单"),
-    PERMISSION_RESOURCE_TYPE_ILLEGAL("6505", "权限点类型仅支持行为action"),
+    PERMISSION_RESOURCE_TYPE_ILLEGAL("6505", "权限点类型仅支持行为operation或query"),
 
     USER_ROLE_EXIST("6505", "用户已存在该角色"),
     USER_ROLE_NOT_EXIST("6505", "用户角色关系不存在"),

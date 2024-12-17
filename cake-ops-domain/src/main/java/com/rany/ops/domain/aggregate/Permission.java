@@ -84,7 +84,7 @@ public class Permission extends BaseAggregateRoot implements IAggregate<Permissi
      * @return
      */
     public Boolean save(String user) {
-        this.setResourceType(Constants.RESOURCE_TYPE_ACTION);
+        this.setResourceType(Constants.RESOURCE_TYPE_OPERATION);
         this.gmtCreate = DateUtil.date();
         this.gmtModified = DateUtil.date();
         this.modifier = user;

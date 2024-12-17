@@ -128,14 +128,8 @@
             <if test="resourcePath != null">
                 resource_path = #{resourcePath,jdbcType=VARCHAR},
             </if>
-            <if test="creator != null">
-                creator = #{creator,jdbcType=VARCHAR},
-            </if>
             <if test="modifier != null">
                 modifier = #{modifier,jdbcType=VARCHAR},
-            </if>
-            <if test="gmtCreate != null">
-                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
             </if>
             <if test="gmtModified != null">
                 gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
@@ -144,13 +138,13 @@
                 is_deleted = #{isDeleted,jdbcType=CHAR},
             </if>
             <if test="refMenuId != null">
-                ref_menu_id = #{refMenuId,jdbcType=BIGINT},
+                ref_menu_id = #{refMenuId},
             </if>
             <if test="status != null">
-                status = #{status,jdbcType=CHAR},
+                status = #{status},
             </if>
         </set>
-        where id = #{id,jdbcType=BIGINT}
+        where id = #{id.id}
     </update>
 
     <select id="selectList" resultType="com.rany.ops.infra.po.PermissionPO"
@@ -169,7 +163,7 @@
             <if test="tenantId == null">
                 and tenant_id is null
             </if>
-            <if test="refMenuId == null">
+            <if test="refMenuId != null">
                 and ref_menu_id = #{refMenuId}
             </if>
         </where>

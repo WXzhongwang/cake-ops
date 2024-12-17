@@ -14,6 +14,7 @@ import {
   Space,
   Table,
   Tabs,
+  Tag,
   Tree,
   TreeSelect,
 } from "antd";
@@ -24,6 +25,7 @@ import { AppDTO } from "@/models/app";
 import * as AllIcons from "@ant-design/icons";
 import { PlusOutlined } from "@ant-design/icons";
 import { PermissionDTO } from "@/models/permission";
+import CreatePermissionForm from "./components/create-permission-form";
 
 interface MenuTreeProps {
   dispatch: Dispatch;
@@ -52,10 +54,23 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
   const [editingPermissionId, setEditingPermissionId] = useState<string | null>(
     null
   );
-
-  const editPermission = (permissionId: string) => {
-    setEditingPermissionId(permissionId);
+  const [editingPermission, setEditingPermission] = useState<PermissionDTO>();
+  const [permissionDrawer, setPermissionDrawer] = useState(false);
+  const editPermission = (permission: PermissionDTO) => {
+    setEditingPermissionId(permission.permissionId);
     // 打开编辑表单或弹窗
+    setPermissionDrawer(true);
+    setEditingPermission(permission);
+  };
+
+  const handleAddPermission = () => {
+    setPermissionDrawer(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setPermissionDrawer(false);
+    form.resetFields();
+    setEditingPermission(undefined);
   };
 
   const deletePermission = (permissionId: string) => {
@@ -71,7 +86,26 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
     });
   };
 
-  const handlePermissionFormSubmit = (values: any) => {
+  const handleSavePermission = (values: any) => {
+    // 创建权限
+    dispatch({
+      type: "permission/createPermission",
+      payload: {
+        ...values,
+        appCode: selectedAppCode,
+        refMenuId: selectedMenuItem?.menuId,
+      },
+      callback: (res: any) => {
+        message.success("添加成功");
+        form.resetFields();
+        setPermissionDrawer(false);
+        setEditingPermission(undefined);
+        fetchPermissions();
+      },
+    });
+  };
+
+  const handleUpdatePermission = (values: any) => {
     if (editingPermissionId) {
       // 更新权限
       dispatch({
@@ -86,20 +120,6 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
           setEditingPermissionId(null);
         },
       });
-    } else {
-      // 创建权限
-      dispatch({
-        type: "permission/createPermission",
-        payload: {
-          ...values,
-          appCode: selectedAppCode,
-          refMenuId: selectedMenuItem?.menuId,
-        },
-        callback: (res: any) => {
-          message.success("添加成功");
-          fetchPermissions();
-        },
-      });
     }
   };
 
@@ -108,7 +128,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
       dispatch({
         type: "permission/listMenuPermission",
         payload: {
-          menuId: selectedMenuItem.menuId,
+          refMenuId: selectedMenuItem.menuId,
           appCode: selectedAppCode,
         },
         callback: (res: PermissionDTO[]) => {
@@ -123,17 +143,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
   }, []);
 
   useEffect(() => {
-    if (selectedMenuItem) {
-      dispatch({
-        type: "permission/listMenuPermission",
-        payload: {
-          permissionId: selectedMenuItem.menuId,
-        },
-        callback: (res: PermissionDTO[]) => {
-          setPermissions(res);
-        },
-      });
-    }
+    fetchPermissions();
   }, [selectedMenuItem]);
 
   const fetchAppList = () => {
@@ -451,7 +461,9 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
                   direction="vertical"
                   style={{ width: "100%" }}
                 >
-                  <Button type="primary">新增权限点</Button>
+                  <Button type="primary" onClick={() => handleAddPermission()}>
+                    新增权限点
+                  </Button>
                   <Table
                     dataSource={permissions}
                     columns={[
@@ -459,6 +471,14 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
                         title: "资源类型",
                         dataIndex: "resourceType",
                         key: "resourceType",
+                        render: (text: string, record: PermissionDTO) => {
+                          if (text === "query") {
+                            return <Tag color="blue">查询</Tag>;
+                          } else if (text === "operation") {
+                            return <Tag color="green">操作</Tag>;
+                          }
+                          return text;
+                        },
                       },
                       {
                         title: "资源名称",
@@ -477,9 +497,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
                           <>
                             <Button
                               type="link"
-                              onClick={() =>
-                                editPermission(record.permissionId)
-                              }
+                              onClick={() => editPermission(record)}
                             >
                               编辑
                             </Button>
@@ -505,7 +523,6 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
           )}
         </Layout.Content>
       </Layout>
-      {/* 菜单抽屉 */}
       <Drawer
         title="添加菜单节点"
         placement="right"
@@ -568,6 +585,21 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
             </Button>
           </Form.Item>
         </Form>
+      </Drawer>
+
+      <Drawer
+        title={editingPermissionId ? "编辑权限点" : "新增权限点"}
+        width={400}
+        open={permissionDrawer}
+        onClose={handleCloseDrawer}
+        destroyOnClose={true}
+      >
+        <CreatePermissionForm
+          initialValues={editingPermission}
+          onSave={handleSavePermission}
+          onUpdate={handleUpdatePermission}
+          onCancel={handleCloseDrawer}
+        />
       </Drawer>
     </PageContainer>
   );

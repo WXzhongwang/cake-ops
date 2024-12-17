@@ -57,7 +57,9 @@ public class PermissionFacadeImpl implements PermissionFacade {
         if (StringUtils.equals(application.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
             throw new BusinessException(BusinessErrorMessage.APP_DISABLED);
         }
-        if (!StringUtils.equals(createPermissionCommand.getResourceType(), Constants.RESOURCE_TYPE_ACTION)) {
+        if (!StringUtils.equals(createPermissionCommand.getResourceType(),
+                Constants.RESOURCE_TYPE_OPERATION) &&
+                !StringUtils.equals(createPermissionCommand.getResourceType(), Constants.RESOURCE_TYPE_QUERY)) {
             throw new BusinessException(BusinessErrorMessage.PERMISSION_RESOURCE_TYPE_ILLEGAL);
         }
         if (Objects.isNull(createPermissionCommand.getRefMenuId())) {
