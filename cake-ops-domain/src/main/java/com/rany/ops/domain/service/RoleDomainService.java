@@ -42,9 +42,10 @@ public class RoleDomainService {
         return roleRepository.findRoles(searchParam);
     }
 
-    public List<Role> findSubRoleListByRoleId(RoleId roleId) {
+    public List<Role> findSubRoleListByRoleId(String appCode, RoleId roleId) {
         SubRoleSearchParam searchParam = new SubRoleSearchParam();
         searchParam.setRoleId(roleId.getId());
+        searchParam.setAppCode(appCode);
         return roleRepository.findSubRoles(searchParam);
     }
 

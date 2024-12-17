@@ -8,19 +8,21 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * UIC+ACL,应用账号，角色，菜单，授权，统一管理
+ * 统一应用管理
  *
  * @author zhongshengwang
- * @description TODO
+ * @description 统一应用管理
  * @date 2021/11/3 10:40 下午
  * @email 18668485565@163.com
  */
 @EnableCakeSso
 @EnableDubboConfig
 @EnableTransactionManagement
+@EnableAspectJAutoProxy
 @SpringBootApplication(exclude = {ParamLimitInterceptor.class})
 @MapperScan(basePackages = {"com.rany.ops.infra.dao", "com.rany.ops.infra.mapper"})
 @ComponentScan({"com.rany.ops.domain", "com.rany.ops.infra", "com.rany.ops.service", "com.rany.ops.web"})

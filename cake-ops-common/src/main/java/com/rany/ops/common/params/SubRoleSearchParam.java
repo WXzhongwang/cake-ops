@@ -17,4 +17,6 @@ import lombok.EqualsAndHashCode;
 public class SubRoleSearchParam extends BaseQuery {
 
     private Long roleId;
+    private String appCode;
+    private Long tenantId;
 }

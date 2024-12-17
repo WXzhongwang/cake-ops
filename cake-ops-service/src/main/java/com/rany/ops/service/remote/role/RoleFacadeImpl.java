@@ -197,7 +197,7 @@ public class RoleFacadeImpl implements RoleFacade {
         if (Objects.isNull(role)) {
             throw new BusinessException(BusinessErrorMessage.ROLE_NOT_FOUND);
         }
-        List<Role> subRoles = roleDomainService.findSubRoleListByRoleId(role.getId());
+        List<Role> subRoles = roleDomainService.findSubRoleListByRoleId(role.getAppCode(), role.getId());
         if (CollectionUtils.isNotEmpty(subRoles)) {
             throw new BusinessException(BusinessErrorMessage.ROLE_CONTAINS_CHILDREN);
         }
