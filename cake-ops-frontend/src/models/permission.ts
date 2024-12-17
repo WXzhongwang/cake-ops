@@ -147,7 +147,10 @@ const PermissionModel = {
         message.error(msg);
       }
     },
-    *deleteMenu({ payload, callback }: DeletePermissionAction, { call, put }) {
+    *deletePermission(
+      { payload, callback }: DeletePermissionAction,
+      { call, put }
+    ) {
       const response = yield call(api.deletePermission, payload);
       const { success, msg } = response;
       // 调用回调函数
@@ -157,7 +160,10 @@ const PermissionModel = {
         message.error(msg);
       }
     },
-    *enableMenu({ payload, callback }: EnablePermissionAction, { call, put }) {
+    *enablePermission(
+      { payload, callback }: EnablePermissionAction,
+      { call, put }
+    ) {
       const response = yield call(api.enablePermission, payload);
       const { success, msg } = response;
       // 调用回调函数
@@ -167,7 +173,7 @@ const PermissionModel = {
         message.error(msg);
       }
     },
-    *disableMenu(
+    *disablePermission(
       { payload, callback }: DisablePermissionAction,
       { call, put }
     ) {

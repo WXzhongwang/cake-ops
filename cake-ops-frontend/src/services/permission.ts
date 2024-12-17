@@ -53,7 +53,6 @@ export async function disablePermission(data: DisablePermissionCommand) {
 }
 
 export async function deletePermission(data: DeletePermissionCommand) {
-  console.log("payload", data);
   return request("/api/ops/permission/delete", {
     method: "POST",
     data,

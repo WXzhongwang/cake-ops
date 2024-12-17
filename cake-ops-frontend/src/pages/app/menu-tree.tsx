@@ -79,7 +79,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
       payload: {
         permissionId,
       },
-      callback: (res: any) => {
+      callback: (res: boolean) => {
         message.success("删除成功");
         fetchPermissions();
       },
