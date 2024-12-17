@@ -4,6 +4,7 @@ import com.rany.ops.common.dto.permission.PermissionDTO;
 import com.rany.ops.domain.aggregate.Permission;
 import com.rany.ops.infra.po.PermissionPO;
 import org.mapstruct.InheritConfiguration;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -44,6 +45,9 @@ public interface PermissionDataConvertor extends BaseConvertor<Permission, Permi
 
     @Mapping(source = "id.id", target = "permissionId")
     PermissionDTO sourceToDTO(Permission permission);
+
+    @InheritInverseConfiguration(name = "sourceToDTO")
+    List<PermissionDTO> sourceToDTO(List<Permission> permissions);
 
 
     /**

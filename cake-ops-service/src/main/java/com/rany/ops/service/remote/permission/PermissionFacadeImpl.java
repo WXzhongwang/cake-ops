@@ -105,7 +105,8 @@ public class PermissionFacadeImpl implements PermissionFacade {
         searchParam.setRefMenuId(menuPermissionQuery.getRefMenuId());
         searchParam.setAppCode(menuPermissionQuery.getAppCode());
         searchParam.setTenantId(menuPermissionQuery.getTenantId());
-        return permissionDomainService.selectPermissionList(searchParam);
+        List<Permission> permissions = permissionDomainService.selectPermissionList(searchParam);
+        return permissionDataConvertor.sourceToDTO(permissions);
     }
 
     @Override

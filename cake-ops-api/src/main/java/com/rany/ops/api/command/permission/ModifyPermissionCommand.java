@@ -17,16 +17,6 @@ import lombok.EqualsAndHashCode;
 public class ModifyPermissionCommand extends BaseCommand {
 
     /**
-     * appCode
-     */
-    private String appCode;
-
-    /**
-     * 租户Id
-     */
-    private Long tenantId;
-
-    /**
      * permissionId
      */
     private Long permissionId;

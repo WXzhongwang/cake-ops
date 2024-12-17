@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { PageContainer } from "@ant-design/pro-components";
 import {
   Button,
+  Divider,
   Drawer,
   Form,
   Input,
@@ -10,6 +11,7 @@ import {
   message,
   Radio,
   Select,
+  Table,
   Tree,
   TreeSelect,
 } from "antd";
@@ -19,6 +21,7 @@ import { MenuTreeDTO, UserRoleMenuDTO } from "@/models/user";
 import { AppDTO } from "@/models/app";
 import * as AllIcons from "@ant-design/icons";
 import { PlusOutlined } from "@ant-design/icons";
+import { PermissionDTO } from "@/models/permission";
 
 interface MenuTreeProps {
   dispatch: Dispatch;
@@ -43,10 +46,93 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
   );
   const [addForm] = Form.useForm();
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]); // 新增 expandedKeys 状态
+  const [permissions, setPermissions] = useState<PermissionDTO[]>([]);
+  const [editingPermissionId, setEditingPermissionId] = useState<string | null>(
+    null
+  );
+
+  const editPermission = (permissionId: string) => {
+    setEditingPermissionId(permissionId);
+    // 打开编辑表单或弹窗
+  };
+
+  const deletePermission = (permissionId: string) => {
+    dispatch({
+      type: "permission/deletePermission",
+      payload: {
+        permissionId,
+      },
+      callback: (res: any) => {
+        message.success("删除成功");
+        fetchPermissions();
+      },
+    });
+  };
+
+  const handlePermissionFormSubmit = (values: any) => {
+    if (editingPermissionId) {
+      // 更新权限
+      dispatch({
+        type: "permission/updatePermission",
+        payload: {
+          ...values,
+          permissionId: editingPermissionId,
+        },
+        callback: (res: any) => {
+          message.success("更新成功");
+          fetchPermissions();
+          setEditingPermissionId(null);
+        },
+      });
+    } else {
+      // 创建权限
+      dispatch({
+        type: "permission/createPermission",
+        payload: {
+          ...values,
+          appCode: selectedAppCode,
+          refMenuId: selectedMenuItem?.menuId,
+        },
+        callback: (res: any) => {
+          message.success("添加成功");
+          fetchPermissions();
+        },
+      });
+    }
+  };
+
+  const fetchPermissions = () => {
+    if (selectedMenuItem) {
+      dispatch({
+        type: "permission/listMenuPermission",
+        payload: {
+          menuId: selectedMenuItem.menuId,
+          appCode: selectedAppCode,
+        },
+        callback: (res: PermissionDTO[]) => {
+          setPermissions(res);
+        },
+      });
+    }
+  };
 
   useEffect(() => {
     fetchAppList();
   }, []);
+
+  useEffect(() => {
+    if (selectedMenuItem) {
+      dispatch({
+        type: "permission/listMenuPermission",
+        payload: {
+          permissionId: selectedMenuItem.menuId,
+        },
+        callback: (res: PermissionDTO[]) => {
+          setPermissions(res);
+        },
+      });
+    }
+  }, [selectedMenuItem]);
 
   const fetchAppList = () => {
     dispatch({
@@ -188,7 +274,6 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
   // 处理表单提交
   const handleFormSubmit = (values: any) => {
     console.log("Received values of form: ", values);
-    // 在这里添加提交逻辑，例如调用 dispatch 发送更新请求
     dispatch({
       type: "menu/updateMenu",
       payload: {
@@ -258,7 +343,6 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
     if (finalParentMenuId === "virtual-root") {
       finalParentMenuId = null;
     }
-    // 在这里添加提交逻辑，例如调用 dispatch 发送添加请求
     dispatch({
       type: "menu/createMenu",
       payload: {
@@ -306,59 +390,110 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
         </Layout.Sider>
         <Layout.Content style={{ padding: 16 }}>
           {selectedMenuItem && (
-            <Form
-              form={menuItemForm}
-              layout="vertical"
-              onFinish={handleFormSubmit}
-            >
-              <Form.Item label="菜单ID" name="menuId">
-                <Input disabled />
-              </Form.Item>
-              <Form.Item label="菜单名称" name="name">
-                <Input />
-              </Form.Item>
-              <Form.Item label="图标" name="icon">
-                <Select
-                  placeholder="选择图标"
-                  options={icons}
-                  style={{ width: "100%" }}
-                  onChange={(value: any) => {
-                    menuItemForm.setFieldsValue({ icon: value });
-                  }}
-                  showSearch
-                  filterOption={filterIconOptions}
-                />
-              </Form.Item>
-              <Form.Item label="路径" name="path">
-                <Input />
-              </Form.Item>
-              <Form.Item label="是否隐藏" name="hidden">
-                <Radio.Group>
-                  <Radio value="false"> 否 </Radio>
-                  <Radio value="true"> 是 </Radio>
-                </Radio.Group>
-              </Form.Item>
-              <Form.Item label="排序" name="sort">
-                <Input type="number" />
-              </Form.Item>
-              <Form.Item>
-                <Button type="primary" htmlType="submit">
-                  提交
-                </Button>
-                <Button
-                  type="primary"
-                  danger
-                  onClick={() => deleteNode(selectedMenuItem.menuId)}
-                  style={{ marginLeft: 8 }}
-                >
-                  删除
-                </Button>
-              </Form.Item>
-            </Form>
+            <>
+              <Form
+                form={menuItemForm}
+                layout="vertical"
+                onFinish={handleFormSubmit}
+              >
+                <Form.Item label="菜单ID" name="menuId">
+                  <Input disabled />
+                </Form.Item>
+                <Form.Item label="菜单名称" name="name">
+                  <Input />
+                </Form.Item>
+                <Form.Item label="图标" name="icon">
+                  <Select
+                    placeholder="选择图标"
+                    options={icons}
+                    style={{ width: "100%" }}
+                    onChange={(value: any) => {
+                      menuItemForm.setFieldsValue({ icon: value });
+                    }}
+                    showSearch
+                    filterOption={filterIconOptions}
+                  />
+                </Form.Item>
+                <Form.Item label="路径" name="path">
+                  <Input />
+                </Form.Item>
+                <Form.Item label="是否隐藏" name="hidden">
+                  <Radio.Group>
+                    <Radio value="false"> 否 </Radio>
+                    <Radio value="true"> 是 </Radio>
+                  </Radio.Group>
+                </Form.Item>
+                <Form.Item label="排序" name="sort">
+                  <Input type="number" />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    提交
+                  </Button>
+                  <Button
+                    type="primary"
+                    danger
+                    onClick={() => deleteNode(selectedMenuItem.menuId)}
+                    style={{ marginLeft: 8 }}
+                  >
+                    删除
+                  </Button>
+                </Form.Item>
+              </Form>
+              <Divider orientation="left">菜单权限</Divider>
+              <Table
+                dataSource={permissions}
+                columns={[
+                  {
+                    title: "权限ID",
+                    dataIndex: "permissionId",
+                    key: "permissionId",
+                  },
+                  {
+                    title: "资源类型",
+                    dataIndex: "resourceType",
+                    key: "resourceType",
+                  },
+                  {
+                    title: "资源名称",
+                    dataIndex: "resourceName",
+                    key: "resourceName",
+                  },
+                  {
+                    title: "资源路径",
+                    dataIndex: "resourcePath",
+                    key: "resourcePath",
+                  },
+                  {
+                    title: "操作",
+                    key: "action",
+                    render: (_, record: PermissionDTO) => (
+                      <>
+                        <Button
+                          type="link"
+                          onClick={() => editPermission(record.permissionId)}
+                        >
+                          编辑
+                        </Button>
+                        <Button
+                          type="link"
+                          danger
+                          onClick={() => deletePermission(record.permissionId)}
+                        >
+                          删除
+                        </Button>
+                      </>
+                    ),
+                  },
+                ]}
+                pagination={false}
+                style={{ marginTop: 16 }}
+              />
+            </>
           )}
         </Layout.Content>
       </Layout>
-
+      {/* 菜单抽屉 */}
       <Drawer
         title="添加菜单节点"
         placement="right"

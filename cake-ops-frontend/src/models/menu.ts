@@ -4,12 +4,12 @@ import { API, BaseAction } from "typings";
 import { message } from "antd";
 
 export interface MenuDTO {
-  id: number;
+  id: string;
   name: string;
   path: string;
   icon: string;
   level: number;
-  parentId: number;
+  parentId: string;
   hidden: boolean;
   isDeleted: boolean;
   sort: number;

@@ -22,5 +22,5 @@ public class UpdateIsvCommand extends BaseCommand {
     private String url;
     private String phone;
     private String country;
-    private String registerIp;
+    private String address;
 }

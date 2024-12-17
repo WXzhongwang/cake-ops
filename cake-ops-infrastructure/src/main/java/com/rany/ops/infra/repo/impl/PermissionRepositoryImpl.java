@@ -1,6 +1,5 @@
 package com.rany.ops.infra.repo.impl;
 
-import com.rany.ops.common.dto.permission.PermissionDTO;
 import com.rany.ops.common.params.PermissionSearchParam;
 import com.rany.ops.domain.aggregate.Permission;
 import com.rany.ops.domain.pk.PermissionId;
@@ -57,8 +56,8 @@ public class PermissionRepositoryImpl implements PermissionRepository {
 
 
     @Override
-    public List<PermissionDTO> findPermissions(PermissionSearchParam roleSearchParam) {
+    public List<Permission> findPermissions(PermissionSearchParam roleSearchParam) {
         List<PermissionPO> rolePOS = permissionDao.selectList(roleSearchParam);
-        return permissionDataConvertor.targetToDTO(rolePOS);
+        return permissionDataConvertor.targetToSource(rolePOS);
     }
 }

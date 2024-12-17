@@ -84,7 +84,7 @@ public class IsvFacadeImpl implements IsvFacade {
         isv.setPhone(new Phone(command.getPhone()));
         isv.setUrl(command.getUrl());
         isv.setCountry(command.getCountry());
-        isv.setRegisterIp(command.getRegisterIp());
+        isv.setAddress(command.getAddress());
         isv.setModifier(command.getUser());
         isv.setGmtModified(new Date());
         isvDomainService.update(isv);

@@ -1,7 +1,6 @@
 package com.rany.ops.domain.repository;
 
 import com.cake.framework.ddd.repository.Repository;
-import com.rany.ops.common.dto.permission.PermissionDTO;
 import com.rany.ops.common.params.PermissionSearchParam;
 import com.rany.ops.domain.aggregate.Permission;
 import com.rany.ops.domain.pk.PermissionId;
@@ -33,5 +32,5 @@ public interface PermissionRepository extends Repository<Permission, PermissionI
      * @param searchParam
      * @return
      */
-    List<PermissionDTO> findPermissions(PermissionSearchParam searchParam);
+    List<Permission> findPermissions(PermissionSearchParam searchParam);
 }

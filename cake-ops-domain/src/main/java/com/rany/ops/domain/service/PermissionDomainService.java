@@ -1,6 +1,5 @@
 package com.rany.ops.domain.service;
 
-import com.rany.ops.common.dto.permission.PermissionDTO;
 import com.rany.ops.common.params.PermissionSearchParam;
 import com.rany.ops.domain.aggregate.Permission;
 import com.rany.ops.domain.pk.PermissionId;
@@ -32,7 +31,7 @@ public class PermissionDomainService {
     }
 
 
-    public List<PermissionDTO> selectPermissionList(PermissionSearchParam searchParam) {
+    public List<Permission> selectPermissionList(PermissionSearchParam searchParam) {
         return permissionRepository.findPermissions(searchParam);
     }
 
