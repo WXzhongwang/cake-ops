@@ -26,9 +26,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication(exclude = {ParamLimitInterceptor.class})
 @MapperScan(basePackages = {"com.rany.ops.infra.dao", "com.rany.ops.infra.mapper"})
 @ComponentScan({"com.rany.ops.domain", "com.rany.ops.infra", "com.rany.ops.service", "com.rany.ops.web"})
-public class CakeAclApplication extends SpringBootServletInitializer {
+public class CakeOpsApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(CakeAclApplication.class, args);
+        SpringApplication.run(CakeOpsApplication.class, args);
     }
 }

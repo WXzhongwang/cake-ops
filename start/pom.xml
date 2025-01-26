@@ -166,7 +166,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.rany.ops.CakeAclApplication</mainClass>
+                    <mainClass>com.rany.ops.CakeOpsApplication</mainClass>
                     <skip>false</skip>
                 </configuration>
                 <executions>

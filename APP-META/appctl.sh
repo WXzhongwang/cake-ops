@@ -24,7 +24,7 @@ IN_DOCKER=$(command -v docker &> /dev/null && echo true || echo false)
 DEPLOY_LOG="/home/admin/${APP_NAME}/deploy.log"
 
 # 定义 Java 主类和 jar 文件路径
-MAIN_CLASS="com.rany.ops.CakeAclApplication"
+MAIN_CLASS="com.rany.ops.CakeOpsApplication"
 JAR_FILE="/home/admin/${APP_NAME}/cake-ops-service.jar"
 
 # 检查 JAR 文件是否存在
