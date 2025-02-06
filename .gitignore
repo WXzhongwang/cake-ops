@@ -149,3 +149,5 @@ buildNumber.properties
 
 logs/
 */logs/*.log
+
+cake-ops-infrastructure/src/main/resources/gen.properties

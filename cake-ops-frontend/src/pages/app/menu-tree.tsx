@@ -165,8 +165,10 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
   // 将 MenuTreeDTO 转换为 Tree 组件所需的数据格式
   const convertToTreeData = (menuTree: MenuTreeDTO[]): any[] => {
     return menuTree.map((menuItem) => {
+      console.log("menuItem.icon", menuItem.icon);
+      const icon = menuItem.icon === null ? "FolderOutlined" : menuItem.icon;
       // @ts-ignore
-      const IconComponent = AllIcons[menuItem.icon];
+      const IconComponent = AllIcons[icon];
       return {
         title: menuItem.name,
         key: menuItem.menuId,
