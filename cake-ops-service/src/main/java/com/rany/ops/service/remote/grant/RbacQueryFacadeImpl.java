@@ -2,22 +2,26 @@ package com.rany.ops.service.remote.grant;
 
 import com.rany.ops.api.facade.grant.RbacQueryFacade;
 import com.rany.ops.api.facade.menu.MenuFacade;
+import com.rany.ops.api.query.grant.RoleMenuPermissionQuery;
 import com.rany.ops.api.query.grant.UserRoleMenuPermissionQuery;
 import com.rany.ops.common.Constants;
 import com.rany.ops.common.dto.application.UserRoleMenuDTO;
 import com.rany.ops.common.dto.menu.MenuDTO;
 import com.rany.ops.common.dto.menu.MenuTreeDTO;
+import com.rany.ops.common.dto.permission.PermissionDTO;
 import com.rany.ops.common.dto.role.RoleDTO;
-import com.rany.ops.common.params.MenuSearchParam;
-import com.rany.ops.common.params.RoleMenuSearchParam;
-import com.rany.ops.common.params.RoleSearchParam;
-import com.rany.ops.common.params.UserRoleSearchParam;
+import com.rany.ops.common.params.*;
+import com.rany.ops.common.util.TreeUtil;
 import com.rany.ops.domain.aggregate.Application;
+import com.rany.ops.domain.aggregate.Menu;
+import com.rany.ops.domain.aggregate.Permission;
 import com.rany.ops.domain.entity.RoleMenu;
+import com.rany.ops.domain.entity.RolePermission;
 import com.rany.ops.domain.entity.UserRole;
 import com.rany.ops.domain.repository.MenuRepository;
 import com.rany.ops.domain.service.*;
 import com.rany.ops.infra.convertor.MenuDataConvertor;
+import com.rany.ops.infra.convertor.PermissionDataConvertor;
 import com.rany.ops.infra.convertor.RoleDataConvertor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +29,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.dubbo.config.annotation.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -46,6 +51,7 @@ public class RbacQueryFacadeImpl implements RbacQueryFacade {
     private final RoleDomainService roleDomainService;
     private final RoleDataConvertor roleDataConvertor;
     private final MenuDataConvertor menuDataConvertor;
+    private final PermissionDataConvertor permissionDataConvertor;
     private final MenuFacade menuFacade;
     private final MenuRepository menuRepository;
 
@@ -86,7 +92,8 @@ public class RbacQueryFacadeImpl implements RbacQueryFacade {
             MenuSearchParam menuSearchParam = new MenuSearchParam();
             searchParam.setAppCode(query.getAppCode());
             searchParam.setTenantId(query.getTenantId());
-            List<MenuDTO> menuDTOList = menuDomainService.selectMenuList(menuSearchParam);
+            List<Menu> menus = menuDomainService.selectMenuList(menuSearchParam);
+            List<MenuDTO> menuDTOList = menuDataConvertor.sourceToDTO(menus);
             roleRefMenuIds = menuDTOList.stream().map(MenuDTO::getMenuId).map(Long::valueOf).collect(Collectors.toList());
         } else {
             RoleMenuSearchParam roleMenuSearchParam = new RoleMenuSearchParam();
@@ -103,23 +110,64 @@ public class RbacQueryFacadeImpl implements RbacQueryFacade {
         menuSearchParam.setTenantId(query.getTenantId());
         menuSearchParam.setAppCode(query.getAppCode());
         menuSearchParam.setMenuIds(roleRefMenuIds);
-        List<MenuDTO> menuDTOS = menuDomainService.selectMenuList(menuSearchParam);
-        List<MenuDTO> top = menuDTOS.stream().filter(p -> Objects.equals(p.getLevel(), 1)).collect(Collectors.toList());
-        List<MenuTreeDTO> treeDTO = menuDataConvertor.convertToTreeDTO(top);
-        for (MenuTreeDTO menuDTO : treeDTO) {
-            recursive(menuDTO, menuDTOS);
-        }
-        userRoleMenuPermissionDTO.setMenuTree(treeDTO);
+
+        List<Menu> menus = menuDomainService.selectMenuList(menuSearchParam);
+        List<MenuTreeDTO> treeDTO = menuDataConvertor.convertToTree(menus);
+        List<MenuTreeDTO> tree = TreeUtil.makeTree(treeDTO, (menuTreeDTO) -> Objects.equals(menuTreeDTO.getParentId(), "0"),
+                (parent, sub) -> Objects.equals(parent.getMenuId(), sub.getParentId()), MenuTreeDTO::setChildren);
+        userRoleMenuPermissionDTO.setMenuTree(tree);
         return userRoleMenuPermissionDTO;
     }
 
-
-    public void recursive(MenuTreeDTO treeDTO, List<MenuDTO> menuDTOS) {
-        List<MenuDTO> children = menuDTOS.stream().filter(p -> Objects.equals(treeDTO.getMenuId(), p.getParentId())).collect(Collectors.toList());
-        List<MenuTreeDTO> childrenTreeItems = menuDataConvertor.convertToTreeDTO(children);
-        treeDTO.setChildren(childrenTreeItems);
-        for (MenuTreeDTO childrenItem : childrenTreeItems) {
-            recursive(childrenItem, menuDTOS);
+    /**
+     * 单一角色菜单权限集合
+     *
+     * @param query 查询条件
+     * @return 单一角色菜单权限集合
+     */
+    @Override
+    public List<MenuTreeDTO> getRoleMenuPermissions(RoleMenuPermissionQuery query) {
+        Application application = applicationDomainService.findByAppCode(query.getAppCode());
+        if (application == null) {
+            return Collections.emptyList();
         }
+        RoleMenuSearchParam roleMenuSearchParam = new RoleMenuSearchParam();
+        roleMenuSearchParam.setTenantId(query.getTenantId());
+        roleMenuSearchParam.setAppCode(query.getAppCode());
+        roleMenuSearchParam.setRoleId(query.getRoleId());
+        // 当前已绑定菜单
+        List<RoleMenu> currentMenus = roleMenuDomainService.getRoleMenus(roleMenuSearchParam);
+        List<Long> roleRefMenuIds = currentMenus.stream().map(RoleMenu::getMenuId).collect(Collectors.toList());
+
+        RolePermissionSearchParam rolePermissionSearchParam = new RolePermissionSearchParam();
+        rolePermissionSearchParam.setAppCode(query.getAppCode());
+        rolePermissionSearchParam.setRoleId(query.getRoleId());
+        rolePermissionSearchParam.setTenantId(query.getTenantId());
+        // 当前已绑定权限点
+        List<RolePermission> currentPermissions = rolePermissionDomainService.getRolePermissions(rolePermissionSearchParam);
+        List<Long> roleRefPermissionIds = currentPermissions.stream().map(RolePermission::getPermissionId).collect(Collectors.toList());
+
+        MenuSearchParam menuSearchParam = new MenuSearchParam();
+        menuSearchParam.setTenantId(query.getTenantId());
+        menuSearchParam.setAppCode(query.getAppCode());
+        menuSearchParam.setMenuIds(roleRefMenuIds);
+        List<Menu> menus = menuDomainService.selectMenuList(menuSearchParam);
+        List<MenuTreeDTO> treeDTO = menuDataConvertor.convertToTree(menus);
+
+        PermissionSearchParam permissionSearchParam = new PermissionSearchParam();
+        permissionSearchParam.setTenantId(query.getTenantId());
+        permissionSearchParam.setAppCode(query.getAppCode());
+        permissionSearchParam.setPermissionIds(roleRefPermissionIds);
+        List<Permission> permissions = permissionDomainService.selectPermissionList(permissionSearchParam);
+        List<PermissionDTO> permissionDTOS = permissionDataConvertor.sourceToDTO(permissions);
+
+        for (MenuTreeDTO menuTreeDTO : treeDTO) {
+            List<PermissionDTO> permissionDTOList = permissionDTOS.stream().filter(p -> Objects.equals(p.getRefMenuId(), menuTreeDTO.getMenuId()))
+                    .collect(Collectors.toList());
+            menuTreeDTO.setPermissions(permissionDTOList);
+        }
+
+        return TreeUtil.makeTree(treeDTO, (menuTreeDTO) -> Objects.equals(menuTreeDTO.getParentId(), "0"),
+                (parent, sub) -> Objects.equals(parent.getMenuId(), sub.getParentId()), MenuTreeDTO::setChildren);
     }
 }

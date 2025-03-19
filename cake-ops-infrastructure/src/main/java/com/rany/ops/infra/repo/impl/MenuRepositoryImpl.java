@@ -1,6 +1,5 @@
 package com.rany.ops.infra.repo.impl;
 
-import com.rany.ops.common.dto.menu.MenuDTO;
 import com.rany.ops.common.params.MenuSearchParam;
 import com.rany.ops.common.params.SubMenuSearchParam;
 import com.rany.ops.domain.aggregate.Menu;
@@ -57,9 +56,9 @@ public class MenuRepositoryImpl implements MenuRepository {
     }
 
     @Override
-    public List<MenuDTO> findMenus(MenuSearchParam menuSearchParam) {
+    public List<Menu> findMenus(MenuSearchParam menuSearchParam) {
         List<MenuPO> menuPOS = menuDao.selectList(menuSearchParam);
-        return menuDataConvertor.targetToDTO(menuPOS);
+        return menuDataConvertor.targetToSource(menuPOS);
     }
 
     @Override

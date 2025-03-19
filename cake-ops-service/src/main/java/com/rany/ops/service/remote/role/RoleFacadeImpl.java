@@ -148,7 +148,9 @@ public class RoleFacadeImpl implements RoleFacade {
     }
 
     public void recursive(RoleTreeDTO treeDTO, List<RoleDTO> menuDTOS) {
-        List<RoleDTO> children = menuDTOS.stream().filter(p -> Objects.equals(treeDTO.getRoleId(), p.getParentId())).collect(Collectors.toList());
+        List<RoleDTO> children = menuDTOS.stream()
+                .filter(p -> Objects.equals(treeDTO.getRoleId(), String.valueOf(p.getParentId())))
+                .collect(Collectors.toList());
         List<RoleTreeDTO> childrenTreeItems = roleDataConvertor.convertToTreeDTO(children);
         treeDTO.setChildren(childrenTreeItems);
         for (RoleTreeDTO childrenItem : childrenTreeItems) {

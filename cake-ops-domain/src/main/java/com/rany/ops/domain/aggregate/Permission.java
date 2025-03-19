@@ -37,6 +37,9 @@ public class Permission extends BaseAggregateRoot implements IAggregate<Permissi
      */
     private String appCode;
 
+    /**
+     * 租户
+     */
     private Long tenantId;
 
     /**
@@ -61,6 +64,9 @@ public class Permission extends BaseAggregateRoot implements IAggregate<Permissi
      */
     private Long refMenuId;
 
+    /**
+     * 状态
+     */
     private String status;
 
     /**

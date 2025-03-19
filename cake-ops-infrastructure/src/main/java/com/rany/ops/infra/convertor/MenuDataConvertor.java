@@ -5,6 +5,7 @@ import com.rany.ops.common.dto.menu.MenuTreeDTO;
 import com.rany.ops.domain.aggregate.Menu;
 import com.rany.ops.infra.po.MenuPO;
 import org.mapstruct.InheritConfiguration;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -47,25 +48,37 @@ public interface MenuDataConvertor extends BaseConvertor<Menu, MenuPO> {
     @Mapping(source = "id.id", target = "menuId")
     MenuDTO sourceToDTO(Menu menu);
 
+    @InheritConfiguration(name = "sourceToDTO")
+        // @IterableMapping(elementTargetType = MenuDTO.class)
+    List<MenuDTO> sourceToDTO(List<Menu> menu);
 
-    /**
-     * PO转DTO
-     *
-     * @param menuPO
-     * @return
-     */
-    @Mapping(source = "id", target = "menuId")
-    @Mapping(target = "hidden", expression = "java(cn.hutool.core.util.BooleanUtil.toBoolean(menuPO.getHidden()))")
-    MenuDTO targetToDTO(MenuPO menuPO);
+    //    /**
+//     * PO转DTO
+//     *
+//     * @param menuPO
+//     * @return
+//     */
+//    @Mapping(source = "id", target = "menuId")
+//    @Mapping(target = "hidden", expression = "java(cn.hutool.core.util.BooleanUtil.toBoolean(menuPO.getHidden()))")
+//    MenuDTO targetToDTO(MenuPO menuPO);
+//
+//    /**
+//     * PO转DTO
+//     *
+//     * @param menuPOS
+//     * @return
+//     */
+//    @InheritConfiguration(name = "targetToDTO")
+//    List<MenuDTO> targetToDTO(List<MenuPO> menuPOS);
 
-    /**
-     * PO转DTO
-     *
-     * @param menuPOS
-     * @return
-     */
-    @InheritConfiguration(name = "targetToDTO")
-    List<MenuDTO> targetToDTO(List<MenuPO> menuPOS);
+    @Mapping(source = "id.id", target = "menuId")
+    MenuTreeDTO convertTreeItem(Menu menu);
 
+
+    @IterableMapping(elementTargetType = MenuTreeDTO.class)
+    @InheritConfiguration(name = "convertTreeItem")
+    List<MenuTreeDTO> convertToTree(List<Menu> menus);
+
+    @IterableMapping(elementTargetType = MenuTreeDTO.class)
     List<MenuTreeDTO> convertToTreeDTO(List<MenuDTO> menuDTOS);
 }

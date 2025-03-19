@@ -166,6 +166,12 @@
             <if test="refMenuId != null">
                 and ref_menu_id = #{refMenuId}
             </if>
+            <if test="permissionIds != null and permissionIds.size() > 0">
+                and id in
+                <foreach collection="permissionIds" item="permissionId" open="(" close=")" separator=",">
+                    #{permissionId}
+                </foreach>
+            </if>
         </where>
         order by gmt_modified desc
     </select>

@@ -12,6 +12,7 @@ import com.rany.ops.common.enums.DeleteStatusEnum;
 import com.rany.ops.common.exception.BusinessErrorMessage;
 import com.rany.ops.common.params.MenuSearchParam;
 import com.rany.ops.common.util.SnowflakeIdWorker;
+import com.rany.ops.common.util.TreeUtil;
 import com.rany.ops.domain.aggregate.Application;
 import com.rany.ops.domain.aggregate.Menu;
 import com.rany.ops.domain.pk.MenuId;
@@ -27,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * 菜单接口
@@ -108,22 +108,10 @@ public class MenuFacadeImpl implements MenuFacade {
         MenuSearchParam searchParam = new MenuSearchParam();
         searchParam.setAppCode(menuTreeQuery.getAppCode());
         searchParam.setTenantId(menuTreeQuery.getTenantId());
-        List<MenuDTO> menuDTOList = menuDomainService.selectMenuList(searchParam);
-        List<MenuDTO> top = menuDTOList.stream().filter(p -> Objects.equals(p.getLevel(), 1)).collect(Collectors.toList());
-        List<MenuTreeDTO> treeDTO = menuDataConvertor.convertToTreeDTO(top);
-        for (MenuTreeDTO menuDTO : treeDTO) {
-            recursive(menuDTO, menuDTOList);
-        }
-        return treeDTO;
-    }
-
-    public void recursive(MenuTreeDTO treeDTO, List<MenuDTO> menuDTOList) {
-        List<MenuDTO> children = menuDTOList.stream().filter(p -> Objects.equals(treeDTO.getMenuId(), p.getParentId())).collect(Collectors.toList());
-        List<MenuTreeDTO> childrenTreeItems = menuDataConvertor.convertToTreeDTO(children);
-        treeDTO.setChildren(childrenTreeItems);
-        for (MenuTreeDTO childrenItem : childrenTreeItems) {
-            recursive(childrenItem, menuDTOList);
-        }
+        List<Menu> menus = menuDomainService.selectMenuList(searchParam);
+        List<MenuTreeDTO> treeDTO = menuDataConvertor.convertToTree(menus);
+        return TreeUtil.makeTree(treeDTO, (menuTreeDTO) -> Objects.equals(menuTreeDTO.getLevel(), 1),
+                (menuTreeDTO, menuTreeDTO2) -> Objects.equals(menuTreeDTO.getParentId(), menuTreeDTO2.getMenuId()), MenuTreeDTO::setChildren);
     }
 
     @Override

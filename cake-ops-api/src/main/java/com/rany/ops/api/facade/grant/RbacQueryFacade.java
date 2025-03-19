@@ -1,7 +1,11 @@
 package com.rany.ops.api.facade.grant;
 
+import com.rany.ops.api.query.grant.RoleMenuPermissionQuery;
 import com.rany.ops.api.query.grant.UserRoleMenuPermissionQuery;
 import com.rany.ops.common.dto.application.UserRoleMenuDTO;
+import com.rany.ops.common.dto.menu.MenuTreeDTO;
+
+import java.util.List;
 
 /**
  * 查询用户角色权限模型接口
@@ -21,4 +25,13 @@ public interface RbacQueryFacade {
      * @return 单一用户应用下权限集合
      */
     UserRoleMenuDTO getUserRbacModel(UserRoleMenuPermissionQuery query);
+
+
+    /**
+     * 单一角色菜单权限集合
+     *
+     * @param query 查询条件
+     * @return 单一角色菜单权限集合
+     */
+    List<MenuTreeDTO> getRoleMenuPermissions(RoleMenuPermissionQuery query);
 }

@@ -2,6 +2,7 @@
 import * as api from "@/services/role";
 import { API, BaseAction } from "typings";
 import { message } from "antd";
+import { MenuTreeDTO } from "./menu";
 
 export interface RoleDTO {
   roleId: string;
@@ -63,6 +64,16 @@ export interface DeleteRoleCommand {
   roleId: string;
 }
 
+export interface RoleMenuPermissionTreeQuery {
+  appCode: string;
+  roleId: string;
+}
+
+interface FetchRoleMenuPermissionTreeAction extends BaseAction {
+  type: "menu/fetchRoleMenuPermissionTree";
+  payload: RoleMenuPermissionTreeQuery;
+}
+
 interface FetchRoleTreeAction extends BaseAction {
   type: "role/fetchRoleTree";
   payload: RoleTreeQuery;
@@ -105,6 +116,22 @@ const RoleModel = {
     *fetchRoleTree({ payload, callback }: FetchRoleTreeAction, { call, put }) {
       const response: API.ResponseBody<RoleTreeDTO[]> = yield call(
         api.fetchRoleTree,
+        payload
+      );
+      const { success, msg } = response;
+      // 调用回调函数
+      if (success && callback && typeof callback === "function") {
+        callback(response.content);
+      } else {
+        message.error(msg);
+      }
+    },
+    *fetchRoleMenuPermissionTree(
+      { payload, callback }: FetchRoleMenuPermissionTreeAction,
+      { call, put }
+    ) {
+      const response: API.ResponseBody<MenuTreeDTO[]> = yield call(
+        api.fetchRoleMenuPermissionTree,
         payload
       );
       const { success, msg } = response;

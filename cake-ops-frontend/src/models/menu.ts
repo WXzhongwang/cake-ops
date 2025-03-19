@@ -2,6 +2,7 @@
 import * as api from "@/services/menu";
 import { API, BaseAction } from "typings";
 import { message } from "antd";
+import { PermissionDTO } from "./permission";
 
 export interface MenuDTO {
   id: string;
@@ -28,6 +29,7 @@ export interface MenuTreeDTO {
   isDeleted: boolean;
   sort: number;
   children: MenuTreeDTO[];
+  permissions: PermissionDTO[];
 }
 
 export interface MenuBasicQuery {

@@ -9,9 +9,12 @@ import com.rany.ops.api.command.grant.GrantRolePermissionsCommand;
 import com.rany.ops.api.command.role.*;
 import com.rany.ops.api.facade.grant.GrantRoleMenuFacade;
 import com.rany.ops.api.facade.grant.GrantRolePermissionFacade;
+import com.rany.ops.api.facade.grant.RbacQueryFacade;
 import com.rany.ops.api.facade.role.RoleFacade;
+import com.rany.ops.api.query.grant.RoleMenuPermissionQuery;
 import com.rany.ops.api.query.role.RoleBasicQuery;
 import com.rany.ops.api.query.role.RoleTreeQuery;
+import com.rany.ops.common.dto.menu.MenuTreeDTO;
 import com.rany.ops.common.dto.role.RoleDTO;
 import com.rany.ops.common.dto.role.RoleTreeDTO;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +40,9 @@ public class RoleController {
     private GrantRoleMenuFacade grantRoleMenuFacade;
     @Resource
     private GrantRolePermissionFacade grantRolePermissionFacade;
+
+    @Resource
+    private RbacQueryFacade rbacQueryFacade;
 
     @PostMapping("/get-role-tree")
     public ListResult<RoleTreeDTO> getRoleTree(@RequestBody RoleTreeQuery roleTreeQuery) {
@@ -84,6 +90,12 @@ public class RoleController {
     public PojoResult<Boolean> delete(@RequestBody DeleteRoleCommand command) {
         Boolean role = roleFacade.deleteRole(command);
         return PojoResult.succeed(role);
+    }
+
+    @PostMapping("/get-role-menu-permission")
+    public PojoResult<List<MenuTreeDTO>> getRoleMenus(@RequestBody RoleMenuPermissionQuery query) {
+        List<MenuTreeDTO> roleMenuPermissions = rbacQueryFacade.getRoleMenuPermissions(query);
+        return PojoResult.succeed(roleMenuPermissions);
     }
 
     @PostMapping("/grant-role-menu")

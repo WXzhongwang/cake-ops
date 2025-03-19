@@ -4,6 +4,8 @@ import com.rany.ops.common.base.BaseQuery;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 /**
  * TODO
  *
@@ -19,6 +21,8 @@ public class PermissionSearchParam extends BaseQuery {
     private String appCode;
 
     private Long tenantId;
-    
+
     private Long refMenuId;
+
+    private List<Long> permissionIds;
 }

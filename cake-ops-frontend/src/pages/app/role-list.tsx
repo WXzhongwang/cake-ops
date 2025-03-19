@@ -22,10 +22,8 @@ import { connect, Dispatch } from "umi";
 import { API } from "typings";
 import { MenuTreeDTO, UserRoleMenuDTO } from "@/models/user";
 import { AppDTO } from "@/models/app";
-import * as AllIcons from "@ant-design/icons";
 import { PlusOutlined } from "@ant-design/icons";
 import { PermissionDTO } from "@/models/permission";
-import CreatePermissionForm from "./components/create-permission-form";
 import { RoleTreeDTO } from "@/models/role";
 
 interface RoleTreeProps {
@@ -51,41 +49,7 @@ const RolePage: React.FC<RoleTreeProps> = React.memo(({ dispatch }) => {
   );
   const [addForm] = Form.useForm();
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]);
-  const [permissions, setPermissions] = useState<PermissionDTO[]>([]);
-  const [editingPermissionId, setEditingPermissionId] = useState<string | null>(
-    null
-  );
-  const [editingPermission, setEditingPermission] = useState<PermissionDTO>();
-  const [permissionDrawer, setPermissionDrawer] = useState(false);
-  const editPermission = (permission: PermissionDTO) => {
-    setEditingPermissionId(permission.permissionId);
-    // 打开编辑表单或弹窗
-    setPermissionDrawer(true);
-    setEditingPermission(permission);
-  };
-
-  const handleAddPermission = () => {
-    setPermissionDrawer(true);
-  };
-
-  const handleCloseDrawer = () => {
-    setPermissionDrawer(false);
-    form.resetFields();
-    setEditingPermission(undefined);
-  };
-
-  const deletePermission = (permissionId: string) => {
-    dispatch({
-      type: "permission/deletePermission",
-      payload: {
-        permissionId,
-      },
-      callback: (res: boolean) => {
-        message.success("删除成功");
-        fetchPermissions();
-      },
-    });
-  };
+  const [roleMenuTree, setRoleMenuTree] = useState<MenuTreeDTO[]>([]);
 
   useEffect(() => {
     fetchAppList();
@@ -188,12 +152,26 @@ const RolePage: React.FC<RoleTreeProps> = React.memo(({ dispatch }) => {
     if (roleItem && roleItem.roleId === "virtual-root") {
       setSelectedRoleItem(null); // 不设置 selectedMenuItem
       chooseRoleForm.resetFields(); // 清空表单
+      setRoleMenuTree([]); // 清空角色菜单树
     } else {
       setSelectedRoleItem(roleItem);
       chooseRoleForm.setFieldsValue({
         ...roleItem,
       });
+      if (roleItem && selectedAppCode) {
+        fetchRoleMenuPermissionTree(selectedAppCode, roleItem.roleId);
+      }
     }
+  };
+
+  const fetchRoleMenuPermissionTree = (appCode: string, roleId: string) => {
+    dispatch({
+      type: "role/fetchRoleMenuPermissionTree",
+      payload: { appCode, roleId },
+      callback: (res: MenuTreeDTO[]) => {
+        setRoleMenuTree(res);
+      },
+    });
   };
 
   // 处理表单提交
@@ -399,21 +377,6 @@ const RolePage: React.FC<RoleTreeProps> = React.memo(({ dispatch }) => {
           </Form.Item>
         </Form>
       </Drawer>
-
-      {/* <Drawer
-        title={editingPermissionId ? "编辑权限点" : "新增权限点"}
-        width={400}
-        open={permissionDrawer}
-        onClose={handleCloseDrawer}
-        destroyOnClose={true}
-      >
-        <CreatePermissionForm
-          initialValues={editingPermission}
-          onSave={handleSavePermission}
-          onUpdate={handleUpdatePermission}
-          onCancel={handleCloseDrawer}
-        />
-      </Drawer> */}
     </PageContainer>
   );
 });

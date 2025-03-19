@@ -1,6 +1,5 @@
 package com.rany.ops.domain.service;
 
-import com.rany.ops.common.dto.menu.MenuDTO;
 import com.rany.ops.common.params.MenuSearchParam;
 import com.rany.ops.common.params.SubMenuSearchParam;
 import com.rany.ops.domain.aggregate.Menu;
@@ -65,7 +64,7 @@ public class MenuDomainService {
         }
     }
 
-    public List<MenuDTO> selectMenuList(MenuSearchParam searchParam) {
+    public List<Menu> selectMenuList(MenuSearchParam searchParam) {
         return menuRepository.findMenus(searchParam);
     }
 

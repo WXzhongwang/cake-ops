@@ -12,12 +12,12 @@
         <result column="modifier" jdbcType="VARCHAR" property="modifier"/>
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
-        <result column="id_deleted" jdbcType="CHAR" property="idDeleted"/>
+        <result column="is_deleted" jdbcType="CHAR" property="isDeleted"/>
     </resultMap>
     <sql id="Base_Column_List">
         id
         , app_code, tenant_id, role_id, permission_id, creator, modifier, gmt_create, gmt_modified,
-    id_deleted
+    is_deleted
     </sql>
 
     <insert id="save" parameterType="com.rany.ops.domain.entity.RolePermission">
@@ -52,7 +52,7 @@
                 gmt_modified,
             </if>
             <if test="idDeleted != null">
-                id_deleted,
+                is_deleted,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -83,8 +83,8 @@
             <if test="gmtModified != null">
                 #{gmtModified,jdbcType=TIMESTAMP},
             </if>
-            <if test="idDeleted != null">
-                #{idDeleted,jdbcType=CHAR},
+            <if test="isDeleted != null">
+                #{isDeleted},
             </if>
         </trim>
     </insert>
@@ -117,7 +117,7 @@
                 gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
             </if>
             <if test="idDeleted != null">
-                id_deleted = #{idDeleted,jdbcType=CHAR},
+                is_deleted = #{idDeleted,jdbcType=CHAR},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}

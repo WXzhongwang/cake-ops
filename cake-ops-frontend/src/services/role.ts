@@ -7,11 +7,20 @@ import {
   RoleBasicQuery,
   RoleTreeQuery,
   ModifyRoleCommand,
+  RoleMenuPermissionTreeQuery,
 } from "@/models/role";
 import request from "@/services/request";
 
 export async function fetchRoleTree(data: RoleTreeQuery) {
   return request("/api/ops/role/get-role-tree", {
+    method: "POST",
+    data,
+  });
+}
+export async function fetchRoleMenuPermissionTree(
+  data: RoleMenuPermissionTreeQuery
+) {
+  return request("/api/ops/role/get-role-menu-permission", {
     method: "POST",
     data,
   });

@@ -1,7 +1,6 @@
 package com.rany.ops.domain.repository;
 
 import com.cake.framework.ddd.repository.Repository;
-import com.rany.ops.common.dto.menu.MenuDTO;
 import com.rany.ops.common.params.MenuSearchParam;
 import com.rany.ops.common.params.SubMenuSearchParam;
 import com.rany.ops.domain.aggregate.Menu;
@@ -34,7 +33,7 @@ public interface MenuRepository extends Repository<Menu, MenuId> {
      * @param menuSearchParam
      * @return
      */
-    List<MenuDTO> findMenus(MenuSearchParam menuSearchParam);
+    List<Menu> findMenus(MenuSearchParam menuSearchParam);
 
     /**
      * 查询下级菜单列表，包含未启用的
