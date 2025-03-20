@@ -1,5 +1,6 @@
 package com.rany.ops.service.remote.grant;
 
+import com.rany.cake.toolkit.lang.utils.Lists;
 import com.rany.ops.api.facade.grant.RbacQueryFacade;
 import com.rany.ops.api.facade.menu.MenuFacade;
 import com.rany.ops.api.query.grant.RoleMenuPermissionQuery;
@@ -131,18 +132,35 @@ public class RbacQueryFacadeImpl implements RbacQueryFacade {
         if (application == null) {
             return Collections.emptyList();
         }
+        RoleSearchParam searchParam = new RoleSearchParam();
+        searchParam.setTenantId(query.getTenantId());
+        searchParam.setAppCode(query.getAppCode());
+        searchParam.setRoleIds(Lists.of(query.getRoleId()));
+
         RoleMenuSearchParam roleMenuSearchParam = new RoleMenuSearchParam();
         roleMenuSearchParam.setTenantId(query.getTenantId());
         roleMenuSearchParam.setAppCode(query.getAppCode());
         roleMenuSearchParam.setRoleId(query.getRoleId());
-        // 当前已绑定菜单
-        List<RoleMenu> currentMenus = roleMenuDomainService.getRoleMenus(roleMenuSearchParam);
-        List<Long> roleRefMenuIds = currentMenus.stream().map(RoleMenu::getMenuId).collect(Collectors.toList());
 
+        
         RolePermissionSearchParam rolePermissionSearchParam = new RolePermissionSearchParam();
         rolePermissionSearchParam.setAppCode(query.getAppCode());
         rolePermissionSearchParam.setRoleId(query.getRoleId());
         rolePermissionSearchParam.setTenantId(query.getTenantId());
+
+        List<RoleDTO> roles = roleDomainService.selectRoleList(searchParam);
+        RoleDTO superAdminRole = roles.stream()
+                .filter(p -> Objects.equals(p.getRoleKey(), Constants.SUPER_ADMINISTRATOR_ROLE_KEY)).findFirst().orElse(null);
+        if (superAdminRole != null) {
+            // 如果是超管则默认加载全部菜单
+            roleMenuSearchParam.setRoleId(null);
+            // 如果是超管则默认加载全部权限点
+            rolePermissionSearchParam.setRoleId(null);
+        }
+
+        // 当前已绑定菜单
+        List<RoleMenu> currentMenus = roleMenuDomainService.getRoleMenus(roleMenuSearchParam);
+        List<Long> roleRefMenuIds = currentMenus.stream().map(RoleMenu::getMenuId).collect(Collectors.toList());
         // 当前已绑定权限点
         List<RolePermission> currentPermissions = rolePermissionDomainService.getRolePermissions(rolePermissionSearchParam);
         List<Long> roleRefPermissionIds = currentPermissions.stream().map(RolePermission::getPermissionId).collect(Collectors.toList());

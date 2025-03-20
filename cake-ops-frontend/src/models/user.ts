@@ -2,6 +2,7 @@ import * as userService from "@/services/user";
 import { message } from "antd";
 import { API, BaseAction } from "typings";
 import { Effect, Reducer } from "umi";
+import { PermissionDTO } from "./permission";
 
 type UserModelState = {
   isLogin: boolean;
@@ -54,6 +55,11 @@ export interface MenuTreeDTO {
   isDeleted: string;
   sort: number;
   children?: MenuTreeDTO[];
+  permissions: PermissionDTO[];
+
+  // 前端使用checked
+  checked: boolean;
+  halfChecked: boolean;
 }
 
 export interface AppAccountDTO {

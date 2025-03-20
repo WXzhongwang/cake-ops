@@ -15,6 +15,9 @@ export interface PermissionDTO {
   status: string;
   gmtCreate: Date;
   gmtModified: Date;
+
+  // 前端使用checked
+  checked: boolean;
 }
 
 export interface PermissionBasicQuery {
