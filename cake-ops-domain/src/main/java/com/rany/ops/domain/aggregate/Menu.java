@@ -59,6 +59,11 @@ public class Menu extends BaseAggregateRoot implements IAggregate<MenuId> {
     private Integer sort;
 
     /**
+     * 菜单类型
+     */
+    private String menuType;
+
+    /**
      * 关联应用
      */
     private Application application;

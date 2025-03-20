@@ -18,4 +18,9 @@ public class MenuDTO extends DTO {
     private Boolean hidden;
     private Boolean isDeleted;
     private Integer sort;
+
+    /**
+     * 菜单类型
+     */
+    private String menuType;
 }

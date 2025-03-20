@@ -337,25 +337,27 @@ const RolePage: React.FC<RoleTreeProps> = React.memo(({ dispatch }) => {
       title: (
         <div>
           {menu.name}
-          <Checkbox
+          {/* <Checkbox
             checked={menu.checked}
             onChange={(e) => handleMenuCheck(e, menu.menuId)}
-          />
+          /> */}
         </div>
       ),
       children: menu.children ? renderMenuTree(menu.children) : [],
-      permissions: menu.permissions?.map((perm) => ({
-        key: perm.permissionId,
-        title: (
-          <div>
-            {perm.resourceName}
-            <Checkbox
-              checked={perm.checked}
-              onChange={(e) => handlePermissionCheck(e, perm.permissionId)}
-            />
-          </div>
-        ),
-      })),
+      // permissions: menu.permissions?.map((perm) => ({
+      //   key: perm.permissionId,
+      //   title: (
+      //     <div>
+      //       {perm.resourceName}
+      //       <Checkbox
+      //         checked={perm.checked}
+      //         onChange={(e) => handlePermissionCheck(e, perm.permissionId)}
+      //       >
+      //         {/* {perm.resourceName} */}
+      //       </Checkbox>
+      //     </div>
+      //   ),
+      // })),
     }));
   };
 

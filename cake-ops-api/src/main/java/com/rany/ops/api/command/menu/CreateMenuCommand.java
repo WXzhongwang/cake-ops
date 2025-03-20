@@ -32,6 +32,11 @@ public class CreateMenuCommand extends BaseCommand {
     private String name;
 
     /**
+     * 菜单类型
+     */
+    private String menuType;
+
+    /**
      * 菜单名称
      */
     private String path;

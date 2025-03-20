@@ -18,11 +18,12 @@
         <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
         <result column="sort" jdbcType="INTEGER" property="sort"/>
         <result column="status" property="status"/>
+        <result column="menu_type" property="menuType"/>
     </resultMap>
     <sql id="Base_Column_List">
         id
         , app_code, tenant_id, name, path, parent_id, level, icon, hidden, creator, modifier,
-    gmt_create, gmt_modified, is_deleted, sort, status
+    gmt_create, gmt_modified, is_deleted, sort, status, menu_type
     </sql>
 
     <insert id="save" parameterType="com.rany.ops.domain.aggregate.Menu">
@@ -77,6 +78,9 @@
             <if test="status != null">
                 status,
             </if>
+            <if test="menuType != null">
+                menu_type,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -127,6 +131,9 @@
             <if test="status != null">
                 #{status},
             </if>
+            <if test="menuType != null">
+                #{menuType},
+            </if>
         </trim>
     </insert>
 
@@ -174,6 +181,12 @@
             </if>
             <if test="sort != null">
                 sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="menuType != null and menuType != ''">
+                menuType = #{menuType},
             </if>
         </set>
         where id = #{id.id,jdbcType=BIGINT}

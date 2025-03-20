@@ -74,6 +74,7 @@ public class MenuFacadeImpl implements MenuFacade {
             menu.setLevel(1);
         }
         menu.setIcon(createMenuCommand.getIcon());
+        menu.setMenuType(createMenuCommand.getMenuType());
         menu.setHidden(createMenuCommand.getHidden());
         menu.setParentId(createMenuCommand.getParentId());
         menu.setSort(createMenuCommand.getSort());
@@ -110,8 +111,8 @@ public class MenuFacadeImpl implements MenuFacade {
         searchParam.setTenantId(menuTreeQuery.getTenantId());
         List<Menu> menus = menuDomainService.selectMenuList(searchParam);
         List<MenuTreeDTO> treeDTO = menuDataConvertor.convertToTree(menus);
-        return TreeUtil.makeTree(treeDTO, (menuTreeDTO) -> Objects.equals(menuTreeDTO.getLevel(), 1),
-                (menuTreeDTO, menuTreeDTO2) -> Objects.equals(menuTreeDTO.getParentId(), menuTreeDTO2.getMenuId()), MenuTreeDTO::setChildren);
+        return TreeUtil.makeTree(treeDTO, (menuTreeDTO) -> Objects.equals(menuTreeDTO.getParentId(), "0"),
+                (parent, sub) -> Objects.equals(parent.getMenuId(), sub.getParentId()), MenuTreeDTO::setChildren);
     }
 
     @Override

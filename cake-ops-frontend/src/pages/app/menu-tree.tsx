@@ -212,6 +212,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
           parentId: "0",
           level: 0,
           isDeleted: "false",
+          menuType: "MENU",
         };
         const updatedMenuData = [virtualRoot];
         setAppMenu(updatedMenuData);
@@ -457,70 +458,75 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
                 </Form>
               </Tabs.TabPane>
 
-              <Tabs.TabPane tab="菜单权限" key="2">
-                <Space
-                  size="middle"
-                  direction="vertical"
-                  style={{ width: "100%" }}
-                >
-                  <Button type="primary" onClick={() => handleAddPermission()}>
-                    新增权限点
-                  </Button>
-                  <Table
-                    dataSource={permissions}
-                    columns={[
-                      {
-                        title: "资源类型",
-                        dataIndex: "resourceType",
-                        key: "resourceType",
-                        render: (text: string, record: PermissionDTO) => {
-                          if (text === "query") {
-                            return <Tag color="blue">查询</Tag>;
-                          } else if (text === "operation") {
-                            return <Tag color="green">操作</Tag>;
-                          }
-                          return text;
+              {selectedMenuItem.menuType === "PAGE" && (
+                <Tabs.TabPane tab="菜单权限" key="2">
+                  <Space
+                    size="middle"
+                    direction="vertical"
+                    style={{ width: "100%" }}
+                  >
+                    <Button
+                      type="primary"
+                      onClick={() => handleAddPermission()}
+                    >
+                      新增权限点
+                    </Button>
+                    <Table
+                      dataSource={permissions}
+                      columns={[
+                        {
+                          title: "资源类型",
+                          dataIndex: "resourceType",
+                          key: "resourceType",
+                          render: (text: string, record: PermissionDTO) => {
+                            if (text === "query") {
+                              return <Tag color="blue">查询</Tag>;
+                            } else if (text === "operation") {
+                              return <Tag color="green">操作</Tag>;
+                            }
+                            return text;
+                          },
                         },
-                      },
-                      {
-                        title: "资源名称",
-                        dataIndex: "resourceName",
-                        key: "resourceName",
-                      },
-                      {
-                        title: "资源路径",
-                        dataIndex: "resourcePath",
-                        key: "resourcePath",
-                      },
-                      {
-                        title: "操作",
-                        key: "action",
-                        render: (_, record: PermissionDTO) => (
-                          <>
-                            <Button
-                              type="link"
-                              onClick={() => editPermission(record)}
-                            >
-                              编辑
-                            </Button>
-                            <Button
-                              type="link"
-                              danger
-                              onClick={() =>
-                                deletePermission(record.permissionId)
-                              }
-                            >
-                              删除
-                            </Button>
-                          </>
-                        ),
-                      },
-                    ]}
-                    pagination={false}
-                    style={{ marginTop: 16 }}
-                  />
-                </Space>
-              </Tabs.TabPane>
+                        {
+                          title: "资源名称",
+                          dataIndex: "resourceName",
+                          key: "resourceName",
+                        },
+                        {
+                          title: "资源路径",
+                          dataIndex: "resourcePath",
+                          key: "resourcePath",
+                        },
+                        {
+                          title: "操作",
+                          key: "action",
+                          render: (_, record: PermissionDTO) => (
+                            <>
+                              <Button
+                                type="link"
+                                onClick={() => editPermission(record)}
+                              >
+                                编辑
+                              </Button>
+                              <Button
+                                type="link"
+                                danger
+                                onClick={() =>
+                                  deletePermission(record.permissionId)
+                                }
+                              >
+                                删除
+                              </Button>
+                            </>
+                          ),
+                        },
+                      ]}
+                      pagination={false}
+                      style={{ marginTop: 16 }}
+                    />
+                  </Space>
+                </Tabs.TabPane>
+              )}
             </Tabs>
           )}
         </Layout.Content>

@@ -54,6 +54,7 @@ export interface MenuTreeDTO {
   hidden: boolean;
   isDeleted: string;
   sort: number;
+  menuType: string;
   children?: MenuTreeDTO[];
   permissions: PermissionDTO[];
 
