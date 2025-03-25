@@ -57,6 +57,8 @@ public enum BusinessErrorMessage implements ResponseCode {
     PARENT_ROLE_NOT_FOUND("6505", "父级角色未找到"),
     PARENT_ROLE_DELETED("6506", "父级角色已删除"),
     ROLE_KEY_DUPLICATED("6507", "角色Key已存在"),
+    ROLE_KEY_NOT_ALLOWED("6508", "角色Key不允许"),
+    ROLE_UPDATE_NOT_ALLOWED("6509", "超级管理员不允许修改"),
 
     PERMISSION_DISABLED("6501", "权限已禁用"),
     PERMISSION_NOT_FOUND("6502", "权限未找到"),

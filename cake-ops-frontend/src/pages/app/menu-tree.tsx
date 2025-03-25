@@ -17,6 +17,8 @@ import {
   Tag,
   Tree,
   TreeSelect,
+  Dropdown,
+  Menu,
 } from "antd";
 import { connect, Dispatch } from "umi";
 import { API } from "typings";
@@ -26,17 +28,18 @@ import * as AllIcons from "@ant-design/icons";
 import { PlusOutlined } from "@ant-design/icons";
 import { PermissionDTO } from "@/models/permission";
 import CreatePermissionForm from "./components/create-permission-form";
+import { MenuDTO } from "@/models/menu";
+import MenuDrawer from "./components/create-menu-drawer";
+import PageDrawer from "./components/create-page-drawer";
 
 interface MenuTreeProps {
   dispatch: Dispatch;
 }
 
 const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
-  const [form] = Form.useForm();
+  // const [form] = Form.useForm();
   const [menuItemForm] = Form.useForm();
-  const [selectedAppCode, setSelectedAppCode] = useState<string | undefined>(
-    undefined
-  );
+  const [selectedAppCode, setSelectedAppCode] = useState<string | null>(null);
   const [appMenu, setAppMenu] = useState<MenuTreeDTO[]>([]);
   const [selectedMenuItem, setSelectedMenuItem] = useState<MenuTreeDTO | null>(
     null
@@ -44,11 +47,11 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
   const [treeData, setTreeData] = useState<any[]>([]);
   const [appList, setAppList] = useState<AppDTO[]>([]);
 
-  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+  const [isDrawerVisible, setIsDrawerVisible] = useState<String>("");
   const [parentMenuId, setParentMenuId] = useState<string | undefined>(
     undefined
   );
-  const [addForm] = Form.useForm();
+  const [addForm] = Form.useForm<MenuDTO>();
   const [expandedKeys, setExpandedKeys] = useState<React.Key[]>([]); // 新增 expandedKeys 状态
   const [permissions, setPermissions] = useState<PermissionDTO[]>([]);
   const [editingPermissionId, setEditingPermissionId] = useState<string | null>(
@@ -69,7 +72,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
 
   const handleCloseDrawer = () => {
     setPermissionDrawer(false);
-    form.resetFields();
+    menuItemForm.resetFields();
     setEditingPermission(undefined);
   };
 
@@ -97,7 +100,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
       },
       callback: (res: any) => {
         message.success("添加成功");
-        form.resetFields();
+        menuItemForm.resetFields();
         setPermissionDrawer(false);
         setEditingPermission(undefined);
         fetchPermissions();
@@ -158,9 +161,9 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
 
   useEffect(() => {
     if (appList.length > 0 && !selectedAppCode) {
-      setSelectedAppCode(appList[0].id);
+      setSelectedAppCode(appList[0].appCode);
     }
-  }, [appList]);
+  }, [appList, selectedAppCode]);
 
   // 将 MenuTreeDTO 转换为 Tree 组件所需的数据格式
   const convertToTreeData = (menuTree: MenuTreeDTO[]): any[] => {
@@ -172,6 +175,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
       return {
         title: menuItem.name,
         key: menuItem.menuId,
+        menuType: menuItem.menuType,
         icon: <IconComponent />,
         value: menuItem.menuId, // 确保每个节点都有 value
         children: menuItem.children
@@ -181,17 +185,23 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
     });
   };
 
+  useEffect(() => {
+    if (selectedAppCode) {
+      fetchMenuTree(selectedAppCode);
+    }
+  }, [selectedAppCode]);
+
   const handleAppChange = (appCode: string) => {
     setSelectedAppCode(appCode);
     setSelectedMenuItem(null);
-    if (appCode === undefined || appCode === "") {
+    if (appCode === null) {
       return;
     }
     fetchMenuTree(appCode);
   };
 
-  const fetchMenuTree = (appCode: string | undefined) => {
-    if (appCode === undefined || appCode === "") {
+  const fetchMenuTree = (appCode: string | null) => {
+    if (!appCode) {
       return;
     }
     dispatch({
@@ -213,6 +223,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
           level: 0,
           isDeleted: "false",
           menuType: "MENU",
+          permissions: [],
         };
         const updatedMenuData = [virtualRoot];
         setAppMenu(updatedMenuData);
@@ -303,12 +314,13 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
     });
   };
 
+  // 删除菜单
   const deleteNode = (menuId: string) => {
     if (!menuId) return;
     dispatch({
       type: "menu/deleteMenu",
       payload: {
-        id: menuId,
+        menuId: menuId,
       },
       callback: (res: any) => {
         // 处理响应
@@ -320,6 +332,28 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
 
   // 定义新增按钮的渲染函数
   const renderTitle = (nodeData: any) => {
+    const menu = (
+      <Menu>
+        <Menu.Item
+          key="1"
+          onClick={(e) => {
+            e.domEvent.stopPropagation();
+            showDrawer(nodeData.key, "MENU");
+          }}
+        >
+          添加菜单
+        </Menu.Item>
+        <Menu.Item
+          key="2"
+          onClick={(info) => {
+            info.domEvent.stopPropagation();
+            showDrawer(nodeData.key, "PAGE");
+          }}
+        >
+          添加页面
+        </Menu.Item>
+      </Menu>
+    );
     return (
       <div
         style={{
@@ -330,24 +364,28 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
         }}
       >
         <span>{nodeData.title}</span>
-        <PlusOutlined
-          onClick={(e) => {
-            e.stopPropagation();
-            showDrawer(nodeData.key);
-          }}
-        />
+        {nodeData.menuType === "MENU" && (
+          <Dropdown overlay={menu} trigger={["click"]}>
+            <PlusOutlined
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            />
+          </Dropdown>
+        )}
       </div>
     );
   };
 
-  const showDrawer = (parentId?: string) => {
-    setIsDrawerVisible(true);
+  const showDrawer = (parentId?: string, type?: string) => {
+    type = type || "";
+    setIsDrawerVisible(type);
     setParentMenuId(parentId); // 设置 parentMenuId 为当前选中的菜单项的 menuId
-    addForm.setFieldsValue({ parentId }); // 设置表单的初始值
+    addForm.setFieldsValue({ parentId, menuType: type }); // 设置表单的初始值
   };
 
   const onClose = () => {
-    setIsDrawerVisible(false);
+    setIsDrawerVisible("");
     addForm.resetFields();
   };
 
@@ -378,11 +416,11 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
     <PageContainer title="菜单管理">
       <Layout style={{ height: "80vh" }}>
         <Layout.Sider width="25%" style={{ background: "#fff", padding: 16 }}>
-          <Form form={form} layout="vertical">
-            <Form.Item label="选择应用" name="appId">
+          <Form layout="vertical">
+            <Form.Item>
               <Select value={selectedAppCode} onChange={handleAppChange}>
                 {appList.map((app) => (
-                  <Select.Option key={app.id} value={app.appCode}>
+                  <Select.Option key={app.appCode} value={app.appCode}>
                     {app.appName}
                   </Select.Option>
                 ))}
@@ -412,11 +450,20 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
                   layout="vertical"
                   onFinish={handleFormSubmit}
                 >
-                  <Form.Item label="菜单ID" name="menuId">
+                  <Form.Item label="ID" name="menuId">
                     <Input disabled />
                   </Form.Item>
-                  <Form.Item label="菜单名称" name="name">
+                  <Form.Item label="名称" name="name">
                     <Input />
+                  </Form.Item>
+                  <Form.Item label="类型" name="menuType">
+                    <Select
+                      disabled
+                      options={[
+                        { value: "MENU", label: "菜单" },
+                        { value: "PAGE", label: "页面" },
+                      ]}
+                    />
                   </Form.Item>
                   <Form.Item label="图标" name="icon">
                     <Select
@@ -430,9 +477,11 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
                       filterOption={filterIconOptions}
                     />
                   </Form.Item>
-                  <Form.Item label="路径" name="path">
-                    <Input />
-                  </Form.Item>
+                  {selectedMenuItem.menuType === "PAGE" && (
+                    <Form.Item label="路径" name="path">
+                      <Input />
+                    </Form.Item>
+                  )}
                   <Form.Item label="是否隐藏" name="hidden">
                     <Radio.Group>
                       <Radio value="false"> 否 </Radio>
@@ -459,7 +508,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
               </Tabs.TabPane>
 
               {selectedMenuItem.menuType === "PAGE" && (
-                <Tabs.TabPane tab="菜单权限" key="2">
+                <Tabs.TabPane tab="页面权限" key="2">
                   <Space
                     size="middle"
                     direction="vertical"
@@ -531,69 +580,25 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
           )}
         </Layout.Content>
       </Layout>
-      <Drawer
-        title="添加菜单节点"
-        placement="right"
+
+      <MenuDrawer
+        isDrawerVisible={isDrawerVisible === "MENU"}
         onClose={onClose}
-        open={isDrawerVisible}
-        width={400}
-      >
-        <Form form={addForm} layout="vertical" onFinish={onAddFormSubmit}>
-          <Form.Item
-            label="菜单名称"
-            name="name"
-            rules={[{ required: true, message: "请输入菜单名称" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item label="图标" name="icon">
-            <Select
-              placeholder="选择图标"
-              options={icons}
-              style={{ width: "100%" }}
-              onChange={(value: any) => {
-                addForm.setFieldsValue({ icon: value });
-              }}
-              showSearch
-              filterOption={filterIconOptions}
-            />
-          </Form.Item>
-          <Form.Item label="路径" name="path">
-            <Input />
-          </Form.Item>
-          <Form.Item label="是否隐藏" name="hidden">
-            <Radio.Group>
-              <Radio value="false"> 否 </Radio>
-              <Radio value="true"> 是 </Radio>
-            </Radio.Group>
-          </Form.Item>
-          <Form.Item label="排序" name="sort">
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item label="上级菜单" name="parentId">
-            <TreeSelect
-              showSearch
-              style={{ width: "100%" }}
-              dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
-              placeholder="请选择上级菜单"
-              allowClear
-              treeDefaultExpandAll
-              treeData={treeData}
-              treeNodeFilterProp="title"
-              value={parentMenuId}
-              onChange={(value) => {
-                console.log("parent menu id:", value);
-                setParentMenuId(value);
-              }}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              提交
-            </Button>
-          </Form.Item>
-        </Form>
-      </Drawer>
+        addForm={addForm}
+        treeData={treeData}
+        parentMenuId={parentMenuId}
+        setParentMenuId={setParentMenuId}
+        onAddFormSubmit={onAddFormSubmit}
+      />
+      <PageDrawer
+        isDrawerVisible={isDrawerVisible === "PAGE"}
+        onClose={onClose}
+        addForm={addForm}
+        treeData={treeData}
+        parentMenuId={parentMenuId}
+        setParentMenuId={setParentMenuId}
+        onAddFormSubmit={onAddFormSubmit}
+      />
 
       <Drawer
         title={editingPermissionId ? "编辑权限点" : "新增权限点"}

@@ -11,10 +11,15 @@ import com.rany.ops.api.facade.grant.GrantRoleMenuFacade;
 import com.rany.ops.api.facade.grant.GrantRolePermissionFacade;
 import com.rany.ops.api.facade.grant.RbacQueryFacade;
 import com.rany.ops.api.facade.role.RoleFacade;
+import com.rany.ops.api.query.grant.RoleMenuListQuery;
 import com.rany.ops.api.query.grant.RoleMenuPermissionQuery;
+import com.rany.ops.api.query.grant.RoleMenuTreeQuery;
+import com.rany.ops.api.query.grant.RolePermissionListQuery;
 import com.rany.ops.api.query.role.RoleBasicQuery;
 import com.rany.ops.api.query.role.RoleTreeQuery;
+import com.rany.ops.common.dto.menu.MenuDTO;
 import com.rany.ops.common.dto.menu.MenuTreeDTO;
+import com.rany.ops.common.dto.permission.PermissionDTO;
 import com.rany.ops.common.dto.role.RoleDTO;
 import com.rany.ops.common.dto.role.RoleTreeDTO;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -93,10 +98,29 @@ public class RoleController {
     }
 
     @PostMapping("/get-role-menu-permission")
-    public PojoResult<List<MenuTreeDTO>> getRoleMenus(@RequestBody RoleMenuPermissionQuery query) {
+    public PojoResult<List<MenuTreeDTO>> getRoleMenuPermission(@RequestBody RoleMenuPermissionQuery query) {
         List<MenuTreeDTO> roleMenuPermissions = rbacQueryFacade.getRoleMenuPermissions(query);
         return PojoResult.succeed(roleMenuPermissions);
     }
+
+    @PostMapping("/get-role-menu-tree")
+    public PojoResult<List<MenuTreeDTO>> getRoleMenus(@RequestBody RoleMenuTreeQuery query) {
+        List<MenuTreeDTO> tree = rbacQueryFacade.getRoleMenus(query);
+        return PojoResult.succeed(tree);
+    }
+
+    @PostMapping("/list-role-menu")
+    public PojoResult<List<MenuDTO>> listRoleMenus(@RequestBody RoleMenuListQuery query) {
+        List<MenuDTO> menus = rbacQueryFacade.listRoleMenus(query);
+        return PojoResult.succeed(menus);
+    }
+
+    @PostMapping("/list-role-permission")
+    public PojoResult<List<PermissionDTO>> listRolePermissions(@RequestBody RolePermissionListQuery query) {
+        List<PermissionDTO> menus = rbacQueryFacade.listRolePermissions(query);
+        return PojoResult.succeed(menus);
+    }
+
 
     @PostMapping("/grant-role-menu")
     public PojoResult<Boolean> grantRoleMenus(@RequestBody GrantRoleMenusCommand command) {

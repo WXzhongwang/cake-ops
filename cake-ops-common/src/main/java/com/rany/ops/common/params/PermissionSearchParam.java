@@ -24,5 +24,7 @@ public class PermissionSearchParam extends BaseQuery {
 
     private Long refMenuId;
 
+    private List<Long> refMenuIds;
+
     private List<Long> permissionIds;
 }

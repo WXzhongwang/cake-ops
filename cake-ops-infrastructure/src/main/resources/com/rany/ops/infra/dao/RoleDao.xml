@@ -13,14 +13,14 @@
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
         <result column="is_deleted" jdbcType="CHAR" property="isDeleted"/>
-        <result column="parent_role_id" jdbcType="BIGINT" property="parentRoleId"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
     </resultMap>
 
     <sql id="Base_Column_List">
 
         id
         , app_code, tenant_id, role_name, role_desc,role_key, creator, modifier, gmt_create, gmt_modified,
-        is_deleted, parent_role_id, status
+        is_deleted, parent_id, status
     </sql>
 
     <select id="selectByRoleKey" resultMap="BaseResultMap">
@@ -44,7 +44,7 @@
         <include refid="Base_Column_List"/>
         from acl_role
         <where>
-            is_deleted = '0' and parent_role_id = #{roleId}
+            is_deleted = '0' and parent_id = #{roleId}
             <if test="appCode != null and appCode != ''">
                 and app_code = #{appCode}
             </if>
@@ -117,8 +117,8 @@
             <if test="isDeleted != null">
                 is_deleted,
             </if>
-            <if test="parentRoleId != null">
-                parent_role_id,
+            <if test="parentId != null">
+                parent_id,
             </if>
             <if test="status != null">
                 status,
@@ -158,8 +158,8 @@
             <if test="isDeleted != null">
                 #{isDeleted,jdbcType=CHAR},
             </if>
-            <if test="parentRoleId != null">
-                #{parentRoleId,jdbcType=BIGINT},
+            <if test="parentId != null">
+                #{parentId,jdbcType=BIGINT},
             </if>
             <if test="status != null">
                 #{status},
@@ -200,8 +200,8 @@
             <if test="isDeleted != null">
                 is_deleted = #{isDeleted,jdbcType=CHAR},
             </if>
-            <if test="parentRoleId != null">
-                parent_role_id = #{parentRoleId,jdbcType=BIGINT},
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=BIGINT},
             </if>
             <if test="status != null">
                 status = #{status},

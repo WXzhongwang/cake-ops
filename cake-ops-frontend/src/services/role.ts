@@ -8,6 +8,11 @@ import {
   RoleTreeQuery,
   ModifyRoleCommand,
   RoleMenuPermissionTreeQuery,
+  UpdateRoleMenuCommand,
+  UpdateRolePermissionCommand,
+  RoleMenuTreeQuery,
+  RoleMenuListQuery,
+  RolePermissionListQuery,
 } from "@/models/role";
 import request from "@/services/request";
 
@@ -17,10 +22,22 @@ export async function fetchRoleTree(data: RoleTreeQuery) {
     data,
   });
 }
-export async function fetchRoleMenuPermissionTree(
-  data: RoleMenuPermissionTreeQuery
-) {
+export async function fetchRoleMenuTree(data: RoleMenuTreeQuery) {
   return request("/api/ops/role/get-role-menu-permission", {
+    method: "POST",
+    data,
+  });
+}
+
+export async function listRoleMenu(data: RoleMenuListQuery) {
+  return request("/api/ops/role/list-role-menu", {
+    method: "POST",
+    data,
+  });
+}
+
+export async function listRolePermission(data: RolePermissionListQuery) {
+  return request("/api/ops/role/list-role-permission", {
     method: "POST",
     data,
   });
@@ -63,6 +80,20 @@ export async function disableRole(data: DisableRoleCommand) {
 
 export async function deleteRole(data: DeleteRoleCommand) {
   return request("/api/ops/role/delete", {
+    method: "POST",
+    data,
+  });
+}
+
+export async function grantRoleMenu(data: UpdateRoleMenuCommand) {
+  return request("/api/ops/role/grant-role-menu", {
+    method: "POST",
+    data,
+  });
+}
+
+export async function grantRolePermission(data: UpdateRolePermissionCommand) {
+  return request("/api/ops/role/grant-role-permission", {
     method: "POST",
     data,
   });

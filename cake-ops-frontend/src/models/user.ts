@@ -59,8 +59,8 @@ export interface MenuTreeDTO {
   permissions: PermissionDTO[];
 
   // 前端使用checked
-  checked: boolean;
-  halfChecked: boolean;
+  // checked?: boolean;
+  // halfChecked?: boolean;
 }
 
 export interface AppAccountDTO {

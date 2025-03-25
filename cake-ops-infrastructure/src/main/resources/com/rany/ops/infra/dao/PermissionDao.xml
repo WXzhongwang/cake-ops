@@ -166,6 +166,12 @@
             <if test="refMenuId != null">
                 and ref_menu_id = #{refMenuId}
             </if>
+            <if test="refMenuIds != null and refMenuIds.size() > 0">
+                and ref_menu_id in
+                <foreach collection="refMenuIds" item="refMenuId" open="(" close=")" separator=",">
+                    #{refMenuId}
+                </foreach>
+            </if>
             <if test="permissionIds != null and permissionIds.size() > 0">
                 and id in
                 <foreach collection="permissionIds" item="permissionId" open="(" close=")" separator=",">

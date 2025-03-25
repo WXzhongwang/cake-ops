@@ -21,9 +21,10 @@ public class RoleMenu extends BaseEntity<Long> {
     private Long menuId;
     private Long roleId;
 
-    public Boolean delete() {
+    public Boolean delete(String user) {
         this.gmtModified = DateUtil.date();
         this.isDeleted = DeleteStatusEnum.YES.getValue();
+        this.modifier = user;
         return Boolean.TRUE;
     }
 }

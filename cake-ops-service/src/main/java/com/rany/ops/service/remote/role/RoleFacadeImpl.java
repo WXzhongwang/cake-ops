@@ -5,6 +5,7 @@ import com.rany.ops.api.command.role.*;
 import com.rany.ops.api.facade.role.RoleFacade;
 import com.rany.ops.api.query.role.RoleBasicQuery;
 import com.rany.ops.api.query.role.RoleTreeQuery;
+import com.rany.ops.common.Constants;
 import com.rany.ops.common.dto.role.RoleDTO;
 import com.rany.ops.common.dto.role.RoleTreeDTO;
 import com.rany.ops.common.enums.CommonStatusEnum;
@@ -12,6 +13,7 @@ import com.rany.ops.common.enums.DeleteStatusEnum;
 import com.rany.ops.common.exception.BusinessErrorMessage;
 import com.rany.ops.common.params.RoleSearchParam;
 import com.rany.ops.common.util.SnowflakeIdWorker;
+import com.rany.ops.common.util.TreeUtil;
 import com.rany.ops.domain.aggregate.Application;
 import com.rany.ops.domain.aggregate.Role;
 import com.rany.ops.domain.pk.RoleId;
@@ -55,6 +57,10 @@ public class RoleFacadeImpl implements RoleFacade {
         if (StringUtils.equals(application.getStatus(), CommonStatusEnum.DISABLED.getValue())) {
             throw new BusinessException(BusinessErrorMessage.APP_DISABLED);
         }
+        if (StringUtils.equals(createRoleCommand.getRoleKey(), Constants.SUPER_ADMINISTRATOR_ROLE_KEY)) {
+            throw new BusinessException(BusinessErrorMessage.ROLE_KEY_NOT_ALLOWED);
+        }
+
         Role role = new Role(new RoleId(snowflakeIdWorker.nextId()),
                 createRoleCommand.getAppCode(),
                 createRoleCommand.getRoleName(),
@@ -120,12 +126,13 @@ public class RoleFacadeImpl implements RoleFacade {
         searchParam.setAppCode(roleTreeQuery.getAppCode());
         searchParam.setTenantId(roleTreeQuery.getTenantId());
         List<RoleDTO> roleDTOS = roleDomainService.selectRoleList(searchParam);
-        List<RoleDTO> top = roleDTOS.stream().filter(p -> Objects.isNull(p.getParentId())).collect(Collectors.toList());
-        List<RoleTreeDTO> treeDTO = roleDataConvertor.convertToTreeDTO(top);
-        for (RoleTreeDTO menuDTO : treeDTO) {
-            recursive(menuDTO, roleDTOS);
-        }
-        return treeDTO;
+        // List<RoleDTO> top = roleDTOS.stream().filter(p -> Objects.isNull(p.getParentId())).collect(Collectors.toList());
+        List<RoleTreeDTO> treeList = roleDataConvertor.convertToTreeDTO(roleDTOS);
+//        for (RoleTreeDTO menuDTO : treeDTO) {
+//            recursive(menuDTO, roleDTOS);
+//        }
+        return TreeUtil.makeTree(treeList, (menuDTO) -> Objects.isNull(menuDTO.getParentId()),
+                (parent, sub) -> Objects.equals(parent.getRoleId(), sub.getParentId()), RoleTreeDTO::setChildren);
     }
 
     @Override
@@ -167,6 +174,9 @@ public class RoleFacadeImpl implements RoleFacade {
         if (StringUtils.equals(role.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.ROLE_DELETED);
         }
+        if (StringUtils.equals(role.getRoleKey(), Constants.SUPER_ADMINISTRATOR_ROLE_KEY)) {
+            throw new BusinessException(BusinessErrorMessage.ROLE_UPDATE_NOT_ALLOWED);
+        }
         List<Role> allSubMenuList = roleDomainService.findAllSubRolesByRoleId(role.getId());
         allSubMenuList.add(role);
         for (Role roleItem : allSubMenuList) {
@@ -188,6 +198,9 @@ public class RoleFacadeImpl implements RoleFacade {
         if (StringUtils.equals(role.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
             throw new BusinessException(BusinessErrorMessage.ROLE_DELETED);
         }
+        if (StringUtils.equals(role.getRoleKey(), Constants.SUPER_ADMINISTRATOR_ROLE_KEY)) {
+            throw new BusinessException(BusinessErrorMessage.ROLE_UPDATE_NOT_ALLOWED);
+        }
         role.enable(enableRoleCommand.getUser());
         roleDomainService.update(role);
         return Boolean.TRUE;
@@ -198,6 +211,9 @@ public class RoleFacadeImpl implements RoleFacade {
         Role role = roleDomainService.findById(new RoleId(deleteRoleCommand.getRoleId()));
         if (Objects.isNull(role)) {
             throw new BusinessException(BusinessErrorMessage.ROLE_NOT_FOUND);
+        }
+        if (StringUtils.equals(role.getRoleKey(), Constants.SUPER_ADMINISTRATOR_ROLE_KEY)) {
+            throw new BusinessException(BusinessErrorMessage.ROLE_UPDATE_NOT_ALLOWED);
         }
         List<Role> subRoles = roleDomainService.findSubRoleListByRoleId(role.getAppCode(), role.getId());
         if (CollectionUtils.isNotEmpty(subRoles)) {
@@ -226,13 +242,8 @@ public class RoleFacadeImpl implements RoleFacade {
         if (StringUtils.isNotEmpty(modifyRoleCommand.getRoleDesc())) {
             role.setRoleDesc(modifyRoleCommand.getRoleDesc());
         }
-        if (StringUtils.isNotEmpty(modifyRoleCommand.getRoleKey())) {
-            role.setRoleKey(modifyRoleCommand.getRoleKey());
-            Role current = roleDomainService.findByRoleKey(role.getAppCode(),
-                    role.getTenantId(), modifyRoleCommand.getRoleKey());
-            if (current != null) {
-                throw new BusinessException(BusinessErrorMessage.ROLE_KEY_DUPLICATED);
-            }
+        if (StringUtils.equals(role.getRoleKey(), Constants.SUPER_ADMINISTRATOR_ROLE_KEY)) {
+            throw new BusinessException(BusinessErrorMessage.ROLE_UPDATE_NOT_ALLOWED);
         }
         role.modify(modifyRoleCommand.getUser());
         roleDomainService.update(role);

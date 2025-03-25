@@ -5,11 +5,12 @@ import { message } from "antd";
 import { PermissionDTO } from "./permission";
 
 export interface MenuDTO {
-  id: string;
+  menuId: string;
   name: string;
   path: string;
   icon: string;
   level: number;
+  menuType: string;
   parentId: string;
   hidden: boolean;
   isDeleted: boolean;
@@ -19,7 +20,7 @@ export interface MenuDTO {
 }
 
 export interface MenuTreeDTO {
-  id: number;
+  menuId: number;
   name: string;
   path: string;
   icon: string;
@@ -33,7 +34,7 @@ export interface MenuTreeDTO {
 }
 
 export interface MenuBasicQuery {
-  id: string;
+  menuId: string;
 }
 
 export interface MenuTreeQuery {
@@ -52,7 +53,7 @@ export interface CreateMenuCommand {
 }
 
 export interface ModifyMenuCommand {
-  id: string;
+  menuId: string;
   name: string;
   path: string;
   icon: string;
@@ -64,15 +65,15 @@ export interface ModifyMenuCommand {
 }
 
 export interface EnableMenuCommand {
-  id: string;
+  menuId: string;
 }
 
 export interface DisableMenuCommand {
-  id: string;
+  menuId: string;
 }
 
 export interface DeleteMenuCommand {
-  id: string;
+  menuId: string;
 }
 
 interface FetchMenuTreeAction extends BaseAction {

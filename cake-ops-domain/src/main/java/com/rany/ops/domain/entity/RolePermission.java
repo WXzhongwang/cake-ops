@@ -18,9 +18,9 @@ public class RolePermission extends BaseEntity<Long> {
     private Long roleId;
     private Long permissionId;
 
-    public Boolean delete() {
+    public Boolean delete(String user) {
         this.gmtModified = DateUtil.date();
-        // this.modifier = user;
+        this.modifier = user;
         this.isDeleted = DeleteStatusEnum.YES.getValue();
         return Boolean.TRUE;
     }

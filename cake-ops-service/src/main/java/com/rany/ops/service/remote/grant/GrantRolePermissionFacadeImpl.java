@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.dubbo.config.annotation.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class GrantRolePermissionFacadeImpl implements GrantRolePermissionFacade 
     private final RoleDomainService roleDomainService;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean grantRolePermissions(GrantRolePermissionsCommand grantRolePermissionsCommand) {
         RolePermissionSearchParam roleMenuSearchParam = new RolePermissionSearchParam();
         roleMenuSearchParam.setAppCode(grantRolePermissionsCommand.getAppCode());
@@ -34,12 +36,12 @@ public class GrantRolePermissionFacadeImpl implements GrantRolePermissionFacade 
         if (grantRolePermissionsCommand.getTenantId() != null) {
             roleMenuSearchParam.setTenantId(grantRolePermissionsCommand.getTenantId());
         }
-        //当前已绑定菜单
+        // 当前已绑定菜单
         List<RolePermission> currentPermissions = rolePermissionDomainService.getRolePermissions(roleMenuSearchParam);
         if (CollectionUtils.isNotEmpty(currentPermissions)) {
-            //删除既往绑定
+            // 删除既往绑定
             for (RolePermission currentPermission : currentPermissions) {
-                currentPermission.delete();
+                currentPermission.delete(grantRolePermissionsCommand.getUser());
                 rolePermissionDomainService.update(currentPermission);
             }
         }
@@ -52,6 +54,7 @@ public class GrantRolePermissionFacadeImpl implements GrantRolePermissionFacade 
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean disGrantRolePermissions(DisGrantRolePermissionsCommand disGrantRolePermissionsCommand) {
         RolePermissionSearchParam roleMenuSearchParam = new RolePermissionSearchParam();
         roleMenuSearchParam.setAppCode(disGrantRolePermissionsCommand.getAppCode());
@@ -59,12 +62,12 @@ public class GrantRolePermissionFacadeImpl implements GrantRolePermissionFacade 
         if (disGrantRolePermissionsCommand.getTenantId() != null) {
             roleMenuSearchParam.setTenantId(disGrantRolePermissionsCommand.getTenantId());
         }
-        //当前已绑定菜单
+        // 当前已绑定权限点
         List<RolePermission> currentPermissions = rolePermissionDomainService.getRolePermissions(roleMenuSearchParam);
         if (CollectionUtils.isNotEmpty(currentPermissions)) {
-            //删除既往绑定
+            // 删除既往绑定
             for (RolePermission currentPermission : currentPermissions) {
-                currentPermission.delete();
+                currentPermission.delete(disGrantRolePermissionsCommand.getUser());
                 rolePermissionDomainService.update(currentPermission);
             }
         }

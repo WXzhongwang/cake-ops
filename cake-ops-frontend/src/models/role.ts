@@ -2,7 +2,8 @@
 import * as api from "@/services/role";
 import { API, BaseAction } from "typings";
 import { message } from "antd";
-import { MenuTreeDTO } from "./menu";
+import { MenuDTO, MenuTreeDTO } from "./menu";
+import { PermissionDTO } from "./permission";
 
 export interface RoleDTO {
   roleId: string;
@@ -64,14 +65,46 @@ export interface DeleteRoleCommand {
   roleId: string;
 }
 
-export interface RoleMenuPermissionTreeQuery {
+export interface UpdateRoleMenuCommand {
+  appCode: string;
+  roleId: string;
+  menuIds: string[];
+}
+
+export interface UpdateRolePermissionCommand {
+  appCode: string;
+  roleId: string;
+  permissionIds: string[];
+}
+
+export interface RoleMenuTreeQuery {
   appCode: string;
   roleId: string;
 }
 
-interface FetchRoleMenuPermissionTreeAction extends BaseAction {
-  type: "menu/fetchRoleMenuPermissionTree";
-  payload: RoleMenuPermissionTreeQuery;
+export interface RolePermissionListQuery {
+  appCode: string;
+  roleId: string;
+}
+
+export interface RoleMenuListQuery {
+  appCode: string;
+  roleId: string;
+}
+
+interface FetchRoleMenuTreeAction extends BaseAction {
+  type: "role/fetchRoleMenuTree";
+  payload: RoleMenuTreeQuery;
+}
+
+interface FetchRoleMenuAction extends BaseAction {
+  type: "role/listRoleMenu";
+  payload: RoleMenuListQuery;
+}
+
+interface FetchRolePermissionAction extends BaseAction {
+  type: "role/listRolePermission";
+  payload: RolePermissionListQuery;
 }
 
 interface FetchRoleTreeAction extends BaseAction {
@@ -109,6 +142,16 @@ interface DeleteRoleAction extends BaseAction {
   payload: DeleteRoleCommand;
 }
 
+interface UpdateRoleMenuAction extends BaseAction {
+  type: "role/grantRoleMenu";
+  payload: UpdateRoleMenuCommand;
+}
+
+interface UpdateRolePermissionAction extends BaseAction {
+  type: "role/grantRolePermission";
+  payload: UpdateRoleMenuCommand;
+}
+
 const RoleModel = {
   namespace: "role",
   state: {},
@@ -126,12 +169,12 @@ const RoleModel = {
         message.error(msg);
       }
     },
-    *fetchRoleMenuPermissionTree(
-      { payload, callback }: FetchRoleMenuPermissionTreeAction,
+    *fetchRoleMenuTree(
+      { payload, callback }: FetchRoleMenuAction,
       { call, put }
     ) {
       const response: API.ResponseBody<MenuTreeDTO[]> = yield call(
-        api.fetchRoleMenuPermissionTree,
+        api.fetchRoleMenuTree,
         payload
       );
       const { success, msg } = response;
@@ -142,6 +185,41 @@ const RoleModel = {
         message.error(msg);
       }
     },
+
+    *listRoleMenu(
+      { payload, callback }: FetchRoleMenuTreeAction,
+      { call, put }
+    ) {
+      const response: API.ResponseBody<MenuDTO[]> = yield call(
+        api.listRoleMenu,
+        payload
+      );
+      const { success, msg } = response;
+      // 调用回调函数
+      if (success && callback && typeof callback === "function") {
+        callback(response.content);
+      } else {
+        message.error(msg);
+      }
+    },
+
+    *listRolePermission(
+      { payload, callback }: FetchRolePermissionAction,
+      { call, put }
+    ) {
+      const response: API.ResponseBody<PermissionDTO[]> = yield call(
+        api.listRolePermission,
+        payload
+      );
+      const { success, msg } = response;
+      // 调用回调函数
+      if (success && callback && typeof callback === "function") {
+        callback(response.content);
+      } else {
+        message.error(msg);
+      }
+    },
+
     *getRole({ payload, callback }: GetRoleAction, { call, put }) {
       const response: API.ResponseBody<RoleDTO> = yield call(
         api.getRole,
@@ -197,6 +275,30 @@ const RoleModel = {
     },
     *disableRole({ payload, callback }: DisableRoleAction, { call, put }) {
       const response = yield call(api.disableRole, payload);
+      const { success, msg } = response;
+      // 调用回调函数
+      if (success && callback && typeof callback === "function") {
+        callback(response.content);
+      } else {
+        message.error(msg);
+      }
+    },
+
+    *grantRoleMenu({ payload, callback }: UpdateRoleMenuAction, { call, put }) {
+      const response = yield call(api.grantRoleMenu, payload);
+      const { success, msg } = response;
+      // 调用回调函数
+      if (success && callback && typeof callback === "function") {
+        callback(response.content);
+      } else {
+        message.error(msg);
+      }
+    },
+    *grantRolePermission(
+      { payload, callback }: UpdateRolePermissionAction,
+      { call, put }
+    ) {
+      const response = yield call(api.grantRolePermission, payload);
       const { success, msg } = response;
       // 调用回调函数
       if (success && callback && typeof callback === "function") {
