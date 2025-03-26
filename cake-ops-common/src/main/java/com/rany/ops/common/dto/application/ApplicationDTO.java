@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class ApplicationDTO extends DTO {
-    private Long id;
+    private String id;
     private String authType;
     private String appName;
     private String appCode;

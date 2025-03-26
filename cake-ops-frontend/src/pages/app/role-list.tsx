@@ -333,24 +333,24 @@ const RolePage: React.FC<RoleTreeProps> = React.memo(({ dispatch }) => {
         },
         callback: (res: any) => {
           message.success("角色绑定菜单成功");
-          fetchParentMenuTree(selectedAppCode, selectedRoleItem.roleId);
+          fetchParentMenuTree(selectedAppCode, selectedRoleItem.parentId);
         },
       });
     }
   };
 
   const handlePermissionSubmit = (
-    addedKeys: React.Key[],
-    removedKeys: React.Key[]
+    addKeys: React.Key[],
+    removeKeys: React.Key[]
   ) => {
     if (selectedRoleItem && selectedAppCode) {
       dispatch({
-        type: "role/grantRolePermission",
+        type: "role/grantRolePermissionV2",
         payload: {
           appCode: selectedAppCode,
           roleId: selectedRoleItem.roleId,
-          addedPermissionIds: addedKeys,
-          removedPermissionIds: removedKeys,
+          addPermissionIds: addKeys,
+          removePermissionIds: removeKeys,
         },
         callback: (res: any) => {
           message.success("角色权限更新成功");
@@ -398,32 +398,47 @@ const RolePage: React.FC<RoleTreeProps> = React.memo(({ dispatch }) => {
         </Layout.Sider>
         <Layout.Content style={{ padding: 16 }}>
           {selectedRoleItem && (
-            <Tabs defaultActiveKey="1">
-              <Tabs.TabPane tab="基本信息" key="1">
-                <RoleBasicInfoTab
-                  form={chooseRoleForm}
-                  roleItem={selectedRoleItem}
-                  treeData={treeData}
-                  updateRole={handleUpdateRole}
-                  deleteRole={deleteRole}
-                />
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="角色菜单" key="2">
-                <RoleMenuTab
-                  fullMenuTree={fullMenuTree}
-                  roleMenus={roleMenus}
-                  onFormSubmit={handleMenuSubmit}
-                />
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="角色权限" key="3">
-                <RolePermissionTab
-                  fullMenuTree={fullMenuTree}
-                  roleMenus={roleMenus}
-                  rolePermissions={rolePermissions}
-                  onFormSubmit={handlePermissionSubmit}
-                />
-              </Tabs.TabPane>
-            </Tabs>
+            <Tabs
+              defaultActiveKey="1"
+              items={[
+                {
+                  key: "1",
+                  label: "基本信息",
+                  children: (
+                    <RoleBasicInfoTab
+                      form={chooseRoleForm}
+                      roleItem={selectedRoleItem}
+                      treeData={treeData}
+                      updateRole={handleUpdateRole}
+                      deleteRole={deleteRole}
+                    />
+                  ),
+                },
+                {
+                  key: "2",
+                  label: "角色菜单",
+                  children: (
+                    <RoleMenuTab
+                      fullMenuTree={fullMenuTree}
+                      roleMenus={roleMenus}
+                      onFormSubmit={handleMenuSubmit}
+                    />
+                  ),
+                },
+                {
+                  key: "3",
+                  label: "角色权限",
+                  children: (
+                    <RolePermissionTab
+                      fullMenuTree={fullMenuTree}
+                      roleMenus={roleMenus}
+                      rolePermissions={rolePermissions}
+                      onFormSubmit={handlePermissionSubmit}
+                    />
+                  ),
+                },
+              ]}
+            />
           )}
         </Layout.Content>
       </Layout>

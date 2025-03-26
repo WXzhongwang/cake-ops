@@ -2,6 +2,7 @@ package com.rany.ops.service.remote.grant;
 
 import com.rany.ops.api.command.grant.DisGrantRolePermissionsCommand;
 import com.rany.ops.api.command.grant.GrantRolePermissionsCommand;
+import com.rany.ops.api.command.grant.GrantRolePermissionsV2Command;
 import com.rany.ops.api.facade.grant.GrantRolePermissionFacade;
 import com.rany.ops.common.params.RolePermissionSearchParam;
 import com.rany.ops.common.util.SnowflakeIdWorker;
@@ -15,6 +16,7 @@ import org.apache.dubbo.config.annotation.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author zhongshengwang
@@ -48,7 +50,40 @@ public class GrantRolePermissionFacadeImpl implements GrantRolePermissionFacade 
         for (Long permissionId : grantRolePermissionsCommand.getPermissionIds()) {
             RolePermission roleMenu = new RolePermission(grantRolePermissionsCommand.getAppCode(),
                     grantRolePermissionsCommand.getTenantId(), grantRolePermissionsCommand.getRoleId(), permissionId);
+            roleMenu.save(grantRolePermissionsCommand.getUser());
             rolePermissionDomainService.save(roleMenu);
+        }
+        return Boolean.TRUE;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean grantRolePermissionsV2(GrantRolePermissionsV2Command grantRolePermissionsCommand) {
+        RolePermissionSearchParam roleMenuSearchParam = new RolePermissionSearchParam();
+        roleMenuSearchParam.setAppCode(grantRolePermissionsCommand.getAppCode());
+        roleMenuSearchParam.setRoleId(grantRolePermissionsCommand.getRoleId());
+        if (grantRolePermissionsCommand.getTenantId() != null) {
+            roleMenuSearchParam.setTenantId(grantRolePermissionsCommand.getTenantId());
+        }
+        // 当前已绑定权限点
+        List<RolePermission> currentPermissions = rolePermissionDomainService.getRolePermissions(roleMenuSearchParam);
+        List<Long> addPermissionIds = grantRolePermissionsCommand.getAddPermissionIds();
+        List<Long> removePermissionIds = grantRolePermissionsCommand.getRemovePermissionIds();
+        if (CollectionUtils.isNotEmpty(addPermissionIds)) {
+            for (Long permissionId : addPermissionIds) {
+                RolePermission roleMenu = new RolePermission(grantRolePermissionsCommand.getAppCode(),
+                        grantRolePermissionsCommand.getTenantId(), grantRolePermissionsCommand.getRoleId(), permissionId);
+                roleMenu.save(grantRolePermissionsCommand.getUser());
+                rolePermissionDomainService.save(roleMenu);
+            }
+        }
+        if (CollectionUtils.isNotEmpty(removePermissionIds)) {
+            List<RolePermission> removeInPermissions = currentPermissions.stream().filter(rolePermission ->
+                    removePermissionIds.contains(rolePermission.getPermissionId())).collect(Collectors.toList());
+            for (RolePermission rolePermission : removeInPermissions) {
+                rolePermission.delete(grantRolePermissionsCommand.getUser());
+                rolePermissionDomainService.update(rolePermission);
+            }
         }
         return Boolean.TRUE;
     }

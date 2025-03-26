@@ -62,8 +62,13 @@ const AppList: React.FC<AppListProps> = ({ dispatch }) => {
     dispatch({
       type: "app/delete",
       payload: { id: appId },
+      callback: (success: boolean) => {
+        if (success) {
+          message.success("处理成功");
+          fetchAppList();
+        }
+      },
     });
-    fetchAppList();
   };
 
   const handleDisabled = (appId: string) => {
@@ -73,10 +78,10 @@ const AppList: React.FC<AppListProps> = ({ dispatch }) => {
       callback: (success: boolean) => {
         if (success) {
           message.success("处理成功");
+          fetchAppList();
         }
       },
     });
-    fetchAppList();
   };
 
   const handleEnable = (appId: string) => {
@@ -86,10 +91,10 @@ const AppList: React.FC<AppListProps> = ({ dispatch }) => {
       callback: (success: boolean) => {
         if (success) {
           message.success("处理成功");
+          fetchAppList();
         }
       },
     });
-    fetchAppList();
   };
 
   const handlePaginationChange = (page: number, pageSize?: number) => {

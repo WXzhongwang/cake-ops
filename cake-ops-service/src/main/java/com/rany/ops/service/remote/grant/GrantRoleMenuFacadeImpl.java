@@ -48,17 +48,17 @@ public class GrantRoleMenuFacadeImpl implements GrantRoleMenuFacade {
         // 分别获取待添加部分和待删除部分
         List<Long> existedMenuIds = currentMenus.stream().map(RoleMenu::getMenuId).collect(Collectors.toList());
         List<Long> menuIds = grantRoleMenusCommand.getMenuIds();
-        List<Long> addMenus = menuIds.stream().filter(menuId -> !existedMenuIds.contains(menuId)).collect(Collectors.toList());
-        List<Long> deleteMenus = existedMenuIds.stream().filter(menuId -> !menuIds.contains(menuId)).collect(Collectors.toList());
+        List<Long> addMenusIds = menuIds.stream().filter(menuId -> !existedMenuIds.contains(menuId)).collect(Collectors.toList());
+        List<Long> deleteMenusIds = existedMenuIds.stream().filter(menuId -> !menuIds.contains(menuId)).collect(Collectors.toList());
+        List<RoleMenu> deleteMenus = currentMenus.stream().filter(menu -> !menuIds.contains(menu.getMenuId())).collect(Collectors.toList());
 
-        for (Long menuId : addMenus) {
+        for (Long menuId : addMenusIds) {
             RoleMenu roleMenu = new RoleMenu(grantRoleMenusCommand.getAppCode(),
-                    grantRoleMenusCommand.getTenantId(), grantRoleMenusCommand.getRoleId(), menuId);
+                    grantRoleMenusCommand.getTenantId(), menuId, grantRoleMenusCommand.getRoleId());
+            roleMenu.save(grantRoleMenusCommand.getUser());
             roleMenuDomainService.save(roleMenu);
         }
-        for (Long menuId : deleteMenus) {
-            RoleMenu roleMenu = new RoleMenu(grantRoleMenusCommand.getAppCode(),
-                    grantRoleMenusCommand.getTenantId(), grantRoleMenusCommand.getRoleId(), menuId);
+        for (RoleMenu roleMenu : deleteMenus) {
             roleMenu.delete(grantRoleMenusCommand.getUser());
             roleMenuDomainService.update(roleMenu);
         }
@@ -66,7 +66,7 @@ public class GrantRoleMenuFacadeImpl implements GrantRoleMenuFacade {
         // 获取删除菜单下绑定的权限
         PermissionSearchParam searchParam = new PermissionSearchParam();
         searchParam.setAppCode(grantRoleMenusCommand.getAppCode());
-        searchParam.setRefMenuIds(deleteMenus);
+        searchParam.setRefMenuIds(deleteMenusIds);
         searchParam.setTenantId(grantRoleMenusCommand.getTenantId());
         List<Permission> permissions = permissionDomainService.selectPermissionList(searchParam);
         List<Long> permissionIds = permissions.stream().map(p -> p.getId().getId()).collect(Collectors.toList());

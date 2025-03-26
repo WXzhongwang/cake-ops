@@ -28,7 +28,7 @@ public class ApplicationFacadeTest extends BaseTests {
 
     @Resource
     private ApplicationFacade applicationFacade;
-    private static final Long APP_ID = 771358516215689216L;
+    private static final String APP_ID = "771358516215689216";
 
     @Test
     public void createAccount() {

@@ -2,6 +2,7 @@ package com.rany.ops.api.query.application;
 
 import com.rany.ops.common.base.BasePageQuery;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * TODO
@@ -12,6 +13,7 @@ import lombok.Data;
  * @email 18668485565163.com
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class ApplicationPageQuery extends BasePageQuery {
 
     private String appName;

@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class DeleteApplicationCommand extends BaseCommand {
     /**
-     * 账号Id
+     * 应用
      */
-    private Long id;
+    private String id;
 }

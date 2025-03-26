@@ -77,6 +77,13 @@ export interface UpdateRolePermissionCommand {
   permissionIds: string[];
 }
 
+export interface UpdateRolePermissionV2Command {
+  appCode: string;
+  roleId: string;
+  addPermissionIds: string[];
+  removePermissionIds: string[];
+}
+
 export interface RoleMenuTreeQuery {
   appCode: string;
   roleId: string;
@@ -149,7 +156,12 @@ interface UpdateRoleMenuAction extends BaseAction {
 
 interface UpdateRolePermissionAction extends BaseAction {
   type: "role/grantRolePermission";
-  payload: UpdateRoleMenuCommand;
+  payload: UpdateRolePermissionCommand;
+}
+
+interface UpdateRolePermissionV2Action extends BaseAction {
+  type: "role/grantRolePermissionV2";
+  payload: UpdateRolePermissionV2Command;
 }
 
 const RoleModel = {
@@ -299,6 +311,19 @@ const RoleModel = {
       { call, put }
     ) {
       const response = yield call(api.grantRolePermission, payload);
+      const { success, msg } = response;
+      // 调用回调函数
+      if (success && callback && typeof callback === "function") {
+        callback(response.content);
+      } else {
+        message.error(msg);
+      }
+    },
+    *grantRolePermissionV2(
+      { payload, callback }: UpdateRolePermissionV2Action,
+      { call, put }
+    ) {
+      const response = yield call(api.grantRolePermissionV2, payload);
       const { success, msg } = response;
       // 调用回调函数
       if (success && callback && typeof callback === "function") {

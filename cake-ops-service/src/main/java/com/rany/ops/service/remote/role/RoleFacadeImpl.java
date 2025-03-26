@@ -87,7 +87,7 @@ public class RoleFacadeImpl implements RoleFacade {
             if (StringUtils.equals(parentRole.getIsDeleted(), DeleteStatusEnum.YES.getValue())) {
                 throw new BusinessException(BusinessErrorMessage.PARENT_ROLE_DISABLED);
             }
-            role.setParentRoleId(createRoleCommand.getParentId());
+            role.setParentId(createRoleCommand.getParentId());
         }
         role.save(createRoleCommand.getUser());
         roleDomainService.save(role);

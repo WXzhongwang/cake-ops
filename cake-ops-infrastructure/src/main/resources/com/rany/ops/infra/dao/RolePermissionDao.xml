@@ -51,7 +51,7 @@
             <if test="gmtModified != null">
                 gmt_modified,
             </if>
-            <if test="idDeleted != null">
+            <if test="isDeleted != null">
                 is_deleted,
             </if>
         </trim>
@@ -116,8 +116,8 @@
             <if test="gmtModified != null">
                 gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
             </if>
-            <if test="idDeleted != null">
-                is_deleted = #{idDeleted,jdbcType=CHAR},
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=CHAR},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}

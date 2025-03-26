@@ -16,9 +16,9 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class EnableApplicationCommand extends BaseCommand {
     /**
-     * 账号Id
+     * 应用ID
      */
-    private Long id;
+    private String id;
 
     /**
      * 租户Id

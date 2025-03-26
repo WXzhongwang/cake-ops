@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ModifyApplicationCommand extends BaseCommand {
-    private Long id;
+    private String id;
     private String appName;
     private String authType;
 }

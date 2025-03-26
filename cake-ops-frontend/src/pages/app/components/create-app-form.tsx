@@ -52,7 +52,10 @@ const CreateAppForm: React.FC<CreateAppFormProps> = ({
         label="应用编码"
         rules={[{ required: true, message: "请输入应用编码" }]}
       >
-        <Input placeholder="请输入应用编码" />
+        <Input
+          placeholder="请输入应用编码"
+          disabled={initialValues ? true : false}
+        />
       </Form.Item>
 
       <Form.Item
@@ -60,7 +63,7 @@ const CreateAppForm: React.FC<CreateAppFormProps> = ({
         label="应用认证方式"
         rules={[{ required: true, message: "请输入应用认证方式" }]}
       >
-        <Select placeholder="认证类型">
+        <Select placeholder="认证类型" disabled={initialValues ? true : false}>
           <Option value="RBAC0">基础认证</Option>
         </Select>
       </Form.Item>

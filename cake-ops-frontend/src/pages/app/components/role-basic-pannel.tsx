@@ -35,7 +35,7 @@ const RoleBasicInfoTab: React.FC<RoleBasicInfoTabProps> = ({
         name="roleKey"
         rules={[{ required: true, message: "请输入角色Key" }]}
       >
-        <Input />
+        <Input disabled />
       </Form.Item>
       <Form.Item label="角色描述" name="roleDesc">
         <Input />

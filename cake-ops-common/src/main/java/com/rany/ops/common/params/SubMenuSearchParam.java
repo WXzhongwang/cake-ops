@@ -17,4 +17,6 @@ import lombok.EqualsAndHashCode;
 public class SubMenuSearchParam extends BaseQuery {
 
     private Long menuId;
+    private Long tenantId;
+    private String appCode;
 }

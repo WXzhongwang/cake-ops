@@ -27,7 +27,6 @@ import com.rany.ops.infra.po.UserRolePO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
@@ -71,7 +70,7 @@ public class RoleRepositoryImpl implements RoleRepository {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+//    @Transactional(rollbackFor = Exception.class)
     public void save(@NotNull Role role) {
         roleDao.save(role);
     }

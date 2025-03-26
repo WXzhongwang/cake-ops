@@ -34,11 +34,11 @@ public class GrantUserRoleFacadeImpl implements GrantUserRoleFacade {
     @Override
     public Boolean grantUserRole(GrantUserRoleCommand grantUserRoleCommand) {
         UserRoleSearchParam userRoleSearchParam = new UserRoleSearchParam();
-        userRoleSearchParam.setUserId(userRoleSearchParam.getUserId());
-        userRoleSearchParam.setAppCode(userRoleSearchParam.getAppCode());
-        userRoleSearchParam.setRoleId(userRoleSearchParam.getRoleId());
+        userRoleSearchParam.setUserId(grantUserRoleCommand.getAccountId());
+        userRoleSearchParam.setAppCode(grantUserRoleCommand.getAppCode());
+        userRoleSearchParam.setRoleId(grantUserRoleCommand.getRoleId());
         if (grantUserRoleCommand.getTenantId() != null) {
-            userRoleSearchParam.setTenantId(userRoleSearchParam.getTenantId());
+            userRoleSearchParam.setTenantId(grantUserRoleCommand.getTenantId());
         }
         UserRole current = userRoleDomainService.getUserRole(userRoleSearchParam);
         if (current != null) {
@@ -56,6 +56,7 @@ public class GrantUserRoleFacadeImpl implements GrantUserRoleFacade {
         }
         UserRole userRole = new UserRole(userRoleSearchParam.getAppCode(), userRoleSearchParam.getTenantId(),
                 userRoleSearchParam.getUserId(), userRoleSearchParam.getRoleId());
+        userRole.save(grantUserRoleCommand.getUser());
         userRoleDomainService.save(userRole);
         return Boolean.TRUE;
     }

@@ -1,10 +1,9 @@
-// src/pages/app/components/role-permission-panel.tsx
-
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { Tree, Table, Checkbox, Button, List, Modal, message } from "antd";
+import { Tree, Table, Checkbox, Button, List, Modal, message, Tag } from "antd";
 import { MenuTreeDTO } from "@/models/user";
 import { PermissionDTO } from "@/models/permission";
 import { MenuDTO } from "@/models/menu";
+import { set } from "lodash";
 
 interface RolePermissionTabProps {
   fullMenuTree: MenuTreeDTO[];
@@ -19,44 +18,118 @@ const RolePermissionTab: React.FC<RolePermissionTabProps> = ({
   roleMenus,
   onFormSubmit,
 }) => {
-  const [expandedMenuKeys, setExpandedMenuKeys] = useState<React.Key[]>([]);
   const [selectedMenuKey, setSelectedMenuKey] = useState<React.Key | null>(
     null
   );
-  const [permissions, setPermissions] = useState<PermissionDTO[]>([]);
+  const [filteredPermissions, setFilteredPermissions] = useState<
+    PermissionDTO[]
+  >([]);
+  const [menuKeys, setMenuKeys] = useState<React.Key[]>([]);
   const [checkedKeys, setCheckedKeys] = useState<React.Key[]>([]);
   const [initialCheckedKeys, setInitialCheckedKeys] = useState<React.Key[]>([]);
   const [addedKeys, setAddedKeys] = useState<React.Key[]>([]);
   const [removedKeys, setRemovedKeys] = useState<React.Key[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const extractPermissions = useMemo(() => {
-    return (menuTree: MenuTreeDTO[], key: React.Key): PermissionDTO[] => {
-      let foundPermissions: PermissionDTO[] = [];
+  // 提取用户有权限的菜单树
+  const filterUserAccessibleMenus = useCallback(
+    (menuTree: MenuTreeDTO[], menuIds: React.Key[]): MenuTreeDTO[] => {
+      const traverse = (items: MenuTreeDTO[]): MenuTreeDTO[] => {
+        return items
+          .filter((item) => menuIds.includes(item.menuId))
+          .map((item) => ({
+            ...item,
+            children: item.children ? traverse(item.children) : undefined,
+          }))
+          .filter((item) => item.children || menuIds.includes(item.menuId));
+      };
+      return traverse(menuTree);
+    },
+    []
+  );
 
+  // 提取用户有权限的权限点
+  const filterUserAccessiblePermissions = useCallback(
+    (
+      permissions: PermissionDTO[],
+      permissionIds: React.Key[]
+    ): PermissionDTO[] => {
+      return permissions.filter((perm) =>
+        permissionIds.includes(perm.permissionId)
+      );
+    },
+    []
+  );
+
+  // 提取角色已绑定的菜单键和权限键
+  const extractCheckedMenuKeys = useCallback(
+    (menus: MenuDTO[]): React.Key[] => menus.map((item) => item.menuId),
+    []
+  );
+  const extractCheckedPermissionKeys = useCallback(
+    (permissions: PermissionDTO[]): React.Key[] =>
+      permissions.map((perm) => perm.permissionId),
+    []
+  );
+
+  // 提取某个菜单下的权限点（递归）
+  const extractPermissions = useCallback(
+    (menuTree: MenuTreeDTO[], selectedMenuKey: React.Key): PermissionDTO[] => {
+      let permissions: PermissionDTO[] = [];
       const traverse = (items: MenuTreeDTO[]) => {
-        items.forEach((item) => {
-          if (item.menuId === key && item.permissions) {
-            foundPermissions = [
-              ...foundPermissions,
-              ...(item.permissions || []),
-            ];
+        for (const item of items) {
+          if (item.menuId === selectedMenuKey && item.permissions) {
+            permissions = [...permissions, ...(item.permissions || [])];
+            break; // 找到目标菜单后停止继续搜索
           }
           if (item.children) {
             traverse(item.children);
           }
-        });
+        }
       };
-
       traverse(menuTree);
-      return foundPermissions;
-    };
-  }, []);
+      return permissions;
+    },
+    []
+  );
 
-  const extractAllPermissions = useMemo(() => {
-    return (menuTree: MenuTreeDTO[]): PermissionDTO[] => {
+  // 初始化数据
+  useEffect(() => {
+    const initialMenuKeys = extractCheckedMenuKeys(roleMenus);
+    setMenuKeys(initialMenuKeys);
+
+    const initialPermissionKeys = extractCheckedPermissionKeys(rolePermissions);
+
+    const filteredMenuTree = filterUserAccessibleMenus(
+      fullMenuTree,
+      initialMenuKeys
+    );
+    const allPermissions = extractAllPermissions(filteredMenuTree);
+
+    const filteredPermissions = filterUserAccessiblePermissions(
+      allPermissions,
+      initialPermissionKeys
+    );
+
+    setFilteredPermissions(
+      initialMenuKeys.length > 0 ? filteredPermissions : []
+    );
+    setCheckedKeys(initialPermissionKeys);
+    setInitialCheckedKeys(initialPermissionKeys);
+  }, [
+    fullMenuTree,
+    roleMenus,
+    rolePermissions,
+    filterUserAccessibleMenus,
+    filterUserAccessiblePermissions,
+    extractCheckedMenuKeys,
+    extractCheckedPermissionKeys,
+  ]);
+
+  // 提取所有权限（递归）
+  const extractAllPermissions = useCallback(
+    (menuTree: MenuTreeDTO[]): PermissionDTO[] => {
       let allPermissions: PermissionDTO[] = [];
-
       const traverse = (items: MenuTreeDTO[]) => {
         items.forEach((item) => {
           if (item.permissions) {
@@ -67,93 +140,42 @@ const RolePermissionTab: React.FC<RolePermissionTabProps> = ({
           }
         });
       };
-
       traverse(menuTree);
       return allPermissions;
-    };
-  }, []);
+    },
+    []
+  );
 
-  const extractCheckedMenuKeys = (menus: MenuDTO[]): React.Key[] => {
-    const keys: React.Key[] = [];
-    menus.forEach((item) => {
-      keys.push(item.menuId);
-    });
-    return keys;
-  };
-
-  const extractCheckedPermissionKeys = useMemo(() => {
-    return (rolePermissions: PermissionDTO[]): React.Key[] => {
-      const keys: React.Key[] = [];
-      rolePermissions.forEach((perm) => {
-        keys.push(perm.permissionId);
-      });
-      return keys;
-    };
-  }, [rolePermissions]);
-
-  useEffect(() => {
-    const allPermissions = extractAllPermissions(fullMenuTree);
-    setPermissions(allPermissions);
-
-    // 设置菜单expandKeys
-  }, [fullMenuTree, extractAllPermissions]);
-
+  // 更新选中菜单时的权限列表
   useEffect(() => {
     if (selectedMenuKey) {
       const selectedPermissions = extractPermissions(
         fullMenuTree,
         selectedMenuKey
       );
-      setPermissions(selectedPermissions);
+      const filteredSelectedPermissions = filterUserAccessiblePermissions(
+        selectedPermissions,
+        checkedKeys
+      );
+      setFilteredPermissions(filteredSelectedPermissions);
     } else {
-      const allPermissions = extractAllPermissions(fullMenuTree);
-      setPermissions(allPermissions);
+      const filteredMenuTree = filterUserAccessibleMenus(
+        fullMenuTree,
+        menuKeys
+      );
+      const allPermissions = extractAllPermissions(filteredMenuTree);
+      setFilteredPermissions(allPermissions);
     }
   }, [
     selectedMenuKey,
     fullMenuTree,
-    extractPermissions,
+    checkedKeys,
     extractAllPermissions,
+    filterUserAccessiblePermissions,
+    extractPermissions,
   ]);
 
-  useEffect(() => {
-    const initialKeys = extractCheckedPermissionKeys(rolePermissions);
-    setCheckedKeys(initialKeys);
-    setInitialCheckedKeys(initialKeys);
-  }, [rolePermissions, extractCheckedPermissionKeys]);
-
-  useEffect(() => {
-    const initialCheckedMenuKeys = extractCheckedMenuKeys(roleMenus);
-    setExpandedMenuKeys(
-      initialCheckedMenuKeys.length > 0
-        ? initialCheckedMenuKeys
-        : extractFullExpandMenuKeys(fullMenuTree)
-    );
-  }, [roleMenus]);
-
-  const extractFullExpandMenuKeys = (roles: MenuTreeDTO[]): React.Key[] => {
-    const keys: React.Key[] = [];
-    roles.forEach((roleItem) => {
-      keys.push(roleItem.menuId);
-      if (roleItem.children) {
-        keys.push(...extractFullExpandMenuKeys(roleItem.children));
-      }
-    });
-    return keys;
-  };
-
-  const onSelect = useCallback((selectedKeys: React.Key[], info: any) => {
-    const selectedKey = selectedKeys[0];
-    setSelectedMenuKey(selectedKey);
-    setExpandedMenuKeys((prevKeys) => {
-      if (prevKeys.includes(selectedKey)) {
-        return prevKeys.filter((key) => key !== selectedKey);
-      } else {
-        return [...prevKeys, selectedKey];
-      }
-    });
-  }, []);
-
+  // 处理权限勾选逻辑
   const handleCheck = useCallback(
     (checked: React.Key[], info: any) => {
       const newAddedKeys = checked.filter(
@@ -170,42 +192,35 @@ const RolePermissionTab: React.FC<RolePermissionTabProps> = ({
     [initialCheckedKeys]
   );
 
-  const showModal = useCallback(() => {
-    setIsModalVisible(true);
-  }, []);
-
-  const handleOk = useCallback(() => {
-    onFormSubmit(addedKeys, removedKeys);
-    setAddedKeys([]);
-    setRemovedKeys([]);
-    setIsModalVisible(false);
-    message.success("权限更新成功");
-  }, [addedKeys, removedKeys, onFormSubmit]);
-
-  const handleCancel = useCallback(() => {
-    setIsModalVisible(false);
-  }, []);
-
-  const convertToTreeData = useMemo(() => {
-    return (fullMenuTree: MenuTreeDTO[]): any[] => {
-      const traverse = (items: MenuTreeDTO[]): any[] => {
-        return items.map((menu) => {
-          return {
-            title: menu.name,
-            key: menu.menuId,
-            value: menu.menuId,
-            children: menu.children ? traverse(menu.children) : undefined,
-          };
-        });
-      };
-      return traverse(fullMenuTree);
+  // 转换树形数据
+  const convertToTreeData = useCallback((menuTree: MenuTreeDTO[]): any[] => {
+    const traverse = (items: MenuTreeDTO[]): any[] => {
+      return items.map((menu) => ({
+        title: menu.name,
+        key: menu.menuId,
+        value: menu.menuId,
+        children: menu.children ? traverse(menu.children) : undefined,
+      }));
     };
+    return traverse(menuTree);
   }, []);
 
   const treeData = useMemo(() => {
-    return convertToTreeData(fullMenuTree);
-  }, [fullMenuTree, convertToTreeData]);
+    const initialMenuKeys = extractCheckedMenuKeys(roleMenus);
+    const filteredMenuTree = filterUserAccessibleMenus(
+      fullMenuTree,
+      initialMenuKeys
+    );
+    return convertToTreeData(filteredMenuTree);
+  }, [
+    fullMenuTree,
+    roleMenus,
+    filterUserAccessibleMenus,
+    convertToTreeData,
+    extractCheckedMenuKeys,
+  ]);
 
+  // 表格列定义
   const columns = useMemo(() => {
     return [
       {
@@ -214,13 +229,38 @@ const RolePermissionTab: React.FC<RolePermissionTabProps> = ({
         key: "resourceName",
       },
       {
+        title: "权限类型",
+        dataIndex: "resourceType",
+        key: "resourceType",
+        render: (text: string) => {
+          if (text === "query") {
+            return <Tag color="blue">查询</Tag>;
+          } else if (text === "operation") {
+            return <Tag color="green">操作</Tag>;
+          }
+          return text;
+        },
+      },
+      {
+        title: "资源路径",
+        dataIndex: "resourcePath",
+        key: "resourcePath",
+      },
+      {
         title: "操作",
         dataIndex: "action",
         key: "action",
         render: (_: any, record: PermissionDTO) => (
           <Checkbox
             checked={checkedKeys.includes(record.permissionId)}
-            onChange={(e) => handleCheck([record.permissionId], {})}
+            onChange={(e) =>
+              handleCheck(
+                e.target.checked
+                  ? [...checkedKeys, record.permissionId]
+                  : checkedKeys.filter((key) => key !== record.permissionId),
+                {}
+              )
+            }
           >
             {checkedKeys.includes(record.permissionId) ? "已开启" : "未开启"}
           </Checkbox>
@@ -229,6 +269,30 @@ const RolePermissionTab: React.FC<RolePermissionTabProps> = ({
     ];
   }, [checkedKeys, handleCheck]);
 
+  // 显示模态框
+  const showModal = useCallback(() => {
+    setIsModalVisible(true);
+  }, []);
+
+  // 确认提交
+  const handleOk = useCallback(() => {
+    onFormSubmit(addedKeys, removedKeys);
+    setAddedKeys([]);
+    setRemovedKeys([]);
+    setIsModalVisible(false);
+    // message.success("权限更新成功");
+  }, [addedKeys, removedKeys, onFormSubmit]);
+
+  // 取消提交
+  const handleCancel = useCallback(() => {
+    setIsModalVisible(false);
+  }, []);
+
+  // 菜单选择事件
+  const onSelect = useCallback((selectedKeys: React.Key[]) => {
+    setSelectedMenuKey(selectedKeys[0]);
+  }, []);
+
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <div style={{ display: "flex", height: "70%" }}>
@@ -236,7 +300,6 @@ const RolePermissionTab: React.FC<RolePermissionTabProps> = ({
           <Tree
             treeData={treeData}
             onSelect={onSelect}
-            expandedKeys={expandedMenuKeys}
             defaultExpandAll
             showIcon
             titleRender={(nodeData) => (
@@ -246,7 +309,7 @@ const RolePermissionTab: React.FC<RolePermissionTabProps> = ({
         </div>
         <div style={{ width: "70%", padding: 16 }}>
           <Table
-            dataSource={permissions}
+            dataSource={filteredPermissions}
             columns={columns}
             rowKey="permissionId"
             pagination={false}
@@ -277,8 +340,9 @@ const RolePermissionTab: React.FC<RolePermissionTabProps> = ({
               renderItem={(item) => (
                 <List.Item>
                   {
-                    permissions.find((perm) => perm.permissionId === item)
-                      ?.resourceName
+                    filteredPermissions.find(
+                      (perm) => perm.permissionId === item
+                    )?.resourceName
                   }
                 </List.Item>
               )}
@@ -293,8 +357,9 @@ const RolePermissionTab: React.FC<RolePermissionTabProps> = ({
               renderItem={(item) => (
                 <List.Item>
                   {
-                    permissions.find((perm) => perm.permissionId === item)
-                      ?.resourceName
+                    filteredPermissions.find(
+                      (perm) => perm.permissionId === item
+                    )?.resourceName
                   }
                 </List.Item>
               )}

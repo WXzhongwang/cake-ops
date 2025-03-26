@@ -37,4 +37,5 @@ public final class Constants {
     public static final String RESOURCE_TYPE_OPERATION = "operation";
     public static final String RESOURCE_TYPE_QUERY = "query";
     public static final String SUPER_ADMINISTRATOR_ROLE_KEY = "SUPER_ADMINISTRATOR";
+    public static final String SUPER_ADMINISTRATOR_ROLE_DESC = "超级管理员";
 }

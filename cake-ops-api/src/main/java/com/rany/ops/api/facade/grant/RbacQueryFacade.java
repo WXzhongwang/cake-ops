@@ -42,7 +42,7 @@ public interface RbacQueryFacade {
      * @param query 查询条件
      * @return 单一角色菜单树查询
      */
-    List<MenuTreeDTO> getRoleMenus(RoleMenuTreeQuery query);
+    List<MenuTreeDTO> getRoleMenuTree(RoleMenuTreeQuery query);
 
     /**
      * 单一角色菜单列表查询

@@ -31,7 +31,9 @@
             <if test="authType != null">
                 auth_type,
             </if>
-
+            <if test="creator != null">
+                creator,
+            </if>
             <if test="status != null">
                 status,
             </if>
@@ -58,14 +60,15 @@
             <if test="authType != null">
                 #{authType,jdbcType=VARCHAR},
             </if>
-
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
             <if test="status != null">
                 #{status,jdbcType=CHAR},
             </if>
             <if test="isDeleted != null">
                 #{isDeleted,jdbcType=CHAR},
             </if>
-
             <if test="gmtCreate != null">
                 #{gmtCreate,jdbcType=TIMESTAMP},
             </if>

@@ -2,6 +2,7 @@ package com.rany.ops.api.facade.grant;
 
 import com.rany.ops.api.command.grant.DisGrantRolePermissionsCommand;
 import com.rany.ops.api.command.grant.GrantRolePermissionsCommand;
+import com.rany.ops.api.command.grant.GrantRolePermissionsV2Command;
 
 /**
  * 角色权限授权
@@ -20,6 +21,15 @@ public interface GrantRolePermissionFacade {
      * @return 是否成功
      */
     Boolean grantRolePermissions(GrantRolePermissionsCommand grantRolePermissionsCommand);
+
+
+    /**
+     * 角色权限绑定
+     *
+     * @param grantRolePermissionsCommand 授权请求
+     * @return 是否成功
+     */
+    Boolean grantRolePermissionsV2(GrantRolePermissionsV2Command grantRolePermissionsCommand);
 
 
     /**

@@ -4,10 +4,13 @@ import com.cake.framework.common.exception.BusinessException;
 import com.cake.framework.common.exception.CommonReturnCode;
 import com.cake.framework.common.response.Page;
 import com.rany.ops.api.command.application.*;
+import com.rany.ops.api.command.grant.GrantUserRoleCommand;
 import com.rany.ops.api.facade.application.ApplicationFacade;
+import com.rany.ops.api.facade.grant.GrantUserRoleFacade;
 import com.rany.ops.api.query.application.ApplicationBasicQuery;
 import com.rany.ops.api.query.application.ApplicationPageQuery;
 import com.rany.ops.api.query.application.ApplicationQuery;
+import com.rany.ops.common.Constants;
 import com.rany.ops.common.dto.application.ApplicationDTO;
 import com.rany.ops.common.enums.AuthTypeEnum;
 import com.rany.ops.common.enums.CommonStatusEnum;
@@ -17,14 +20,18 @@ import com.rany.ops.common.params.ApplicationPageSearchParam;
 import com.rany.ops.common.params.ApplicationSearchParam;
 import com.rany.ops.common.util.SnowflakeIdWorker;
 import com.rany.ops.domain.aggregate.Application;
+import com.rany.ops.domain.aggregate.Role;
 import com.rany.ops.domain.pk.ApplicationId;
+import com.rany.ops.domain.pk.RoleId;
 import com.rany.ops.domain.service.ApplicationDomainService;
+import com.rany.ops.domain.service.RoleDomainService;
 import com.rany.ops.infra.convertor.ApplicationDataConvertor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -44,11 +51,14 @@ import java.util.Objects;
 public class ApplicationFacadeImpl implements ApplicationFacade {
 
     private final ApplicationDomainService applicationDomainService;
+    private final RoleDomainService roleDomainService;
+    private final GrantUserRoleFacade grantUserRoleFacade;
     private final ApplicationDataConvertor accountDataConvertor;
     private final SnowflakeIdWorker snowflakeIdWorker;
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Long createApplication(CreateApplicationCommand createApplicationCommand) {
         Application application = new Application(new ApplicationId(snowflakeIdWorker.nextId()),
                 createApplicationCommand.getAppName(),
@@ -63,12 +73,30 @@ public class ApplicationFacadeImpl implements ApplicationFacade {
         }
         application.save(createApplicationCommand.getUser());
         applicationDomainService.save(application);
+
+        // 应用创建，新建超管角色
+        Role role = new Role(new RoleId(snowflakeIdWorker.nextId()),
+                createApplicationCommand.getAppCode(),
+                Constants.SUPER_ADMINISTRATOR_ROLE_DESC,
+                Constants.SUPER_ADMINISTRATOR_ROLE_DESC,
+                Constants.SUPER_ADMINISTRATOR_ROLE_KEY);
+
+        role.save(createApplicationCommand.getUser());
+        roleDomainService.save(role);
+
+        // 创建者授予超管角色
+        GrantUserRoleCommand grantUserRoleCommand = new GrantUserRoleCommand();
+        grantUserRoleCommand.setAppCode(createApplicationCommand.getAppCode());
+        grantUserRoleCommand.setUser(createApplicationCommand.getUser());
+        grantUserRoleCommand.setAccountId(Long.valueOf(createApplicationCommand.getUser()));
+        grantUserRoleCommand.setRoleId(role.getId().getId());
+        grantUserRoleFacade.grantUserRole(grantUserRoleCommand);
         return application.getId().getId();
     }
 
     @Override
     public ApplicationDTO getApplication(ApplicationBasicQuery applicationBasicQuery) {
-        Application application = applicationDomainService.findById(new ApplicationId(applicationBasicQuery.getAppId()));
+        Application application = applicationDomainService.findById(new ApplicationId(Long.valueOf(applicationBasicQuery.getAppId())));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }
@@ -98,7 +126,7 @@ public class ApplicationFacadeImpl implements ApplicationFacade {
 
     @Override
     public Boolean disableApplication(DisableApplicationCommand disableApplicationCommand) {
-        Application application = applicationDomainService.findById(new ApplicationId(disableApplicationCommand.getId()));
+        Application application = applicationDomainService.findById(new ApplicationId(Long.valueOf(disableApplicationCommand.getId())));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }
@@ -112,7 +140,7 @@ public class ApplicationFacadeImpl implements ApplicationFacade {
 
     @Override
     public Boolean enableApplication(EnableApplicationCommand enableApplicationCommand) {
-        Application application = applicationDomainService.findById(new ApplicationId(enableApplicationCommand.getId()));
+        Application application = applicationDomainService.findById(new ApplicationId(Long.valueOf(enableApplicationCommand.getId())));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }
@@ -127,7 +155,7 @@ public class ApplicationFacadeImpl implements ApplicationFacade {
     @Override
     public Boolean deleteApplication(DeleteApplicationCommand deleteApplicationCommand) {
         Application application
-                = applicationDomainService.findById(new ApplicationId(deleteApplicationCommand.getId()));
+                = applicationDomainService.findById(new ApplicationId(Long.valueOf(deleteApplicationCommand.getId())));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }
@@ -138,7 +166,7 @@ public class ApplicationFacadeImpl implements ApplicationFacade {
 
     @Override
     public Boolean modifyApplication(ModifyApplicationCommand modifyApplicationCommand) {
-        Application application = applicationDomainService.findById(new ApplicationId(modifyApplicationCommand.getId()));
+        Application application = applicationDomainService.findById(new ApplicationId(Long.valueOf(modifyApplicationCommand.getId())));
         if (Objects.isNull(application)) {
             throw new BusinessException(BusinessErrorMessage.APP_NOT_FOUND);
         }

@@ -51,7 +51,7 @@ public class Role extends BaseAggregateRoot implements IAggregate<RoleId> {
     /**
      * 上级角色
      */
-    private Long parentRoleId;
+    private Long parentId;
 
     /**
      * 关联应用

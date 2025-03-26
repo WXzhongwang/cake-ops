@@ -310,6 +310,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
         // 处理响应
         console.log("Update response:", res);
         message.success("更新成功");
+        fetchMenuTree(selectedAppCode);
       },
     });
   };
@@ -325,9 +326,9 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
       callback: (res: any) => {
         // 处理响应
         message.success("删除成功");
+        fetchMenuTree(selectedAppCode);
       },
     });
-    fetchMenuTree(selectedAppCode);
   };
 
   // 定义新增按钮的渲染函数

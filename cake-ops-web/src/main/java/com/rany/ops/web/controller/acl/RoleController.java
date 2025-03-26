@@ -2,10 +2,7 @@ package com.rany.ops.web.controller.acl;
 
 import com.cake.framework.common.response.ListResult;
 import com.cake.framework.common.response.PojoResult;
-import com.rany.ops.api.command.grant.DisGrantRoleMenusCommand;
-import com.rany.ops.api.command.grant.DisGrantRolePermissionsCommand;
-import com.rany.ops.api.command.grant.GrantRoleMenusCommand;
-import com.rany.ops.api.command.grant.GrantRolePermissionsCommand;
+import com.rany.ops.api.command.grant.*;
 import com.rany.ops.api.command.role.*;
 import com.rany.ops.api.facade.grant.GrantRoleMenuFacade;
 import com.rany.ops.api.facade.grant.GrantRolePermissionFacade;
@@ -105,7 +102,7 @@ public class RoleController {
 
     @PostMapping("/get-role-menu-tree")
     public PojoResult<List<MenuTreeDTO>> getRoleMenus(@RequestBody RoleMenuTreeQuery query) {
-        List<MenuTreeDTO> tree = rbacQueryFacade.getRoleMenus(query);
+        List<MenuTreeDTO> tree = rbacQueryFacade.getRoleMenuTree(query);
         return PojoResult.succeed(tree);
     }
 
@@ -137,6 +134,12 @@ public class RoleController {
     @PostMapping("/grant-role-permission")
     public PojoResult<Boolean> grantRolePermissions(@RequestBody GrantRolePermissionsCommand command) {
         Boolean success = grantRolePermissionFacade.grantRolePermissions(command);
+        return PojoResult.succeed(success);
+    }
+
+    @PostMapping("/v2/grant-role-permission")
+    public PojoResult<Boolean> grantRolePermissionsV2(@RequestBody GrantRolePermissionsV2Command command) {
+        Boolean success = grantRolePermissionFacade.grantRolePermissionsV2(command);
         return PojoResult.succeed(success);
     }
 

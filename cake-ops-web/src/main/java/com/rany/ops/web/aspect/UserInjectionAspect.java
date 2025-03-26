@@ -21,7 +21,7 @@ import java.util.Objects;
 @Component
 public class UserInjectionAspect {
 
-    @Before("execution(* com.rany.ops.web.controller.*Controller.*(..))")
+    @Before("execution(* com.rany.ops.web.controller.*.*Controller.*(..))")
     public void injectUserIntoBaseCommand(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         Object[] args = joinPoint.getArgs();

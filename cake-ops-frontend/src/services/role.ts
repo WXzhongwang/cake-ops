@@ -13,6 +13,7 @@ import {
   RoleMenuTreeQuery,
   RoleMenuListQuery,
   RolePermissionListQuery,
+  UpdateRolePermissionV2Command,
 } from "@/models/role";
 import request from "@/services/request";
 
@@ -94,6 +95,15 @@ export async function grantRoleMenu(data: UpdateRoleMenuCommand) {
 
 export async function grantRolePermission(data: UpdateRolePermissionCommand) {
   return request("/api/ops/role/grant-role-permission", {
+    method: "POST",
+    data,
+  });
+}
+
+export async function grantRolePermissionV2(
+  data: UpdateRolePermissionV2Command
+) {
+  return request("/api/ops/role/v2/grant-role-permission", {
     method: "POST",
     data,
   });
