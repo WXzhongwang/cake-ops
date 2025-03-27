@@ -64,14 +64,14 @@ start_app() {
     if is_running; then
         echo "Application is already running."
     else
-        # 使用 nohup 启动 Java 应用，并捕获退出码
-        nohup $START_CMD > /dev/null 2>&1 &
+        # 直接启动 Java 应用，不使用 nohup
+        $START_CMD &
         APP_PID=$!
         echo "Application started with PID $APP_PID."
 
         # 检查 Java 应用是否成功启动
         sleep 5
-        if ! ps -p $APP_PID > /dev/null; then
+        if ! is_running; then
             echo "Application failed to start." >&2
             exit 1
         fi
