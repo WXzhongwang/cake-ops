@@ -2,11 +2,9 @@ package com.rany.ops.api.facade.account;
 
 import com.cake.framework.common.response.Page;
 import com.rany.ops.api.command.account.*;
-import com.rany.ops.api.query.account.AccountBasicQuery;
-import com.rany.ops.api.query.account.AccountDingIdQuery;
-import com.rany.ops.api.query.account.AccountPageQuery;
-import com.rany.ops.api.query.account.AccountQuery;
+import com.rany.ops.api.query.account.*;
 import com.rany.ops.common.dto.account.AccountDTO;
+import com.rany.ops.common.dto.account.SafeStrategyDTO;
 
 import java.util.List;
 
@@ -94,6 +92,14 @@ public interface AccountFacade {
      */
     Boolean updateSafeStrategy(UpdateSafeStrategyCommand updateSafeStrategyCommand);
 
+
+    /**
+     * 查看账号登录策略
+     *
+     * @param accountQuery 查询账号登录策略
+     * @return 登录策略
+     */
+    List<SafeStrategyDTO> findSafeStrategies(AccountSafeStrategyQuery accountQuery);
 
     /**
      * 分页查询账号

@@ -101,11 +101,11 @@ const AppList: React.FC<AppListProps> = ({ dispatch }) => {
     setPagination({ pageNo: page, pageSize: pageSize || 10 });
   };
 
-  const handleAddApp = () => {
+  const openDrawer = () => {
     setDrawerVisible(true);
   };
 
-  const handleCloseDrawer = () => {
+  const closeDrawer = () => {
     setDrawerVisible(false);
     form.resetFields();
     setEditingApp(undefined);
@@ -244,7 +244,7 @@ const AppList: React.FC<AppListProps> = ({ dispatch }) => {
               </Button>
             </Form.Item>
           </Form>
-          <Button type="primary" onClick={handleAddApp}>
+          <Button type="primary" onClick={openDrawer}>
             新增应用
           </Button>
           <Table
@@ -266,14 +266,14 @@ const AppList: React.FC<AppListProps> = ({ dispatch }) => {
         title={editingApp ? "编辑应用" : "新增应用"}
         width={400}
         open={drawerVisible}
-        onClose={handleCloseDrawer}
+        onClose={closeDrawer}
         destroyOnClose={true}
       >
         <CreateAppForm
           initialValues={editingApp}
           onSave={handleSaveApp}
           onUpdate={handleSaveApp}
-          onCancel={handleCloseDrawer}
+          onCancel={closeDrawer}
         />
       </Drawer>
     </PageContainer>

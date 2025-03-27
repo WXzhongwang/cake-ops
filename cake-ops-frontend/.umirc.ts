@@ -42,6 +42,8 @@ export default defineConfig({
     { path: "/acl/app", component: "app/app-list", name: "应用管理" },
     { path: "/acl/menu-tree", component: "app/menu-tree", name: "菜单管理" },
     { path: "/acl/role-list", component: "app/role-list", name: "角色管理" },
+    { path: "/404", component: "system/not-found" }, // 显式声明 /404 路由
+    { path: "/*", redirect: "/404" }, // 通配符路由，重定向到 /404 路由
   ],
   npmClient: "pnpm",
   dva: {},

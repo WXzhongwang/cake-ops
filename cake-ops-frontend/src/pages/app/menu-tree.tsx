@@ -59,6 +59,12 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
   );
   const [editingPermission, setEditingPermission] = useState<PermissionDTO>();
   const [permissionDrawer, setPermissionDrawer] = useState(false);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
+
   const editPermission = (permission: PermissionDTO) => {
     setEditingPermissionId(permission.permissionId);
     // 打开编辑表单或弹窗
@@ -120,6 +126,7 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
         callback: (res: any) => {
           message.success("更新成功");
           fetchPermissions();
+          handleCloseDrawer();
           setEditingPermissionId(null);
         },
       });
@@ -413,6 +420,13 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
     });
   };
 
+  useEffect(() => {
+    setPagination({
+      ...pagination,
+      total: permissions.length,
+    });
+  }, [permissions]);
+
   return (
     <PageContainer title="菜单管理">
       <Layout style={{ height: "80vh" }}>
@@ -442,142 +456,174 @@ const MenuPage: React.FC<MenuTreeProps> = React.memo(({ dispatch }) => {
             }}
           />
         </Layout.Sider>
-        <Layout.Content style={{ padding: 16 }}>
+        <Layout.Content
+          style={{ background: "#fff", padding: 16, marginLeft: 16 }}
+        >
           {selectedMenuItem && (
-            <Tabs defaultActiveKey="1">
-              <Tabs.TabPane tab="基本信息" key="1">
-                <Form
-                  form={menuItemForm}
-                  layout="vertical"
-                  onFinish={handleFormSubmit}
-                >
-                  <Form.Item label="ID" name="menuId">
-                    <Input disabled />
-                  </Form.Item>
-                  <Form.Item label="名称" name="name">
-                    <Input />
-                  </Form.Item>
-                  <Form.Item label="类型" name="menuType">
-                    <Select
-                      disabled
-                      options={[
-                        { value: "MENU", label: "菜单" },
-                        { value: "PAGE", label: "页面" },
-                      ]}
-                    />
-                  </Form.Item>
-                  <Form.Item label="图标" name="icon">
-                    <Select
-                      placeholder="选择图标"
-                      options={icons}
-                      style={{ width: "100%" }}
-                      onChange={(value: any) => {
-                        menuItemForm.setFieldsValue({ icon: value });
-                      }}
-                      showSearch
-                      filterOption={filterIconOptions}
-                    />
-                  </Form.Item>
-                  {selectedMenuItem.menuType === "PAGE" && (
-                    <Form.Item label="路径" name="path">
-                      <Input />
-                    </Form.Item>
-                  )}
-                  <Form.Item label="是否隐藏" name="hidden">
-                    <Radio.Group>
-                      <Radio value="false"> 否 </Radio>
-                      <Radio value="true"> 是 </Radio>
-                    </Radio.Group>
-                  </Form.Item>
-                  <Form.Item label="排序" name="sort">
-                    <Input type="number" />
-                  </Form.Item>
-                  <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                      更新
-                    </Button>
-                    <Button
-                      type="primary"
-                      danger
-                      onClick={() => deleteNode(selectedMenuItem.menuId)}
-                      style={{ marginLeft: 8 }}
+            <Tabs
+              defaultActiveKey="1"
+              items={[
+                {
+                  key: "1",
+                  label: "基本信息",
+                  children: (
+                    <Form
+                      labelCol={{ span: 4 }}
+                      wrapperCol={{ span: 16 }}
+                      form={menuItemForm}
+                      // layout="vertical"
+                      style={{ maxWidth: 600 }}
+                      onFinish={handleFormSubmit}
                     >
-                      删除
-                    </Button>
-                  </Form.Item>
-                </Form>
-              </Tabs.TabPane>
-
-              {selectedMenuItem.menuType === "PAGE" && (
-                <Tabs.TabPane tab="页面权限" key="2">
-                  <Space
-                    size="middle"
-                    direction="vertical"
-                    style={{ width: "100%" }}
-                  >
-                    <Button
-                      type="primary"
-                      onClick={() => handleAddPermission()}
-                    >
-                      新增权限点
-                    </Button>
-                    <Table
-                      dataSource={permissions}
-                      columns={[
-                        {
-                          title: "资源类型",
-                          dataIndex: "resourceType",
-                          key: "resourceType",
-                          render: (text: string, record: PermissionDTO) => {
-                            if (text === "query") {
-                              return <Tag color="blue">查询</Tag>;
-                            } else if (text === "operation") {
-                              return <Tag color="green">操作</Tag>;
-                            }
-                            return text;
-                          },
-                        },
-                        {
-                          title: "资源名称",
-                          dataIndex: "resourceName",
-                          key: "resourceName",
-                        },
-                        {
-                          title: "资源路径",
-                          dataIndex: "resourcePath",
-                          key: "resourcePath",
-                        },
-                        {
-                          title: "操作",
-                          key: "action",
-                          render: (_, record: PermissionDTO) => (
-                            <>
-                              <Button
-                                type="link"
-                                onClick={() => editPermission(record)}
-                              >
-                                编辑
-                              </Button>
-                              <Button
-                                type="link"
-                                danger
-                                onClick={() =>
-                                  deletePermission(record.permissionId)
-                                }
-                              >
-                                删除
-                              </Button>
-                            </>
-                          ),
-                        },
-                      ]}
-                      pagination={false}
-                      style={{ marginTop: 16 }}
-                    />
-                  </Space>
-                </Tabs.TabPane>
-              )}
-            </Tabs>
+                      <Form.Item label="ID" name="menuId">
+                        <Input disabled />
+                      </Form.Item>
+                      <Form.Item label="名称" name="name">
+                        <Input />
+                      </Form.Item>
+                      <Form.Item label="类型" name="menuType">
+                        <Select
+                          disabled
+                          options={[
+                            { value: "MENU", label: "菜单" },
+                            { value: "PAGE", label: "页面" },
+                          ]}
+                        />
+                      </Form.Item>
+                      <Form.Item label="图标" name="icon">
+                        <Select
+                          placeholder="选择图标"
+                          options={icons}
+                          style={{ width: "100%" }}
+                          onChange={(value: any) => {
+                            menuItemForm.setFieldsValue({ icon: value });
+                          }}
+                          showSearch
+                          filterOption={filterIconOptions}
+                        />
+                      </Form.Item>
+                      {selectedMenuItem.menuType === "PAGE" && (
+                        <Form.Item label="路径" name="path">
+                          <Input />
+                        </Form.Item>
+                      )}
+                      <Form.Item label="是否隐藏" name="hidden">
+                        <Radio.Group>
+                          <Radio value="false"> 否 </Radio>
+                          <Radio value="true"> 是 </Radio>
+                        </Radio.Group>
+                      </Form.Item>
+                      <Form.Item label="排序" name="sort">
+                        <Input type="number" />
+                      </Form.Item>
+                      <Form.Item>
+                        <Button type="primary" htmlType="submit">
+                          更新
+                        </Button>
+                        <Button
+                          type="primary"
+                          danger
+                          onClick={() => deleteNode(selectedMenuItem.menuId)}
+                          style={{ marginLeft: 8 }}
+                        >
+                          删除
+                        </Button>
+                      </Form.Item>
+                    </Form>
+                  ),
+                },
+                ...(selectedMenuItem.menuType === "MENU"
+                  ? []
+                  : [
+                      {
+                        key: "2",
+                        label: "页面权限",
+                        children: (
+                          <Space
+                            size="small"
+                            direction="vertical"
+                            style={{ width: "100%" }}
+                          >
+                            <Button
+                              type="primary"
+                              onClick={() => handleAddPermission()}
+                            >
+                              新增权限点
+                            </Button>
+                            <Table
+                              dataSource={permissions.slice(
+                                (pagination.current - 1) * pagination.pageSize,
+                                pagination.current * pagination.pageSize
+                              )}
+                              columns={[
+                                {
+                                  title: "资源类型",
+                                  dataIndex: "resourceType",
+                                  key: "resourceType",
+                                  render: (
+                                    text: string,
+                                    record: PermissionDTO
+                                  ) => {
+                                    if (text === "query") {
+                                      return <Tag color="blue">查询</Tag>;
+                                    } else if (text === "operation") {
+                                      return <Tag color="green">操作</Tag>;
+                                    }
+                                    return text;
+                                  },
+                                },
+                                {
+                                  title: "资源名称",
+                                  dataIndex: "resourceName",
+                                  key: "resourceName",
+                                },
+                                {
+                                  title: "资源路径",
+                                  dataIndex: "resourcePath",
+                                  key: "resourcePath",
+                                },
+                                {
+                                  title: "操作",
+                                  key: "action",
+                                  render: (_, record: PermissionDTO) => (
+                                    <>
+                                      <Button
+                                        type="link"
+                                        onClick={() => editPermission(record)}
+                                      >
+                                        编辑
+                                      </Button>
+                                      <Button
+                                        type="link"
+                                        danger
+                                        onClick={() =>
+                                          deletePermission(record.permissionId)
+                                        }
+                                      >
+                                        删除
+                                      </Button>
+                                    </>
+                                  ),
+                                },
+                              ]}
+                              pagination={{
+                                ...pagination,
+                                onChange: (page, pageSize) => {
+                                  setPagination({
+                                    ...pagination,
+                                    current: page,
+                                    pageSize,
+                                  });
+                                },
+                              }}
+                              style={{ marginTop: 16 }}
+                            />
+                          </Space>
+                        ),
+                      },
+                    ]),
+              ]}
+            ></Tabs>
           )}
         </Layout.Content>
       </Layout>

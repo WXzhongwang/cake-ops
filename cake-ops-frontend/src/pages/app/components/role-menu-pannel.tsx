@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tree, Button } from "antd";
+import { Tree, Button, Space } from "antd";
 import { MenuTreeDTO } from "@/models/user";
 import { MenuDTO } from "@/models/menu";
 
@@ -127,6 +127,26 @@ const RoleMenuTab: React.FC<RoleMenuTabProps> = ({
     onFormSubmit(checkedKeys);
   };
 
+  // 全选逻辑
+  const handleSelectAll = () => {
+    const allKeys = new Set<React.Key>();
+    const traverse = (items: MenuTreeDTO[]) => {
+      items.forEach((item) => {
+        allKeys.add(item.menuId);
+        if (item.children) {
+          traverse(item.children);
+        }
+      });
+    };
+    traverse(fullMenuTree);
+    setCheckedKeys(Array.from(allKeys));
+  };
+
+  // 全不选逻辑
+  const handleSelectNone = () => {
+    setCheckedKeys([]);
+  };
+
   // 转换树形数据
   const convertToTreeData = (fullMenuTree: MenuTreeDTO[]): any[] => {
     return fullMenuTree.map((menu) => {
@@ -141,7 +161,13 @@ const RoleMenuTab: React.FC<RoleMenuTabProps> = ({
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      <div style={{ flex: 1 }}>
+      <div
+        style={{
+          display: "flex",
+          height: "80%",
+          padding: 16,
+        }}
+      >
         <Tree
           checkable
           checkStrictly={true}
@@ -155,14 +181,33 @@ const RoleMenuTab: React.FC<RoleMenuTabProps> = ({
           )}
         />
       </div>
-      <div style={{ padding: 16, borderTop: "1px solid #e8e8e8" }}>
-        <Button
+      <div
+        style={{
+          height: "20%",
+          borderTop: "1px solid #e8e8e8",
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        {/* <Button
           type="primary"
           onClick={handleFormSubmit}
           style={{ marginTop: 16 }}
         >
           更新菜单
-        </Button>
+        </Button> */}
+
+        <Space style={{ marginTop: 16 }}>
+          <Button type="default" onClick={handleSelectAll}>
+            全选
+          </Button>
+          <Button type="default" onClick={handleSelectNone}>
+            全不选
+          </Button>
+          <Button type="primary" onClick={handleFormSubmit}>
+            更新
+          </Button>
+        </Space>
       </div>
     </div>
   );

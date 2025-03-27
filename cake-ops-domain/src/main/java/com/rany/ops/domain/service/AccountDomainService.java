@@ -6,6 +6,7 @@ import com.rany.ops.common.params.AccountSearchParam;
 import com.rany.ops.common.util.SnowflakeIdWorker;
 import com.rany.ops.domain.aggregate.Account;
 import com.rany.ops.domain.aggregate.Tenant;
+import com.rany.ops.domain.entity.SafeStrategy;
 import com.rany.ops.domain.pk.AccountId;
 import com.rany.ops.domain.repository.AccountRepository;
 import com.rany.ops.domain.repository.TenantRepository;
@@ -20,10 +21,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * TODO
+ * 账号领域服务
  *
  * @author zhongshengwang
- * @description TODO
+ * @description 账号领域服务
  * @date 2022/12/1 22:36
  * @email 18668485565163.com
  */
@@ -63,6 +64,10 @@ public class AccountDomainService {
 
     public void saveSafeStrategy(Account account) {
         accountRepository.saveSafeStrategy(account);
+    }
+
+    public List<SafeStrategy> listSafeStrategy(AccountId accountId) {
+        return accountRepository.listSafeStrategy(accountId);
     }
 
     public void updateSafeStrategy(Account account) {

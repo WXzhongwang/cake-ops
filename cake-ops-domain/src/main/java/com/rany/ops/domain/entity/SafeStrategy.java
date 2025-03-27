@@ -35,7 +35,13 @@ public class SafeStrategy extends BaseEntity<Long> {
      * authValue
      */
     private String authValue;
+    /**
+     * 冻结时间
+     */
     private Date blockAt;
+    /**
+     * 过期时间
+     */
     private Date expiredAt;
 
     public Boolean isBlocked() {

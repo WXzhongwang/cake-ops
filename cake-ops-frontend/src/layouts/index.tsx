@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MenuDataItem, ProLayout, ProSettings } from "@ant-design/pro-layout";
-import { Dropdown } from "antd"; // 引入 Spin 用于加载指示器
+import { Dropdown, message } from "antd"; // 引入 Spin 用于加载指示器
 import { logout } from "@/services/user";
 import { connect, Dispatch, history, Link, Outlet } from "umi";
 import * as allIcons from "@ant-design/icons";
@@ -114,9 +114,14 @@ const Layout: React.FC<LayoutProps> = ({ dispatch, isLogin, userData }) => {
                     icon: <LogoutOutlined />,
                     label: "退出登录",
                     onClick: async () => {
-                      const res = await logout();
-                      if (res.success) {
-                        history.push("/apps");
+                      try {
+                        const res = await logout();
+                        if (!res.success) {
+                          message.error("退出登录失败，请重试");
+                        }
+                      } catch (error) {
+                        console.error("退出登录时发生错误:", error);
+                        message.error("退出登录时发生错误，请重试");
                       }
                     },
                   },

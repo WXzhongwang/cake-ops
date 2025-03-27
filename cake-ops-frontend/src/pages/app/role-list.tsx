@@ -364,10 +364,7 @@ const RolePage: React.FC<RoleTreeProps> = React.memo(({ dispatch }) => {
     <PageContainer title="角色管理">
       <Layout style={{ height: "80vh" }}>
         <Layout.Sider width="25%" style={{ background: "#fff", padding: 16 }}>
-          <Form
-            // form={appChooseForm}
-            layout="vertical"
-          >
+          <Form layout="vertical">
             <Form.Item>
               <Select value={selectedAppCode} onChange={handleAppChange}>
                 {appList.map((app) => (
@@ -396,7 +393,9 @@ const RolePage: React.FC<RoleTreeProps> = React.memo(({ dispatch }) => {
             />
           )}
         </Layout.Sider>
-        <Layout.Content style={{ padding: 16 }}>
+        <Layout.Content
+          style={{ background: "#fff", padding: 16, marginLeft: 16 }}
+        >
           {selectedRoleItem && (
             <Tabs
               defaultActiveKey="1"

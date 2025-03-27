@@ -40,14 +40,14 @@ public class LogInterceptor implements HandlerInterceptor {
         }
 
         MDC.put(Constants.TRACE_ID, traceId);
-        log.info("api请求开始, requestId:" + SEQ_HOLDER.get());
-        log.info("api请求开始时间:" + Dates.format(START_HOLDER.get(), Dates.YMD_HMSS));
+        String requestUri = request.getRequestURI();
+        log.info("api请求开始, requestId: {}, requestUri: {}, api请求开始时间: {}",
+                SEQ_HOLDER.get(), requestUri, Dates.format(START_HOLDER.get(), Dates.YMD_HMSS));
         return true;
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)
-            throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
     }
 
     @Override
@@ -55,13 +55,10 @@ public class LogInterceptor implements HandlerInterceptor {
         // 调用结束后删除
         Date endTime = new Date();
         MDC.remove(Constants.TRACE_ID);
-        String sb = "api请求结束, requestId:" + SEQ_HOLDER.get() +
-                ", api请求结束时间: " +
-                Dates.format(endTime, Dates.YMD_HMSS) +
-                ", api请求耗时:" +
-                (endTime.getTime() - START_HOLDER.get().getTime()) +
-                "ms";
-        log.info(sb);
+        String requestUri = request.getRequestURI();
+        String sb = "api请求结束, requestId: {}, requestUri: {}, api请求结束时间: {}, api请求耗时: {}ms";
+        log.info(sb, SEQ_HOLDER.get(), requestUri, Dates.format(endTime, Dates.YMD_HMSS),
+                (endTime.getTime() - START_HOLDER.get().getTime()));
         SEQ_HOLDER.remove();
         START_HOLDER.remove();
     }

@@ -105,7 +105,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public Boolean saveSafeStrategy(Account account) {
+    public void saveSafeStrategy(Account account) {
         Long accountId = account.getId().getId();
         List<SafeStrategy> safeStrategies = account.getSafeStrategies();
         if (CollectionUtils.isNotEmpty(safeStrategies)) {
@@ -118,12 +118,17 @@ public class AccountRepositoryImpl implements AccountRepository {
                 safeStrategyPOMapper.insertSelective(strategy);
             }
         }
-        return Boolean.TRUE;
+    }
+
+    @Override
+    public List<SafeStrategy> listSafeStrategy(AccountId accountId) {
+        List<SafeStrategyPO> safeStrategyPOS = safeStrategyDao.selectStrategiesByAccountId(accountId.getId());
+        return safeStrategyConvertor.targetToSource(safeStrategyPOS);
     }
 
 
     @Override
-    public Boolean updateSafeStrategy(Account account) {
+    public void updateSafeStrategy(Account account) {
         List<SafeStrategy> safeStrategies = account.getSafeStrategies();
         if (CollectionUtils.isNotEmpty(safeStrategies)) {
             for (SafeStrategy safeStrategy : safeStrategies) {
@@ -131,7 +136,6 @@ public class AccountRepositoryImpl implements AccountRepository {
                 safeStrategyPOMapper.updateByPrimaryKey(strategy);
             }
         }
-        return Boolean.TRUE;
     }
 
     @Override

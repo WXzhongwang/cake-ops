@@ -1,9 +1,20 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { Tree, Table, Checkbox, Button, List, Modal, message, Tag } from "antd";
+import {
+  Tree,
+  Table,
+  Checkbox,
+  Button,
+  List,
+  Modal,
+  message,
+  Tag,
+  Space,
+} from "antd";
 import { MenuTreeDTO } from "@/models/user";
 import { PermissionDTO } from "@/models/permission";
 import { MenuDTO } from "@/models/menu";
 import { set } from "lodash";
+import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
 interface RolePermissionTabProps {
   fullMenuTree: MenuTreeDTO[];
@@ -30,6 +41,11 @@ const RolePermissionTab: React.FC<RolePermissionTabProps> = ({
   const [addedKeys, setAddedKeys] = useState<React.Key[]>([]);
   const [removedKeys, setRemovedKeys] = useState<React.Key[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
 
   // 提取用户有权限的菜单树
   const filterUserAccessibleMenus = useCallback(
@@ -274,6 +290,14 @@ const RolePermissionTab: React.FC<RolePermissionTabProps> = ({
     setIsModalVisible(true);
   }, []);
 
+  // 更新分页总数
+  useEffect(() => {
+    setPagination({
+      ...pagination,
+      total: filteredPermissions.length,
+    });
+  }, [filteredPermissions]);
+
   // 确认提交
   const handleOk = useCallback(() => {
     onFormSubmit(addedKeys, removedKeys);
@@ -293,10 +317,29 @@ const RolePermissionTab: React.FC<RolePermissionTabProps> = ({
     setSelectedMenuKey(selectedKeys[0]);
   }, []);
 
+  // 全选权限点
+  const handleSelectAllPermissions = () => {
+    const allPermissionKeys = filteredPermissions.map(
+      (perm) => perm.permissionId
+    );
+    handleCheck(allPermissionKeys, {});
+  };
+
+  // 全不选权限点
+  const handleSelectNonePermissions = () => {
+    handleCheck([], {});
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      <div style={{ display: "flex", height: "70%" }}>
-        <div style={{ width: "30%", borderRight: "1px solid #e8e8e8" }}>
+      <div style={{ display: "flex", height: "80%" }}>
+        <div
+          style={{
+            width: "30%",
+            borderRight: "1px solid #e8e8e8",
+            padding: 16,
+          }}
+        >
           <Tree
             treeData={treeData}
             onSelect={onSelect}
@@ -309,64 +352,108 @@ const RolePermissionTab: React.FC<RolePermissionTabProps> = ({
         </div>
         <div style={{ width: "70%", padding: 16 }}>
           <Table
-            dataSource={filteredPermissions}
+            size="small"
+            style={{ height: "100%" }}
+            dataSource={filteredPermissions.slice(
+              (pagination.current - 1) * pagination.pageSize,
+              pagination.current * pagination.pageSize
+            )}
             columns={columns}
             rowKey="permissionId"
-            pagination={false}
+            pagination={{
+              ...pagination,
+              onChange: (page, pageSize) => {
+                setPagination({ ...pagination, current: page, pageSize });
+              },
+              position: ["bottomRight"], // 固定分页在底部
+            }}
           />
         </div>
       </div>
       <div
-        style={{ height: "30%", padding: 16, borderTop: "1px solid #e8e8e8" }}
+        style={{
+          height: "20%",
+          borderTop: "1px solid #e8e8e8",
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
       >
-        <Button type="primary" onClick={showModal} style={{ marginTop: 16 }}>
-          提交
-        </Button>
+        <Space
+          style={{
+            // height: "20%",
+            // borderTop: "1px solid #e8e8e8",
+            display: "flex",
+            justifyContent: "flex-center",
+            alignItems: "center",
+            padding: 12,
+          }}
+        >
+          <Button type="default" onClick={handleSelectAllPermissions}>
+            全选
+          </Button>
+          <Button type="default" onClick={handleSelectNonePermissions}>
+            全不选
+          </Button>
+          <Button type="primary" onClick={showModal}>
+            提交
+          </Button>
+        </Space>
+        <Modal
+          title="确认权限变更"
+          open={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          width={800}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ width: "45%" }}>
+              <h4>
+                <CheckCircleOutlined
+                  style={{ color: "green", marginRight: 8 }}
+                />
+                新增权限（{addedKeys.length}）
+              </h4>
+              <List
+                style={{ height: 400, overflowY: "auto" }}
+                size="small"
+                bordered
+                dataSource={addedKeys}
+                renderItem={(item) => (
+                  <List.Item>
+                    {
+                      filteredPermissions.find(
+                        (perm) => perm.permissionId === item
+                      )?.resourceName
+                    }
+                  </List.Item>
+                )}
+              />
+            </div>
+            <div style={{ width: "45%" }}>
+              <h4>
+                <CloseCircleOutlined style={{ color: "red", marginRight: 8 }} />
+                删除权限（{removedKeys.length}）
+              </h4>
+              <List
+                style={{ height: 400, overflowY: "auto" }}
+                size="small"
+                bordered
+                dataSource={removedKeys}
+                renderItem={(item) => (
+                  <List.Item>
+                    {
+                      filteredPermissions.find(
+                        (perm) => perm.permissionId === item
+                      )?.resourceName
+                    }
+                  </List.Item>
+                )}
+              />
+            </div>
+          </div>
+        </Modal>
       </div>
-      <Modal
-        title="确认权限变更"
-        open={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        width={800}
-      >
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ width: "45%" }}>
-            <h4>新增权限</h4>
-            <List
-              size="small"
-              bordered
-              dataSource={addedKeys}
-              renderItem={(item) => (
-                <List.Item>
-                  {
-                    filteredPermissions.find(
-                      (perm) => perm.permissionId === item
-                    )?.resourceName
-                  }
-                </List.Item>
-              )}
-            />
-          </div>
-          <div style={{ width: "45%" }}>
-            <h4>删除权限</h4>
-            <List
-              size="small"
-              bordered
-              dataSource={removedKeys}
-              renderItem={(item) => (
-                <List.Item>
-                  {
-                    filteredPermissions.find(
-                      (perm) => perm.permissionId === item
-                    )?.resourceName
-                  }
-                </List.Item>
-              )}
-            />
-          </div>
-        </div>
-      </Modal>
     </div>
   );
 };

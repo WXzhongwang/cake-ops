@@ -5,11 +5,9 @@ import com.cake.framework.common.exception.BusinessException;
 import com.cake.framework.common.response.Page;
 import com.rany.ops.api.command.account.*;
 import com.rany.ops.api.facade.account.AccountFacade;
-import com.rany.ops.api.query.account.AccountBasicQuery;
-import com.rany.ops.api.query.account.AccountDingIdQuery;
-import com.rany.ops.api.query.account.AccountPageQuery;
-import com.rany.ops.api.query.account.AccountQuery;
+import com.rany.ops.api.query.account.*;
 import com.rany.ops.common.dto.account.AccountDTO;
+import com.rany.ops.common.dto.account.SafeStrategyDTO;
 import com.rany.ops.common.enums.CommonStatusEnum;
 import com.rany.ops.common.enums.DeleteStatusEnum;
 import com.rany.ops.common.exception.BusinessErrorMessage;
@@ -21,6 +19,7 @@ import com.rany.ops.domain.page.PageUtils;
 import com.rany.ops.domain.pk.AccountId;
 import com.rany.ops.domain.service.AccountDomainService;
 import com.rany.ops.infra.convertor.AccountDataConvertor;
+import com.rany.ops.infra.convertor.SafeStrategyConvertor;
 import com.rany.ops.service.factory.account.AccountFactory;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +49,7 @@ public class AccountFacadeImpl implements AccountFacade {
     private final AccountDomainService accountDomainService;
     private final AccountDataConvertor accountDataConvertor;
     private final AccountFactory accountFactory;
+    private final SafeStrategyConvertor safeStrategyConvertor;
 
     @Override
     public Long createAccount(CreateAccountCommand createAccountCommand) {
@@ -172,6 +172,12 @@ public class AccountFacadeImpl implements AccountFacade {
         }
         accountDomainService.updateSafeStrategy(account);
         return Boolean.TRUE;
+    }
+
+    @Override
+    public List<SafeStrategyDTO> findSafeStrategies(AccountSafeStrategyQuery accountQuery) {
+        List<SafeStrategy> safeStrategies = accountDomainService.listSafeStrategy(new AccountId(accountQuery.getAccountId()));
+        return safeStrategyConvertor.sourceToDTO(safeStrategies);
     }
 
     @Override
