@@ -9,6 +9,10 @@ ENV APP_HOME=/home/admin/$APP_NAME
 RUN apk add --no-cache bash curl wget netcat-openbsd && \
     mkdir -p $APP_HOME/logs
 
+# 添加 appctl.sh 脚本
+ADD /APP-META/appctl.sh /home/admin/appctl.sh
+RUN chmod +x /home/admin/appctl.sh
+
 # 挂载目录
 VOLUME /tmp
 
