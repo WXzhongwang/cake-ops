@@ -20,9 +20,6 @@ echo "Spring Profiles Active: ${SPRING_PROFILES_ACTIVE}"
 # 检查是否运行在容器内
 IN_DOCKER=$(command -v docker &> /dev/null && echo true || echo false)
 
-# 定义日志文件
-DEPLOY_LOG="/home/admin/${APP_NAME}/deploy.log"
-
 # 定义 Java 主类和 jar 文件路径
 MAIN_CLASS="com.rany.ops.CakeOpsApplication"
 JAR_FILE="/home/admin/${APP_NAME}/cake-ops-service.jar"
@@ -50,8 +47,6 @@ JAVA_OPTS=(
 # 定义启动命令
 START_CMD="java ${JAVA_OPTS[*]} -Dspring.profiles.active=$SPRING_PROFILES_ACTIVE -jar $JAR_FILE"
 
-echo "开始启动: $START_CMD"
-
 # 检查应用是否正在运行
 is_running() {
     if [[ $IN_DOCKER == true ]]; then
@@ -65,29 +60,36 @@ is_running() {
 
 # 启动应用
 start_app() {
-    echo "Starting application..." | tee -a "$DEPLOY_LOG"
+    echo "Starting application..."
     if is_running; then
-        echo "Application is already running." | tee -a "$DEPLOY_LOG"
+        echo "Application is already running."
     else
-        # 使用nohup来让Java应用在后台运行
-        # 注意：这里不再重定向到日志文件，而是直接启动应用
-        exec $START_CMD
-        echo "Application started with PID $$." | tee -a "$DEPLOY_LOG"
+        # 使用 nohup 启动 Java 应用，并捕获退出码
+        nohup $START_CMD > /dev/null 2>&1 &
+        APP_PID=$!
+        echo "Application started with PID $APP_PID."
+
+        # 检查 Java 应用是否成功启动
+        sleep 5
+        if ! ps -p $APP_PID > /dev/null; then
+            echo "Application failed to start." >&2
+            exit 1
+        fi
     fi
 }
 
 # 停止应用
 stop_app() {
-    echo "Stopping application..." | tee -a "$DEPLOY_LOG"
+    echo "Stopping application..."
     if is_running; then
         if [[ $IN_DOCKER == true ]]; then
             pkill -f "$MAIN_CLASS"
         else
             ps aux | grep "[j]ava.*$MAIN_CLASS" | awk '{print $2}' | xargs kill
         fi
-        echo "Application stopped." | tee -a "$DEPLOY_LOG"
+        echo "Application stopped."
     else
-        echo "Application is not running." | tee -a "$DEPLOY_LOG"
+        echo "Application is not running."
     fi
 }
 

@@ -1,16 +1,13 @@
 FROM openjdk:8-jdk-alpine
-# 定义构建参数 ENV
+
+# 定义构建参数和环境变量
 ARG ENV=dev
-
 ENV APP_NAME=cake-ops
+ENV APP_HOME=/home/admin/$APP_NAME
 
+# 安装依赖并创建目录
 RUN apk add --no-cache bash curl wget netcat-openbsd && \
-    mkdir -p /home/admin/$APP_NAME && \
-    mkdir -p /home/admin/$APP_NAME/logs
-
-# 添加 appctl.sh 脚本
-ADD /APP-META/appctl.sh /home/admin/appctl.sh
-RUN chmod +x /home/admin/appctl.sh
+    mkdir -p $APP_HOME/logs
 
 # 挂载目录
 VOLUME /tmp
@@ -18,4 +15,5 @@ VOLUME /tmp
 ADD /start/target/cake-ops-service.jar /home/admin/cake-ops/cake-ops-service.jar
 
 # 设置 ENTRYPOINT
-ENTRYPOINT ["/home/admin/appctl.sh", "cake-ops", "start", "test"]
+ENTRYPOINT ["/home/admin/appctl.sh"]
+CMD ["cake-ops", "start", "test"]
