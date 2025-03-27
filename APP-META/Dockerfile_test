@@ -6,12 +6,8 @@ ARG ENV=test
 ENV APP_NAME=cake-ops
 ENV APP_HOME=/home/admin/$APP_NAME
 
-# 安装依赖并创建目录
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends bash curl wget netcat && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    mkdir -p $APP_HOME/logs
+# 创建目录
+RUN mkdir -p $APP_HOME/logs
 
 # 添加 appctl.sh 脚本
 ADD /APP-META/appctl.sh /home/admin/appctl.sh
