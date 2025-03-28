@@ -18,7 +18,7 @@ echo "ACTION: ${ACTION}"
 echo "Spring Profiles Active: ${SPRING_PROFILES_ACTIVE}"
 
 # 定义路径
-JAR_FILE="/home/admin/${APP_NAME}/${APP_NAME}-service.jar"
+JAR_FILE="/home/admin/${APP_NAME}/cake-ops-service.jar"
 MAIN_CLASS="com.rany.ops.CakeOpsApplication"
 
 # 检查 JAR 文件是否存在
