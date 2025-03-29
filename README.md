@@ -23,9 +23,39 @@
 8. 角色权限表关联表：角色存在菜单权限之后，仍然需要关联菜单下的权限点，进而确定角色具备特定的权限
 
 参考：
-![RBAC模型](https://github.com/WXzhongwang/cake-acl-center/blob/main/RBAC.png)
+![RBAC模型](https://github.com/WXzhongwang/cake-acl-center/blob/main/docs/RBAC.png)
 
-![租户账号模型](https://github.com/WXzhongwang/cake-ops/blob/main/WX20231015-225622@2x.png)
+![租户账号模型](https://github.com/WXzhongwang/cake-ops/blob/main/docs/WX20231015-225622@2x.png)
+
+## 部分系统截图
+
+### ISV管理
+
+![ISV管理](https://github.com/WXzhongwang/cake-ops/blob/main/docs/isv.png)
+![ISV01](https://github.com/WXzhongwang/cake-ops/blob/main/docs/isv01.png)
+
+### 租户管理
+
+![租户管理](https://github.com/WXzhongwang/cake-ops/blob/main/docs/tenant.png)
+
+### 账号管理
+
+![账号管理](https://github.com/WXzhongwang/cake-ops/blob/main/docs/account.png)
+
+### 应用管理
+
+![应用管理](https://github.com/WXzhongwang/cake-ops/blob/main/docs/application.png)
+
+### 菜单管理
+
+![菜单管理](https://github.com/WXzhongwang/cake-ops/blob/main/docs/menu.png)
+![应用管理](https://github.com/WXzhongwang/cake-ops/blob/main/docs/menu01.png)
+
+### 角色管理
+
+![角色菜单](https://github.com/WXzhongwang/cake-ops/blob/main/docs/role-menu.png)
+![角色权限](https://github.com/WXzhongwang/cake-ops/blob/main/docs/role-permission01.png)
+![角色权限02](https://github.com/WXzhongwang/cake-ops/blob/main/docs/role-permission01.png)
 
 # 快速使用
 
