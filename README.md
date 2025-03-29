@@ -55,7 +55,7 @@
 
 ![角色菜单](https://github.com/WXzhongwang/cake-ops/blob/main/docs/role-menu.png)
 ![角色权限](https://github.com/WXzhongwang/cake-ops/blob/main/docs/role-permission01.png)
-![角色权限02](https://github.com/WXzhongwang/cake-ops/blob/main/docs/role-permission01.png)
+![角色权限02](https://github.com/WXzhongwang/cake-ops/blob/main/docs/role-permission02.png)
 
 # 快速使用
 
