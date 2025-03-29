@@ -49,7 +49,7 @@
 ### 菜单管理
 
 ![菜单管理](https://github.com/WXzhongwang/cake-ops/blob/main/docs/menu.png)
-![应用管理](https://github.com/WXzhongwang/cake-ops/blob/main/docs/menu01.png)
+![菜单管理01](https://github.com/WXzhongwang/cake-ops/blob/main/docs/menu-01.png)
 
 ### 角色管理
 
