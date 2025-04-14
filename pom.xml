@@ -49,7 +49,7 @@
         <mapstruct.version>1.3.0.Final</mapstruct.version>
 
         <cake-sso.version>1.0-SNAPSHOT</cake-sso.version>
-        <cake-toolkit.version>1.0.0</cake-toolkit.version>
+        <cake-toolkit.version>1.0.3</cake-toolkit.version>
     </properties>
 
     <dependencyManagement>
