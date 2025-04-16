@@ -220,6 +220,11 @@
                 <artifactId>cake-toolkit-all</artifactId>
                 <version>${cake-toolkit.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.rany.cake.toolkit</groupId>
+                <artifactId>cake-toolkit-cms</artifactId>
+                <version>${cake-toolkit.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
