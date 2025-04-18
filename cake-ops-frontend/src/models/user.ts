@@ -3,14 +3,15 @@ import { message } from "antd";
 import { API, BaseAction } from "typings";
 import { Effect, Reducer } from "umi";
 import { PermissionDTO } from "./permission";
+import { MenuTreeDTO } from "./menu";
 
 type UserModelState = {
   isLogin: boolean;
-  userData: API.UserInfo;
-  menu: UserRoleMenuDTO | null;
+  userData: UserInfo;
+  menu: UserRoleMenuDTO;
 };
 
-interface QueryCurrentUserAction {
+interface QueryCurrentUserAction extends BaseAction {
   type: "user/getUserInfo";
 }
 
@@ -43,24 +44,6 @@ export interface RoleDTO {
   parentId: string;
   isDeleted: string;
   status: string;
-}
-export interface MenuTreeDTO {
-  menuId: string;
-  name: string;
-  path: string;
-  parentId: string;
-  level: number;
-  icon: string;
-  hidden: boolean;
-  isDeleted: string;
-  sort: number;
-  menuType: string;
-  children?: MenuTreeDTO[];
-  permissions: PermissionDTO[];
-
-  // 前端使用checked
-  // checked?: boolean;
-  // halfChecked?: boolean;
 }
 
 export interface AppAccountDTO {
@@ -100,6 +83,13 @@ type UserModelType = {
   };
 };
 
+/** 用户信息数据 */
+export interface UserInfo {
+  userId: string;
+  userName: string;
+  realName: string;
+}
+
 const UserModel: UserModelType = {
   namespace: "user",
   state: {
@@ -109,12 +99,16 @@ const UserModel: UserModelType = {
       userName: "",
       realName: "",
     },
-    menu: null,
+    menu: {
+      roles: [],
+      menuTree: [],
+    },
   },
   effects: {
     *logout(_, { call, put }) {
-      const res: API.LogoutResponse = yield call(userService.logout);
-      console.log("res", res);
+      const res: API.ResponseBody<Record<string, never>> = yield call(
+        userService.logout
+      );
       yield put({
         type: "setUserInfo",
         payload: {
@@ -123,10 +117,10 @@ const UserModel: UserModelType = {
         },
       });
     },
-    *getUserInfo(_: QueryCurrentUserAction, { call, put }) {
-      const res: API.UserInfoResponse = yield call(userService.getUserInfo);
-      console.log("res", res);
-      console.log("content", res.content);
+    *getUserInfo({ callback }: QueryCurrentUserAction, { call, put }) {
+      const res: API.ResponseBody<UserInfo> = yield call(
+        userService.getUserInfo
+      );
       yield put({
         type: "setUserInfo",
         payload: {
@@ -134,12 +128,25 @@ const UserModel: UserModelType = {
           userData: res.content,
         },
       });
+
+      const { success, msg } = res;
+      if (success) {
+        if (callback && typeof callback === "function") {
+          callback(res.content);
+        }
+      } else {
+        message.error(msg);
+      }
     },
     *queryMenu({ callback }: QueryMenuAction, { call, put }) {
-      const response = yield call(userService.queryUserMenu);
+      const response: API.ResponseBody<UserRoleMenuDTO> = yield call(
+        userService.queryUserMenu
+      );
       yield put({
         type: "setMenu",
-        payload: response.content,
+        payload: {
+          menu: response.content,
+        },
       });
 
       const { success, msg } = response;
@@ -154,15 +161,18 @@ const UserModel: UserModelType = {
   },
   reducers: {
     setUserInfo(state, action) {
+      console.log("action", action.payload);
       return {
         ...state,
         ...action.payload,
       };
     },
+
     setMenu(state, action) {
+      console.log("action", action.payload);
       return {
         ...state,
-        menu: action.payload,
+        ...action.payload,
       };
     },
   },

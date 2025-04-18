@@ -59,6 +59,11 @@ const PageDrawer: React.FC<PageDrawerProps> = ({
     };
   });
 
+  const submit = (values: any) => {
+    values.menuType = "PAGE";
+    onAddFormSubmit(values);
+  };
+
   return (
     <Drawer
       title="添加页面"
@@ -67,7 +72,7 @@ const PageDrawer: React.FC<PageDrawerProps> = ({
       open={isDrawerVisible}
       width={400}
     >
-      <Form form={addForm} layout="vertical" onFinish={onAddFormSubmit}>
+      <Form form={addForm} layout="vertical" onFinish={submit}>
         <Form.Item
           label="页面名称"
           name="name"

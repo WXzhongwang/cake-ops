@@ -1,8 +1,9 @@
+import { UserInfo } from "@/models/user";
 import { API } from "typings";
 
 export default {
   "GET /api/ops/user/current": (req: Request, res: Response) => {
-    const result: API.UserInfoResponse = {
+    const result: API.ResponseBody<UserInfo> = {
       success: true,
       code: "200",
       msg: "请求成功",

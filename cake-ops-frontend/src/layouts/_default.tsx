@@ -52,9 +52,9 @@ export default {
   //       },
   //     ],
   //   },
-  location: {
-    pathname: "/",
-  },
+  // location: {
+  //   pathname: "/",
+  // },
   appList: [
     {
       icon: "https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg",

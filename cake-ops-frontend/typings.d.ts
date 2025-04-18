@@ -25,18 +25,6 @@ declare namespace API {
     pageSize: number;
     totalPage: number;
     total: number;
-    items: T[]
+    items: T[];
   };
-
-  /** 用户信息数据 */
-  type UserInfo = {
-    userId: string;
-    userName: string;
-    realName: string;
-  };
-
-  /** 用户信息响应结果 */
-  type UserInfoResponse = ResponseBody<UserInfo>;
-  /** 登出响应结果 */
-  type LogoutResponse = ResponseBody<Record<string, never>>;
 }

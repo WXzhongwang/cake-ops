@@ -59,6 +59,11 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
     };
   });
 
+  const submit = (values: any) => {
+    values.menuType = "MENU";
+    onAddFormSubmit(values);
+  };
+
   return (
     <Drawer
       title="添加菜单"
@@ -67,7 +72,7 @@ const MenuDrawer: React.FC<MenuDrawerProps> = ({
       open={isDrawerVisible}
       width={400}
     >
-      <Form form={addForm} layout="vertical" onFinish={onAddFormSubmit}>
+      <Form form={addForm} layout="vertical" onFinish={submit}>
         <Form.Item
           label="菜单名称"
           name="name"

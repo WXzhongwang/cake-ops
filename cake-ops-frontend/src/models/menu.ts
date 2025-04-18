@@ -47,6 +47,7 @@ export interface CreateMenuCommand {
   icon: string;
   level: number;
   parentId: number;
+  menuType: string;
   hidden: boolean;
   isDeleted: boolean;
   sort: number;

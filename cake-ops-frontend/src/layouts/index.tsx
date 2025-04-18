@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { MenuDataItem, ProLayout, ProSettings } from "@ant-design/pro-layout";
-import { Dropdown, message } from "antd"; // 引入 Spin 用于加载指示器
+import { Dropdown, message, Spin } from "antd";
 import { logout } from "@/services/user";
-import { connect, Dispatch, history, Link, Outlet } from "umi";
+import { connect, Dispatch, Link, Outlet } from "umi";
 import * as allIcons from "@ant-design/icons";
 import { LogoutOutlined } from "@ant-design/icons";
 import defaultProps from "./_default";
-import { API } from "typings";
-import { MenuTreeDTO, UserRoleMenuDTO } from "@/models/user";
+import { UserInfo, UserRoleMenuDTO } from "@/models/user";
+import Loading from "@/wrappers/loading";
+import { MenuTreeDTO } from "@/models/menu";
 
 interface LayoutProps {
   dispatch: Dispatch;
   isLogin: boolean;
-  userData: API.UserInfo;
+  userData: UserInfo;
   menu: UserRoleMenuDTO;
 }
 
-const Layout: React.FC<LayoutProps> = ({ dispatch, isLogin, userData }) => {
+const Layout: React.FC<LayoutProps> = ({
+  dispatch,
+  isLogin,
+  userData,
+  menu,
+}) => {
   const [settings, setSetting] = useState<Partial<ProSettings>>({
     fixSiderbar: true,
     layout: "top",
@@ -27,13 +33,16 @@ const Layout: React.FC<LayoutProps> = ({ dispatch, isLogin, userData }) => {
     siderMenuType: "sub",
   });
   const [pathname, setPathname] = useState("/apps");
+  const [loading, setLoading] = useState(true); // 初始状态为 true
+  const [menuLoaded, setMenuLoaded] = useState(false);
+  const [userMenu, setUserMenu] = useState<MenuDataItem[]>([]);
 
   const getUserInfo = () => {
     dispatch({
       type: "user/getUserInfo",
+      callback: () => {},
     });
   };
-
   const queryUserMenu = async () => {
     return new Promise<MenuDataItem[]>((resolve) => {
       dispatch({
@@ -46,6 +55,21 @@ const Layout: React.FC<LayoutProps> = ({ dispatch, isLogin, userData }) => {
           resolve(convertedMenuData);
         },
       });
+    });
+  };
+
+  const queryUserMenuV2 = async () => {
+    setLoading(true);
+    dispatch({
+      type: "user/queryMenu",
+      callback: (content: UserRoleMenuDTO) => {
+        const convertedMenuData = convertMenuTreeToProLayoutMenu(
+          content.menuTree
+        );
+        setUserMenu(convertedMenuData);
+        setLoading(false);
+        setMenuLoaded(true); // 设置菜单已加载
+      },
     });
   };
 
@@ -79,9 +103,12 @@ const Layout: React.FC<LayoutProps> = ({ dispatch, isLogin, userData }) => {
 
   useEffect(() => {
     getUserInfo();
+    queryUserMenuV2();
   }, []);
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <div
       id="main-pro-layout"
       style={{
@@ -95,12 +122,21 @@ const Layout: React.FC<LayoutProps> = ({ dispatch, isLogin, userData }) => {
         menu={{
           type: "group",
           collapsedShowGroupTitle: true,
-          request: queryUserMenu,
+          request: async () => {
+            if (menuLoaded) {
+              return userMenu;
+            }
+            return [];
+          },
+          // request: queryUserMenu,
         }}
         waterMarkProps={{
-          content: [userData?.userName, userData?.userId],
+          content: [
+            userData?.userName || "", // 如果 userName 为 undefined，则使用空字符串
+            userData?.userId || "", // 如果 userId 为 undefined，则使用空字符串
+          ],
         }}
-        {...defaultProps}
+        appList={defaultProps.appList}
         avatarProps={{
           src: "https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg",
           size: "small",
@@ -166,7 +202,14 @@ const Layout: React.FC<LayoutProps> = ({ dispatch, isLogin, userData }) => {
           );
         }}
       >
-        <Outlet />
+        {menuLoaded ? (
+          <>
+            <Outlet />
+            <div>Debug: Outlet Rendered</div> {/* 添加调试信息 */}
+          </>
+        ) : (
+          <Spin size="large" />
+        )}
       </ProLayout>
     </div>
   );
@@ -178,7 +221,7 @@ export default connect(
   }: {
     user: {
       isLogin: boolean;
-      userData: API.UserInfo;
+      userData: UserInfo;
       menu: UserRoleMenuDTO;
     };
   }) => ({

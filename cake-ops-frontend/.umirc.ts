@@ -1,4 +1,4 @@
-import AuthGuard from "@/components/AuthGuard";
+// import AuthGuard from "@/components/auth-guard";
 import { defineConfig } from "umi";
 
 const { BUILD_ENV } = process.env;
@@ -36,37 +36,37 @@ export default defineConfig({
       path: "/uic/isv",
       component: "isv/isv-list",
       name: "ISV列表",
-      wrappers: [AuthGuard],
+      wrappers: ["@/wrappers/auth"],
     },
     {
       path: "/uic/tenant",
       component: "tenant/tenant-list",
       name: "租户列表",
-      wrappers: [AuthGuard],
+      wrappers: ["@/wrappers/auth"],
     },
     {
       path: "/uic/account",
       component: "tenant/account-list",
       name: "账号列表",
-      wrappers: [AuthGuard],
+      wrappers: ["@/wrappers/auth"],
     },
     {
       path: "/acl/app",
       component: "app/app-list",
       name: "应用管理",
-      wrappers: [AuthGuard],
+      wrappers: ["@/wrappers/auth"],
     },
     {
       path: "/acl/menu-tree",
       component: "app/menu-tree",
       name: "菜单管理",
-      wrappers: [AuthGuard],
+      wrappers: ["@/wrappers/auth"],
     },
     {
       path: "/acl/role-list",
       component: "app/role-list",
       name: "角色管理",
-      wrappers: [AuthGuard],
+      wrappers: ["@/wrappers/auth"],
     },
     { path: "/404", component: "system/not-found" }, // 显式声明 /404 路由
     { path: "/403", component: "system/not-authorized" }, // 显式声明 /403 路由
