@@ -23,7 +23,7 @@ import dayjs from "dayjs";
 import { ColumnsType } from "antd/lib/table";
 import CreateAccountForm from "./components/create-account-form";
 import Paragraph from "antd/lib/typography/Paragraph";
-import { UserRoleMenuDTO } from "@/models/user";
+import { UserInfo, UserRoleMenuDTO } from "@/models/user";
 
 interface AccountListProps {
   dispatch: Dispatch;
@@ -391,7 +391,7 @@ export default connect(
   }: {
     user: {
       isLogin: boolean;
-      userData: API.UserInfo;
+      userData: UserInfo;
       menu: UserRoleMenuDTO;
     };
   }) => ({

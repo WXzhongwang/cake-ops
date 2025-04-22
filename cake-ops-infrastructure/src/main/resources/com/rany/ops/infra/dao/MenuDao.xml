@@ -186,7 +186,7 @@
                 status = #{status},
             </if>
             <if test="menuType != null and menuType != ''">
-                menuType = #{menuType},
+                menu_type = #{menuType},
             </if>
         </set>
         where id = #{id.id,jdbcType=BIGINT}

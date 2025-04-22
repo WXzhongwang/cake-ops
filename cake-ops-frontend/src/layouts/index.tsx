@@ -12,17 +12,9 @@ import { MenuTreeDTO } from "@/models/menu";
 
 interface LayoutProps {
   dispatch: Dispatch;
-  isLogin: boolean;
-  userData: UserInfo;
-  menu: UserRoleMenuDTO;
 }
 
-const Layout: React.FC<LayoutProps> = ({
-  dispatch,
-  isLogin,
-  userData,
-  menu,
-}) => {
+const Layout: React.FC<LayoutProps> = ({ dispatch }) => {
   const [settings, setSetting] = useState<Partial<ProSettings>>({
     fixSiderbar: true,
     layout: "top",
@@ -36,25 +28,14 @@ const Layout: React.FC<LayoutProps> = ({
   const [loading, setLoading] = useState(true); // 初始状态为 true
   const [menuLoaded, setMenuLoaded] = useState(false);
   const [userMenu, setUserMenu] = useState<MenuDataItem[]>([]);
+  const [userData, setUserData] = useState<UserInfo>();
 
   const getUserInfo = () => {
     dispatch({
       type: "user/getUserInfo",
-      callback: () => {},
-    });
-  };
-  const queryUserMenu = async () => {
-    return new Promise<MenuDataItem[]>((resolve) => {
-      dispatch({
-        type: "user/queryMenu",
-        callback: (content: UserRoleMenuDTO) => {
-          const convertedMenuData = convertMenuTreeToProLayoutMenu(
-            content.menuTree
-          );
-          console.log("converted:", convertedMenuData); // 确保这里打印出正确的菜单数据
-          resolve(convertedMenuData);
-        },
-      });
+      callback: (user: UserInfo) => {
+        setUserData(user);
+      },
     });
   };
 
@@ -136,6 +117,7 @@ const Layout: React.FC<LayoutProps> = ({
             userData?.userId || "", // 如果 userId 为 undefined，则使用空字符串
           ],
         }}
+        breadcrumbRender={false}
         appList={defaultProps.appList}
         avatarProps={{
           src: "https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg",
@@ -205,7 +187,6 @@ const Layout: React.FC<LayoutProps> = ({
         {menuLoaded ? (
           <>
             <Outlet />
-            <div>Debug: Outlet Rendered</div> {/* 添加调试信息 */}
           </>
         ) : (
           <Spin size="large" />
@@ -215,18 +196,4 @@ const Layout: React.FC<LayoutProps> = ({
   );
 };
 
-export default connect(
-  ({
-    user,
-  }: {
-    user: {
-      isLogin: boolean;
-      userData: UserInfo;
-      menu: UserRoleMenuDTO;
-    };
-  }) => ({
-    isLogin: user.isLogin,
-    userData: user.userData,
-    menu: user.menu,
-  })
-)(Layout);
+export default connect()(Layout);

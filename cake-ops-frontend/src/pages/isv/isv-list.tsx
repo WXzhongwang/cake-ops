@@ -19,7 +19,7 @@ import { IsvDTO } from "@/models/isv";
 import { create, update } from "@/services/isv";
 import CreateIsvForm from "./components/create-isv-form";
 import { API } from "typings";
-import { UserRoleMenuDTO } from "@/models/user";
+import { UserInfo, UserRoleMenuDTO } from "@/models/user";
 import dayjs from "dayjs";
 import { ColumnsType } from "antd/lib/table";
 import Paragraph from "antd/lib/typography/Paragraph";
@@ -287,7 +287,7 @@ const IsvList: React.FC<IsvListProps> = ({ dispatch }) => {
   ];
 
   return (
-    <PageContainer title="ISV管理">
+    <PageContainer>
       <Card>
         <Space size="middle" direction="vertical" style={{ width: "100%" }}>
           <Form
@@ -360,7 +360,7 @@ export default connect(
   }: {
     user: {
       isLogin: boolean;
-      userData: API.UserInfo;
+      userData: UserInfo;
       menu: UserRoleMenuDTO;
     };
   }) => ({
