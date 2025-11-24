@@ -25,6 +25,8 @@ public interface SafeStrategyDao extends BaseMapper<AccountPO> {
      */
     SafeStrategyPO findAccountByAuthCode(@Param("authCode") String authCode, @Param("loginStrategy") String loginStrategy);
 
+    SafeStrategyPO findAccountByLoginName(@Param("tenantId") Long tenantId, @Param("authCode") String authCode, @Param("loginStrategy") String loginStrategy);
+
 
     /**
      * 根据账号获取登录策略

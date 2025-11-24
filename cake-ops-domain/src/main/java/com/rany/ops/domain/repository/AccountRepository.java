@@ -28,6 +28,7 @@ public interface AccountRepository extends Repository<Account, AccountId> {
      * @return 账号
      */
     Account findAccountByLoginName(String loginName);
+    SafeStrategy getStrategyByLoginInName(Long tenantId, String loginName);
 
     /**
      * 根据dingUnionId查找用户

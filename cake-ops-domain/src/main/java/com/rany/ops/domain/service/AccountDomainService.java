@@ -58,6 +58,10 @@ public class AccountDomainService {
         return accountRepository.findAccountByDingUnionId(tenantId, dingUnionId);
     }
 
+    public SafeStrategy getStrategyByLoginInName(Long tenantId, String loginName) {
+        return accountRepository.getStrategyByLoginInName(tenantId, loginName);
+    }
+
     public Account findAccountByLoginName(String loginName) {
         return accountRepository.findAccountByLoginName(loginName);
     }

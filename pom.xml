@@ -6,7 +6,7 @@
 
     <groupId>com.rany.ops</groupId>
     <artifactId>cake-ops</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.2</version>
     <name>cake-ops</name>
     <modules>
         <module>start</module>
@@ -49,7 +49,7 @@
         <mapstruct.version>1.3.0.Final</mapstruct.version>
 
         <cake-sso.version>1.0-SNAPSHOT</cake-sso.version>
-        <cake-toolkit.version>1.0.3</cake-toolkit.version>
+        <cake-toolkit.version>1.0.4</cake-toolkit.version>
     </properties>
 
     <dependencyManagement>
@@ -218,11 +218,6 @@
             <dependency>
                 <groupId>com.rany.cake.toolkit</groupId>
                 <artifactId>cake-toolkit-all</artifactId>
-                <version>${cake-toolkit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.rany.cake.toolkit</groupId>
-                <artifactId>cake-toolkit-cms</artifactId>
                 <version>${cake-toolkit.version}</version>
             </dependency>
         </dependencies>

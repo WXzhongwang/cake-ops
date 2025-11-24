@@ -78,6 +78,15 @@ public class AccountFacadeImpl implements AccountFacade {
     }
 
     @Override
+    public SafeStrategyDTO getAccountByLoginInName(AccountLoginNameQuery accountBasicQuery) {
+        SafeStrategy safeStrategy = accountDomainService.getStrategyByLoginInName(accountBasicQuery.getTenantId(), accountBasicQuery.getLoginName());
+        if (Objects.isNull(safeStrategy)) {
+            throw new BusinessException(BusinessErrorMessage.ACCOUNT_NOT_FOUND);
+        }
+        return safeStrategyConvertor.sourceToDTO(safeStrategy);
+    }
+
+    @Override
     public Boolean disableAccount(DisableAccountCommand disableAccountCommand) {
         Account account = accountDomainService.findById(new AccountId(disableAccountCommand.getAccountId()));
         if (Objects.isNull(account)) {

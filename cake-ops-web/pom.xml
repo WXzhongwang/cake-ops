@@ -5,13 +5,13 @@
     <parent>
         <artifactId>cake-ops</artifactId>
         <groupId>com.rany.ops</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>cake-ops-web</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.2</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -22,6 +22,7 @@
         <dependency>
             <groupId>com.rany.cake.toolkit</groupId>
             <artifactId>cake-toolkit-cms</artifactId>
+            <version>${cake-toolkit.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

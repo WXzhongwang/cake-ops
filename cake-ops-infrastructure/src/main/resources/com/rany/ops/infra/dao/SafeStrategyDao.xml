@@ -29,6 +29,18 @@
         and is_deleted = '0'
     </select>
 
+    <select id="findAccountByLoginName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from safe_strategy
+        LEFT JOIN account ON account.id = safe_strategy.account_id
+        where safe_strategy.auth_code = #{authCode,jdbcType=BIGINT}
+        and safe_strategy.login_strategy = #{loginStrategy}
+        and safe_strategy.is_deleted = '0'
+            and account.status = '0'
+            and account.tenant_id = #{tenantId}
+            and account.is_deleted = '0'
+    </select>
     <select id="selectStrategiesByAccountId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

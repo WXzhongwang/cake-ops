@@ -94,6 +94,15 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
+    public SafeStrategy getStrategyByLoginInName(Long tenantId, String loginName) {
+        SafeStrategyPO safeStrategyPO = safeStrategyDao.findAccountByLoginName(tenantId, loginName, LoginSafeStrategyEnum.BASIC_AUTH.name());
+        if (Objects.isNull(safeStrategyPO)) {
+            return null;
+        }
+        return safeStrategyConvertor.targetToSource(safeStrategyPO);
+    }
+
+    @Override
     public Account findAccountByDingUnionId(Long tenantId, String dingUnionId) {
         AccountPO accountPO = accountDao.getAccountByUnionId(dingUnionId, tenantId);
         return accountDataConvertor.targetToSource(accountPO);

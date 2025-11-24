@@ -45,6 +45,14 @@ public interface AccountFacade {
     AccountDTO getAccountByDingId(AccountDingIdQuery accountBasicQuery);
 
     /**
+     * 获取账号信息
+     *
+     * @param accountBasicQuery query
+     * @return account
+     */
+    SafeStrategyDTO getAccountByLoginInName(AccountLoginNameQuery accountBasicQuery);
+
+    /**
      * 账号禁用
      *
      * @param disableAccountCommand 指令
